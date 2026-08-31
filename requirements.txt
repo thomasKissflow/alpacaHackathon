@@ -1,0 +1,10 @@
+alpaca-py>=0.33.0
+python-dotenv>=1.0.1
+pytest>=8.0.0
+
+# LLM agent layer. openai's client also talks to Featherless's
+# OpenAI-compatible endpoint (agent/llm_agent.py just overrides base_url), so
+# it's installed by default; anthropic is optional, only needed if you set
+# ANTHROPIC_API_KEY instead.
+openai>=1.50.0
+# anthropic>=0.40.0

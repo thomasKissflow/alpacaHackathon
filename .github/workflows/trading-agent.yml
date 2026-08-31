@@ -1,0 +1,62 @@
+# One agent cycle (agent/run.py -> agent/cycle.py:run_cycle), 3x/day. This is
+# comfortable for Convexity Mode and the LLM MarketPlan/postmortem layer, but
+# it is NOT a substitute for Specialist Mode's quote maintenance, which needs
+# to run far more often than every few hours to generate real fills -- run
+# `python -m agent.daemon` continuously somewhere (a laptop left open during
+# market hours is fine for a paper-trading hackathon week) for that. See the
+# README's "Running it for real" section.
+name: trading-agent
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    # Weekdays only. Times are UTC -- US market is 9:30-16:00 ET which is
+    # 13:30-20:00 UTC during EDT (14:30-21:00 UTC during EST). Adjust if
+    # running outside EDT (Aug-Sep 2026 is EDT, so these are correct as-is).
+    - cron: "35 13 * * 1-5"   # ~09:35 ET, just after the open
+    - cron: "0 17 * * 1-5"    # ~13:00 ET, midday check
+    - cron: "50 19 * * 1-5"   # ~15:50 ET, before the close
+
+permissions:
+  contents: write
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "stable"
+
+      - name: Install Alpaca CLI
+        run: go install github.com/alpacahq/cli/cmd/alpaca@latest
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Run risk-gate + pricing test suite (no live API calls)
+        run: python -m pytest tests/ -q
+
+      - name: Run agent cycle
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          ALPACA_PAPER_TRADE: "true"
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FEATHERLESS_API_KEY: ${{ secrets.FEATHERLESS_API_KEY }}
+          PATH: ${{ env.PATH }}:${{ runner.tool_cache }}/../../go/bin:/home/runner/go/bin
+        run: python -m agent.run
+
+      - name: Commit updated data files for the dashboard
+        run: |
+          git config user.name "trading-agent-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "agent: update trading data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push

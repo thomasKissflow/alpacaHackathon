@@ -1,7 +1,7 @@
 # Project Overview
 
-> **Status:** Pre-build — research & idea convergence
-> **Last updated:** 2026-08-29 (Sat)
+> **Status:** 🟢 Code live — see [decisions.md](decisions.md) D-011/D-012 for the concept/architecture actually shipped (a pivot from the D-004 proposal below; the "why" is fully documented there, not hidden).
+> **Last updated:** 2026-08-31 (Sun)
 > **Owner of this doc:** Claude (documentation owner)
 
 ---
@@ -124,13 +124,14 @@ Two consequences:
 
 ## 8. High-Level Solution
 
-**Not yet locked.** Candidate direction (see [brainstorming.md](brainstorming.md) and [decisions.md](decisions.md) D-004):
+**Locked — see [decisions.md](decisions.md) D-011 and D-012.** "The Specialist": an autonomous options market maker.
 
-A two-tier system:
-- **Agent runtime** — a scheduled, unattended job that uses the **Alpaca CLI / MCP server** to read the market, decide, and place defined-risk options trades, writing a full decision log.
-- **Glass-box dashboard** — a static, frontend-only app that replays the agent's decision log and shows live positions/P&L, deployed at a public URL.
+- **Specialist Mode** (primary, the differentiator): quotes both sides of the market on 3–5 liquid, near-the-money options, captures the bid/ask edge, delta-hedges every fill with the underlying immediately.
+- **Convexity Mode** (fallback, keeps the account active): IV-rank/trend-filtered defined-risk vertical spreads and iron condors, sharing the same risk core and ledger.
+- **Agent layer** — Claude or a Featherless-hosted model decides *where* to quote and *how wide* on a slow cadence (~45min) and writes a daily post-mortem; it never places an order, matching D-008 exactly.
+- **Two-tier runtime, exactly as D-006 originally argued for**: a scheduled/long-running job (`agent/daemon.py` + GitHub Actions, holds all secrets) does the trading; a 100% static dashboard (`dashboard/`) reads a public, secret-free JSON export.
 
-Awaiting your decision on the strategy concept before this section is filled in.
+This is a different concept than D-004's originally-proposed portfolio-greeks VRP desk — see D-011 for the full reasoning and, importantly, what was given up in the pivot (a book-level Greeks-budget *allocator*, regime-switching playbook selection, and the time-travel replay UI are the three biggest gaps against the original plan).
 
 ---
 
@@ -142,11 +143,14 @@ Awaiting your decision on the strategy concept before this section is filled in.
 | Technical research | ✅ First pass complete (Alpaca CLI, MCP, data tiers, competitors) |
 | Documentation structure | ✅ Created |
 | Idea generation | ✅ 14 ideas logged, top 4 fully evaluated |
-| **Strategy decision** | ⏳ **Awaiting Thomas** |
-| New paper account (R4) | ❌ Not created — **blocking, do today** |
-| Featherless credits | ❌ Not claimed — first-come-first-served |
-| Repo scaffold | ❌ Not started (code frozen until instructed) |
-| Agent live | ❌ Target: Sun 31 Aug |
+| **Strategy decision** | ✅ **Decided — D-011** (pivoted from D-004, reasoning documented, not silent) |
+| **Architecture decision** | ✅ **Decided — D-012** (SQLite ledger + static vanilla-JS dashboard) |
+| Code | ✅ **Live** — `agent/` (Specialist + Convexity modes, risk gate, LLM layer, reconciliation), `dashboard/`, `tests/` (27 passing, no live API calls) |
+| New competition paper account (R4/R5) | ❌ **Still not created — still blocking, still today.** Nothing above changes this: T-001 is unchanged and urgent. |
+| Featherless credits | ⚠️ Featherless API key is wired up and verified working end-to-end (`Qwen/Qwen2.5-72B-Instruct`); confirm separately whether the `ALPACA26` $25 credit code (T-003) was claimed — first-come-first-served, may already be gone |
+| Time-travel replay dashboard (T-030) | ❌ Not built — biggest open gap vs. the original plan, see D-012 |
+| NFP event rule (T-027) | ❌ Not built — still open regardless of concept, see D-011 |
+| Agent live (trading) | ⏳ Code is ready; needs the competition account + `python -m agent.daemon` running somewhere for real fills — see README "Running it for real" |
 
 ---
 
@@ -155,9 +159,9 @@ Awaiting your decision on the strategy concept before this section is filled in.
 | # | Question | Blocking? | Owner |
 |---|---|---|---|
 | Q1 | Who are Developer A and Developer B, and what are their strengths? | Task assignment | Thomas |
-| Q2 | Which strategy concept do we commit to? | **Yes — everything downstream** | Thomas |
-| Q3 | Are we willing to run the agent runtime outside the browser (scheduled job)? See [architecture.md](architecture.md) §2 | **Yes — R1/R2 depend on it** | Thomas |
-| Q4 | Do we pay $99 for Algo Trader Plus (OPRA real-time options data), or engineer around the free indicative feed? | Strategy design | Thomas |
+| Q2 | Which strategy concept do we commit to? | ~~Yes — everything downstream~~ | **Resolved: D-011** (market-making + convexity fallback, pivoted from D-004) |
+| Q3 | Are we willing to run the agent runtime outside the browser (scheduled job)? See [architecture.md](architecture.md) §2 | ~~Yes — R1/R2 depend on it~~ | **Resolved: yes — D-012**, `agent/daemon.py` + GitHub Actions |
+| Q4 | Do we pay $99 for Algo Trader Plus (OPRA real-time options data), or engineer around the free indicative feed? | Strategy design | Thomas — **still open; current build engineers around the free indicative feed and hasn't needed OPRA** |
 | Q5 | Who owns the social/build-in-public workstream? It is a separately winnable $500. | Prize EV | Thomas |
 | Q6 | Do we have X and LinkedIn accounts with any existing audience? | Social prize realism | Thomas |
 | Q7 | Is anyone awake/available during US market hours (19:00–01:30 IST) for a manual kill switch? | Risk design | Thomas |

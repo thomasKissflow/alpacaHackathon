@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Specialist — Live Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+</head>
+<body>
+  <header>
+    <h1>The Specialist</h1>
+    <p class="subtitle">Autonomous options market-making (Specialist Mode) + defined-risk convexity selling (Convexity Mode) on Alpaca paper trading.</p>
+  </header>
+
+  <section class="stat-row" id="stat-row">
+    <div class="stat-card"><div class="label">Equity</div><div class="value" id="stat-equity">—</div></div>
+    <div class="stat-card"><div class="label">Day P&amp;L</div><div class="value" id="stat-day-pnl">—</div></div>
+    <div class="stat-card"><div class="label">Specialist P&amp;L</div><div class="value" id="stat-specialist-pnl">—</div></div>
+    <div class="stat-card"><div class="label">Convexity P&amp;L</div><div class="value" id="stat-convexity-pnl">—</div></div>
+    <div class="stat-card"><div class="label">Last snapshot</div><div class="value" id="stat-updated">—</div></div>
+  </section>
+
+  <section class="panel">
+    <h2>Equity curve</h2>
+    <canvas id="equity-chart" height="80"></canvas>
+  </section>
+
+  <section class="panel">
+    <h2>Portfolio Greeks vs. risk gate caps</h2>
+    <div class="gauge-row" id="gauge-row"></div>
+  </section>
+
+  <section class="grid-2">
+    <div class="panel">
+      <h2>Specialist Mode inventory</h2>
+      <table id="inventory-table">
+        <thead>
+          <tr><th>Symbol</th><th>Mode</th><th>Qty</th><th>Delta $</th><th>Gamma</th><th>Vega $</th><th>Theta $</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Quote / hedge activity feed</h2>
+      <div id="activity-feed" class="feed"></div>
+    </div>
+  </section>
+
+  <section class="grid-2">
+    <div class="panel">
+      <h2>Convexity Mode positions</h2>
+      <table id="convexity-table">
+        <thead>
+          <tr><th>Underlying</th><th>Type</th><th>Status</th><th>Entry credit</th><th>Max loss / Exit P&amp;L</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Risk gate event log</h2>
+      <div id="risk-feed" class="feed"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Daily LLM post-mortem</h2>
+    <div id="postmortem-feed" class="feed"></div>
+  </section>
+
+  <section class="panel">
+    <h2>MarketPlan history</h2>
+    <div id="plan-feed" class="feed"></div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

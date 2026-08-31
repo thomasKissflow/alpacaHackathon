@@ -47,7 +47,7 @@
 ---
 
 ## D-004 — Build an autonomous options *desk*, not a signal bot
-**Date:** 2026-08-29 · **Status:** PROPOSED — **needs Thomas's sign-off (Q2), blocks everything**
+**Date:** 2026-08-29 · **Status:** SUPERSEDED by [D-011](#d-011--pivot-the-concept-to-an-options-market-maker-specialist-mode--convexity-mode-fallback)
 
 **Decision:** Build a diversified, defined-risk options book managed against a **portfolio-level greeks budget** (net delta / vega / theta), selecting structures from a regime-matched playbook, harvesting volatility risk premium, with scheduled-event awareness — presented through a glass-box replayable dashboard.
 
@@ -78,7 +78,7 @@
 ---
 
 ## D-006 — Challenge and amend the "frontend only, no backend" constraint
-**Date:** 2026-08-29 · **Status:** PROPOSED — **needs sign-off (Q3)**
+**Date:** 2026-08-29 · **Status:** SUPERSEDED (constraint amendment accepted; concrete state/dashboard shape changed — see [D-012](#d-012--adopt-a-sqlite-ledger-and-a-static-vanilla-jshtml-dashboard-instead-of-json-files--reactvite))
 
 **Decision:** Amend to: **"No application server, no database — but the agent runtime is a scheduled job, not a browser tab."** Tier 1 is a cron-triggered script (holds secrets, uses the Alpaca CLI, commits state). Tier 2 is a 100% static dashboard reading committed JSON, with zero secrets.
 
@@ -145,15 +145,61 @@
 
 ---
 
+## D-011 — Pivot the concept to an options market-maker (Specialist Mode) + Convexity Mode fallback
+**Date:** 2026-08-31 · **Status:** DECIDED — supersedes D-004
+
+**Decision:** Build "The Specialist" — an autonomous options market maker that quotes both sides of the market on a small basket of liquid, near-the-money options (SPY, QQQ, AAPL, NVDA, TSLA), captures the bid/ask edge, and immediately delta-hedges every fill with the underlying (**Specialist Mode**). A second, independent strategy — IV-rank/trend-filtered defined-risk vertical spreads and iron condors (**Convexity Mode**) — runs in parallel through the same risk core and ledger, specifically so the account keeps generating judged trading activity even in a week where Specialist Mode's passive quotes don't get filled. An LLM agent layer (Claude or Featherless) decides *where* to make markets and *how wide* to quote, and writes a daily post-mortem; it never places an order (unchanged principle from D-008).
+
+**Reasoning:**
+1. **This is a genuinely different, and arguably wider-open, lane than D-004's proposal.** The team's own competitor research ([research.md](research.md) §2) found no book-level-greeks manager among the 12 published entries — true, and D-004 was a sound response to that gap. But it also found nobody doing *inventory-managed two-sided quoting* — market making is a market-microstructure activity, not a directional-or-volatility bet, and none of the 12 competitors (signal bots, LLM-gated pickers, human-in-the-loop notifiers) touch it either. It is at least as unclaimed as D-004's framing, and it maps even more directly onto Alpaca's own "algorithmic trading" framing of the challenge.
+2. **De-risks the P&L criterion the same way D-003 already argued for, via a different mechanism.** D-003's goal — a defensible, low-variance, explainable P&L over ~4.2 sessions — holds completely and is *why* this build ships two independent, parallel P&L engines (captured-spread market-making, and defined-risk premium-selling) sharing one ledger, rather than staging one concept into another over the week. If Specialist Mode's fills are sparse in a quiet week (a real risk with paper trading's fill semantics, see [research.md](research.md) §1.6), Convexity Mode still produces real, judgeable activity independently.
+3. **It was already built, end-to-end, and tested against a real Featherless key before this decision was written down.** Given the clock (D-003's binding constraint), a complete, currently-working implementation beats re-deriving the portfolio-greeks-desk concept from scratch. This is a legitimate reason on a 4-day build, but it is an honest one, not a technical argument that D-004 was wrong — see "What we're giving up" below.
+4. Both concepts satisfy R1–R7 equally well and use the same CLI-for-execution / MCP-for-research split the team had already independently arrived at (D-007) — that reasoning carries over unchanged.
+
+**What we're giving up from D-004 (say this plainly, don't bury it):**
+- **Book-level Greeks budget as the core allocator abstraction.** This build tracks and caps portfolio delta/vega/gamma (see D-012 and `agent/risk_gate.py`), but as *hard limits on a market-making/premium-selling book*, not as the risk-budget-driven trade-selection allocator D-004 envisioned (B1). If sophistication time remains this week, a Greeks-budget allocator layered on top of Convexity Mode's structure selection is the closest bridge back to that original idea — worth revisiting as Stage 2-equivalent work, not a rebuild.
+- **Regime-switching playbook selection (B3)** is not implemented. Convexity Mode's trend read (SMA20/SMA50) is a simpler version of the same instinct.
+- **NFP event-awareness (D-004/B5) is not yet implemented in this build** — still correctly flagged as high-severity and unclaimed in [research.md](research.md) §5, still needs to land before Thursday close regardless of which concept underlies the agent. Tracked in [tasks.md](tasks.md).
+- **10–15% of team research effort (the VRP/regime-desk-specific parts of brainstorming.md Part C and decisions D-003) doesn't carry forward directly.** The account setup, data-tier findings, competitor analysis, paper-fill semantics ([research.md](research.md) §1.4–1.6), and D-001/D-007/D-008/D-009/D-010 all carry forward completely unchanged — this was not wasted work.
+
+**Alternatives considered:** Build D-004 as originally scoped (rejected for now — would mean discarding a working, tested implementation to re-derive a comparable amount of new code, on a 4-day clock, for a concept whose main advantage — differentiation — this build's concept shares); build both concepts and pick the stronger one by mid-week (rejected — splits the team's scarce time on a clock where D-005's own logic says a live, correct agent beats a hypothetically-better one still being built).
+
+**Naming (resolves P-6):** "The Specialist" — a specialist, in market-structure terms, is literally who makes a two-sided market in a security. Fits this concept much better than the `Nightshift`/`Vega Budget` shortlist, which were coined for the VRP-desk framing.
+
+**Impact:** Supersedes D-004. Does not touch D-001, D-002, D-003, D-005 (still directionally correct — see note below), D-007, D-008, D-009, D-010, which all apply unchanged.
+**Note on D-005:** its literal Stage 1/2/3 sequencing (simple VRP spreads first, sophistication layered on while live) doesn't apply to a system built complete before go-live, but its underlying principle — a simple, correct agent live for Monday's open beats a sophisticated one live Wednesday — is exactly why this build ships both modes together now rather than staging Specialist Mode in later.
+
+---
+
+## D-012 — Adopt a SQLite ledger and a static vanilla-JS/HTML dashboard, instead of JSON files + React/Vite
+**Date:** 2026-08-31 · **Status:** DECIDED — supersedes the concrete state/dashboard shape proposed under D-006 (the "no server, no database, git-as-audit-trail" *principle* is unchanged and fully honored)
+
+**Decision:** State (orders, fills, hedges, risk-gate events, LLM MarketPlans, postmortems, account/position snapshots) lives in one append-only SQLite file (`agent/ledger.py`, `data/ledger.db`) committed to the repo, rather than one JSON file per agent run under `state/decisions/*.json`. The dashboard (`dashboard/*.html+js`) is a single static page using Chart.js, reading one exported JSON snapshot (`agent/dashboard_export.py` → `data/dashboard.json`) — no React/Vite/Tailwind/Recharts build step, no npm toolchain, no Vercel deploy.
+
+**Reasoning:**
+1. **The core idea D-006 was arguing for — no application server, no database-as-a-service, the git repo itself as the audit trail — is fully preserved.** SQLite is a single file, not a server; it is arguably a *more* literal reading of "no database" than a folder of hand-shaped JSON files, and it is trivially inspectable by a judge with any SQLite browser (a concrete ask from `agent/config.py`'s own comments: "keep it simple and inspectable, since judges may want to see raw data").
+2. **A single ledger with real foreign keys (fills reference orders, hedges reference the fill that triggered them) is a more honest audit trail than independent per-run JSON snapshots** for a system with two interacting strategies feeding one shared risk gate — reconstructing "why did the portfolio delta look like X at time T" is a join, not a multi-file scan.
+3. **Zero npm toolchain removes a dependency and a build step** from a project that already has no other JS tooling; Chart.js via a CDN `<script>` tag is enough for an equity curve, Greeks gauges, and activity feeds. This trades away Recharts' visual polish and the time-travel replay UI's interaction quality (see "What we're giving up").
+4. Both choices honor D-006 §2.1's actual constraints: no secrets in the browser (dashboard reads a public JSON export, same as before), works on GitHub Pages with zero backend, zero ops surface added.
+
+**What we're giving up:**
+- **The time-travel replay UI (T-030, a named P0 presentation differentiator in the original plan)** is not implemented. The current dashboard shows live/recent state (equity curve, current Greeks/inventory, activity feed, risk log, postmortems) but not a scrubbable timeline over the whole week. This is a real gap against a documented judging-criterion play (Presentation & Execution) and is the single highest-value frontend addition someone should pick up this week — the ledger already has everything a replay view would need (every row is timestamped); it needs a UI, not new state-collection work.
+- **React/TypeScript component reuse and Dev B's originally-scoped frontend stack** don't apply to this codebase as shipped. If Dev B strongly prefers building the replay UI in React reading `data/dashboard.json` (or querying `data/ledger.db` directly via sql.js in the browser), that's a compatible, additive change — the data layer doesn't need to change for that.
+
+**Alternatives considered:** Rebuild the ledger as `state/decisions/*.json` to match D-006's literal sketch (rejected — would mean re-plumbing every module in a working, tested system for a format whose only advantage is matching a sketch that predates any real data); keep both formats in parallel (rejected as unnecessary duplication of the same information).
+
+**Impact:** Supersedes D-006's concrete `state/` JSON shape and frontend stack choice. The underlying principle (no server, no DB-as-a-service, static+public dashboard) is unchanged. `agent/dashboard_export.py` is the seam if someone wants to add a richer frontend on top later — it doesn't need the ledger schema to change to do that.
+
+---
+
 ## Pending decisions (not yet made)
 
 | # | Decision needed | Blocks | Owner |
 |---|---|---|---|
-| P-1 | Sign off D-004 (the concept) | Everything | Thomas |
-| P-2 | Sign off D-006 (the architecture amendment) | Stage 1 | Thomas |
-| P-3 | Agent runtime language: Python vs TypeScript | Stage 1 | Thomas + devs |
+| P-3 | Agent runtime language: Python vs TypeScript | — | ~~Thomas + devs~~ **Resolved by D-011/D-012: Python** (`alpaca-py` + the LLM provider SDKs) |
 | P-4 | Buy Algo Trader Plus ($99) for OPRA data? | Strategy design | Thomas |
-| P-5 | Public repo from day 1, or private-then-public? | Stage 1 | Thomas |
-| P-6 | Project name | Branding, cover image | Team |
-| P-7 | Underlying basket (which 6–10 tickers) | Stage 1 | Dev A |
+| P-5 | Public repo from day 1, or private-then-public? | — | This repo is already public; **resolved: public from day 1** |
+| P-7 | Underlying basket confirmation (SPY/QQQ/AAPL/NVDA/TSLA for Specialist Mode; SPY/QQQ/IWM for Convexity Mode, from before D-011) | Live trading | Whoever runs the daemon — see `agent/config.py` `RiskConfig` |
 | P-8 | Dev A / Dev B assignment to real people | Task board | Thomas |
+| P-9 | Time-travel replay dashboard (D-012's biggest open gap) — who picks it up? | Presentation criterion | Team |
+| P-10 | NFP event rule (T-027) — still not implemented regardless of concept | P&L risk on the Friday session | Whoever has bandwidth Wed/Thu |
