@@ -192,6 +192,28 @@
 
 ---
 
+## D-013 — Specialist Mode's execution mechanic, corrected against real platform behavior found live
+**Date:** 2026-08-31 · **Status:** DECIDED — refines D-011, doesn't reverse it
+
+**Decision:** Running Specialist Mode against a real Alpaca paper account (rather than assuming the mechanics from the build brief would just work) surfaced two hard platform constraints and led to three bug fixes, all before any account was treated as the competition account:
+
+1. **Puts only, not puts-and-calls.** Alpaca rejected a naked short call live: `"account not eligible to trade uncovered option contracts"`. A short call is uncovered (unbounded loss) unless backed by 100 held shares per contract or built as a recognized spread; a short put is cash-secured (bounded risk, covered by cash) and Alpaca allows it as a plain single-leg order. Specialist Mode now quotes puts only. Convexity Mode already covers call-side exposure structurally, via spreads.
+2. **One side per contract per cycle, not both simultaneously.** Alpaca's wash-trade protection also rejected a live order: `"cannot open a short sell while a long buy order is open"`. The literal mechanic of "post a resting bid and a resting ask on the same contract at the same time" is not achievable via plain orders on this platform. `agent/specialist_mode.py::_pick_quote_side()` now quotes whichever side moves inventory toward flat (sell when long, buy when short, alternating when flat) — one live price per contract at a time, not two.
+3. **Three bugs, found and fixed via the same live run, before any of this touched a real competition account:**
+   - A rounding bug: bid/ask were checked for crossing at float precision but placed independently rounded to the cent, so a computed $7.278/$7.282 quote could collapse to $7.28/$7.28 and get rejected as a wash trade. Fixed in `compute_quote_prices()`.
+   - A reconciliation scope bug: fills were only reconciled for contracts still selected as nearest-ATM *this* cycle. A contract that filled and then fell out of selection was never revisited, leaving a real fill unhedged indefinitely. Fixed by making reconciliation scan every open Specialist order globally, every cycle (`_reconcile_all_open_orders()`).
+   - A hedge-orphaning bug: hedges were applied incrementally per fill, so when a position closed via the book's own opposite-side fill, its hedge was never unwound. Fixed by rebalancing each underlying's equity hedge to its *current total target delta* every cycle (`_rebalance_hedge()`), recomputed from currently-held positions rather than tracked incrementally.
+
+**Reasoning:** All three bugs and both constraints were only discoverable by actually running the system against Alpaca's real (paper) order-entry logic — none of it is documented in Alpaca's public docs in a way that would have surfaced it from reading alone. This is exactly the kind of finding [research.md](research.md) and [team-handoff.md](team-handoff.md) already argued for doing early (T-004/T-021, "highest-uncertainty technical unknown," "the first real order must be intentional") — it just happened for Specialist Mode specifically, after D-011 had already been decided on paper. None of this reverses D-011's core call: market-making liquidity provision on puts, inventory-managed, is still a genuinely differentiated, still-unclaimed lane; it's more precisely specified now than it was when only described in prose.
+
+**A process note, not a strategy one:** this testing surfaced a real mistake — while probing whether short puts were also restricted like short calls, a test order's price direction was set wrong and it filled for real (an inorganic, non-strategic trade). Per D-010's own logic (never contaminate the competition account with test trades), that account was retired to dev/sandbox use and a fresh account is needed before the account ID goes in the submission. **T-001 is unchanged and still the most urgent open item** — see [team-handoff.md](team-handoff.md).
+
+**What's now actually validated live** (closing out T-004/T-005's "highest-uncertainty technical unknown" status): option chain + snapshot Greeks return correctly on the free indicative feed for the full basket (Greeks populate only when bid/ask are both non-zero, exactly as documented); Convexity Mode's MLEG bull-put-spread submission works via the SDK; Specialist Mode's put quoting, fill reconciliation, and hedge rebalancing all work end-to-end after the fixes above; portfolio delta converged to within ~$100 of flat after a hedge rebalance, against a $25,000 cap.
+
+**Impact:** `agent/specialist_mode.py` rewritten around these constraints. `agent/occ.py` gained `underlying_from_occ_symbol()`. Test coverage added for all of the above (`tests/test_specialist_pricing.py`, `tests/test_specialist_reconcile.py`) — 39 tests passing, still zero live API calls in the suite itself. T-004/T-005/T-021 move from "assumed" to "validated, with fixes."
+
+---
+
 ## Pending decisions (not yet made)
 
 | # | Decision needed | Blocks | Owner |

@@ -40,10 +40,16 @@ Nothing is in flight from this session. Next real blocker is **not a decision an
 
 | Blocker | Who | Why it blocks |
 |---|---|---|
-| **New $100k paper account not created** (T-001) | Thomas | Hard eligibility requirement, unchanged by anything above — still the single most urgent open item |
+| **New $100k paper account not created** (T-001) | Thomas | Hard eligibility requirement — **still the single most urgent open item, more so now**: a dev account was used to run the live smoke test below, and picked up one inorganic manual test trade in the process. Per D-010, that account is retired to dev/sandbox use; a genuinely fresh account is needed before an account ID goes anywhere near the submission. |
 | **Featherless `ALPACA26` $25 credit code** (T-003) | Thomas | First-come, first-served — separate from the API key itself, which is already wired up and working |
 | **Dev A / Dev B assignment** | Thomas | Task board owners are still placeholders |
-| **T-021 go-live smoke test** | Whoever has the account | Blocked entirely on the account existing — this is genuinely the next step, code is ready |
+| **T-021 go-live smoke test** | Whoever has the account | The smoke test itself has now been run and passed (see D-013) — what's left is purely re-running it once against the real competition account after T-001 |
+
+## 🎉 Update: T-004/T-005/T-021 validated live (with real findings, see D-013)
+
+Ran the full agent against a real Alpaca paper account (dev/sandbox, not competition — see below). It surfaced two genuine platform constraints Specialist Mode's original design didn't account for (Alpaca rejects naked short calls; Alpaca rejects a simultaneous resting buy+sell on the same contract) and three real bugs (a rounding bug that caused a wash-trade rejection, a reconciliation scope gap that left one fill unhedged, and a hedge-orphaning bug on position close) — all found and fixed in the same session, all now covered by tests. Full writeup in [decisions.md](decisions.md) D-013. Portfolio delta converged to within ~$100 of flat after the fixes, against a $25,000 cap.
+
+**Process note:** while probing whether short puts were also restricted (they aren't — only naked calls are), a test order's price direction was set wrong and it filled for real: an inorganic $0.01 sale against a ~$0.59 market, no strategic basis. Caught immediately, position closed. Per D-010's own reasoning, that account is now dev/sandbox-only going forward — **T-001 needs a genuinely untouched account before the account ID goes in the submission.**
 
 ---
 

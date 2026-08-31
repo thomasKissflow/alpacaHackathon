@@ -15,6 +15,13 @@ class ParsedOccSymbol:
     strike: float
 
 
+def underlying_from_occ_symbol(occ_symbol: str) -> str:
+    """OCC symbols are {underlying}{YYMMDD}{C/P}{strike*1000, 8 digits} --
+    the trailing 15 characters are always date+type+strike, so whatever
+    remains at the front is the underlying ticker."""
+    return occ_symbol[:-15]
+
+
 def parse_occ_symbol(underlying: str, occ_symbol: str) -> ParsedOccSymbol:
     if not occ_symbol.startswith(underlying):
         raise ValueError(f"{occ_symbol!r} does not start with underlying {underlying!r}")

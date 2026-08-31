@@ -40,13 +40,19 @@ Two execution modes share one risk core, orchestrated by an LLM agent layer
 that only ever proposes structured JSON — it never places an order itself.
 
 - **Specialist Mode** (the differentiator — see D-011 for why this replaced
-  the originally-proposed VRP portfolio-greeks desk): maintains two-sided
-  resting limit quotes, priced off Black-Scholes theoretical value with IV
-  solved from each contract's own live NBBO mid (Newton-Raphson, from
-  scratch — `agent/pricing.py`), on near-the-money contracts across
-  SPY/QQQ/AAPL/NVDA/TSLA. Quotes are cancelled and reposted every cycle as
-  the underlying/IV move. Every fill triggers an immediate offsetting equity
-  order to flatten that fill's delta contribution.
+  the originally-proposed VRP portfolio-greeks desk): inventory-driven
+  liquidity provision on near-the-money **puts** across SPY/QQQ/AAPL/NVDA/TSLA,
+  priced off Black-Scholes theoretical value with IV solved from each
+  contract's own live NBBO mid (Newton-Raphson, from scratch —
+  `agent/pricing.py`). Two real Alpaca constraints, found by running this
+  live against a real paper account rather than assumed, shape the exact
+  mechanic — see D-013: naked short calls are rejected (puts only, cash-secured
+  and allowed), and a resting buy + resting sell can't be open on the same
+  contract at once (quotes one side per contract per cycle, chosen by
+  current inventory, not both simultaneously). Every underlying's equity
+  hedge is rebalanced to its current target delta every cycle — not hedged
+  incrementally per fill — so a position that closes via the book's own
+  opposite-side fill correctly unwinds its hedge too.
 - **Convexity Mode** (fallback, keeps the account active): screens the same
   kind of basket for IV rank + SMA20/SMA50 trend, and opens a defined-risk
   vertical spread or iron condor when a signal fires — never a naked/
@@ -78,8 +84,10 @@ Risk Gate (agent/risk_gate.py) -- pure deterministic Python, zero LLM
         v
 Execution core
   -> Specialist Mode (agent/specialist_mode.py): Black-Scholes/IV pricer
-     (agent/pricing.py, from scratch) -> two-sided resting limit quotes
-     inside NBBO -> cancel/repost each cycle -> on fill, immediate equity hedge
+     (agent/pricing.py, from scratch) -> inventory-driven one-sided-at-a-time
+     resting put quotes inside NBBO (D-013: Alpaca rejects naked calls and
+     simultaneous same-contract buy+sell) -> cancel/repost each cycle ->
+     global fill reconciliation -> hedge rebalanced to target delta
   -> Convexity Mode (agent/convexity_mode.py): reconcile actual broker
      positions vs the ledger FIRST (agent/reconcile.py -- catches the
      naked-leg risk from Alpaca's documented ~10% random partial-fill rate
