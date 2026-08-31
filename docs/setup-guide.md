@@ -50,7 +50,15 @@ Alpaca supports multiple simultaneous paper accounts under one login, so this co
 
 ### Step 1 — Sign up
 1. Go to **https://alpaca.markets/** and sign up, or log in at **https://app.alpaca.markets/**.
-2. Email + password. Choose **paper trading** — do not start a live account application; it needs identity documents we do not need and will not use.
+2. 🔀 **You will be asked to choose between Broker API and Trading API. Choose `Trading API`.**
+
+   | | What it is | Us? |
+   |---|---|---|
+   | **Trading API** | Trade **your own** account programmatically — retail/algo traders, prop firms | ✅ **Yes** |
+   | **Broker API** | Build a brokerage **for other people**: open customer accounts, hold their funds, KYC. For fintechs/institutions | ❌ No |
+
+   Requirement R1 names the Trading API explicitly. Broker API also has no self-serve instant paper account — it routes into a business onboarding flow. If you find yourself looking at endpoints for creating *customer* accounts, you picked the wrong one; back out.
+3. Email + password. Choose **paper trading** — do not start a live account application; it needs identity documents we do not need and will not use.
 3. You land on the dashboard with a paper account already created.
 
 > ⚠️ Claude cannot create accounts or enter passwords on your behalf. Each of you must do this yourself.
