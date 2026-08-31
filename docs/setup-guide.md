@@ -61,7 +61,8 @@ The account you get on signup *is* your sandbox. Use it for all development and 
 ### Step 3 — The competition account (Thomas only, once)
 1. In the dashboard, click the **paper account number in the upper-left corner**.
 2. Select **"Open New Paper Account."**
-3. Set the starting balance to **$100,000**. New paper accounts default to exactly this, which happens to be what requirement R5 demands — but confirm it in the dialog rather than assuming.
+3. Set the starting balance to **$100,000**. New paper accounts default to exactly this, which is what requirement R5 demands — but **check it in the dialog before confirming**.
+   > ⚠️ **The balance cannot be changed after creation.** Alpaca's only supported way to change it is to delete the account and create a new one. If we get this wrong we must delete and recreate — which is fine on day one, and a disaster on day four once the account has trading history we are judged on.
 4. Name it something unmistakable, e.g. `HACKATHON-COMPETITION-DO-NOT-TOUCH`.
 5. **Record the account ID** in this repo (`docs/credentials.md`, ID only). It is a required submission field — judges use it to pull our P&L — so it is not a secret.
 6. **Never place a manual or test order on it.** The first order it ever sees should be the agent's, in production.
@@ -73,6 +74,21 @@ The account you get on signup *is* your sandbox. Use it for all development and 
 The API key is how your code authenticates. Without one, nothing can read the market or place an order.
 
 **Keys are per paper account.** Switching accounts in the dashboard and generating keys gives you keys for *that* account.
+
+### How authentication actually works
+
+Two headers on every request — that is the whole mechanism:
+
+```
+APCA-API-KEY-ID: <your key id>
+APCA-API-SECRET-KEY: <your secret>
+```
+
+(HTTP Basic auth with key-as-username also works.) The SDKs and the CLI set these for you from `ALPACA_API_KEY` / `ALPACA_SECRET_KEY`.
+
+- Paper key IDs start `PK…`, live key IDs start `AK…`.
+- **Paper and live credentials are not interchangeable**, and each account has its own.
+- ⚠️ **Ignore `POST /oauth2/token` (the "issue tokens" reference page).** That is an OAuth2 endpoint for **Broker API partners and Alpaca-internal systems** (Keycloak/Google JWT-bearer grants). Alpaca's docs state the Client Credentials flow **is not yet available for the Trading API**. It is not our path and will waste an hour if someone tries it.
 
 ### To generate
 1. Select the account you want keys for (upper-left account switcher — **check this twice**).

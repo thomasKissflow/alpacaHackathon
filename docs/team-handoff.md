@@ -54,7 +54,9 @@ Nothing is in flight. **The project is waiting on Thomas** for the decisions bel
 
 4. **"Frontend only, no backend" as originally stated cannot satisfy the hackathon's hard requirements.** The Alpaca CLI is a Go binary and the MCP server is a self-hosted Python process — neither runs in a browser. The proposed amendment keeps the spirit (no server, no database, static dashboard, zero secrets in the browser) while achieving compliance. See [architecture.md](architecture.md) §2.
 
-5. **0DTE options have no greeks on Alpaca** (days-to-expiry is in the Black-Scholes denominator). Any 0DTE-greek strategy is dead on arrival. Stay in the 7–45 DTE band.
+5. **Paper trading fills are optimistic and randomly partial.** No slippage, no market impact, unlimited liquidity — but a documented **10% random partial-fill rate**. A half-filled vertical spread is a *naked short option*. Reconciliation is not defensive polish; it is what keeps the account alive overnight.
+
+6. **0DTE options have no greeks on Alpaca** (days-to-expiry is in the Black-Scholes denominator). Any 0DTE-greek strategy is dead on arrival. Stay in the 7–45 DTE band.
 
 ---
 
@@ -87,6 +89,8 @@ Nothing is in flight. **The project is waiting on Thomas** for the decisions bel
 | Multi-leg order placement is not a documented CLI flag set | Medium | Must validate day 1 (T-004) |
 | GitHub Actions cron drifts 5–30 min and **can silently drop runs** | Medium | Design must be latency-insensitive + idempotent + self-healing |
 | Free-tier data: indicative options feed, IEX equities, last 15 min of history blocked, 200 req/min | Medium | Strategy designed around it; revisit Algo Trader Plus (P-4) |
+| 🔴 **Paper partial-fills (documented 10% random) can leave a naked short leg on a multi-leg spread** | **High** | Reconciliation + naked-leg detection — T-047, mandatory in Stage 1 |
+| Non-marketable limit orders never fill in paper → agent silently trades nothing | Medium | Use marketable limits; cancel/re-price working orders each run — T-048 |
 | Short-premium book gapping through strikes on NFP Friday | **High** | Event rule T-027 — must be built before Thu close |
 | Accidentally trading on the competition account during dev | **High** | Two-account separation (D-010) + env guard (T-002) |
 | Only 2 developers across agent + frontend + video + slides + social | Medium | Presentation tasks are P0 and time-boxed in Stage 5 |

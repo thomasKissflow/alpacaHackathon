@@ -115,6 +115,41 @@ echo '{"order_class":"mleg","legs":[...]}' | alpaca api POST /v2/orders
 - **This does not make a frontend-only agent safe.** Any key shipped to a browser is public. On a *judged* account whose ID we publish, exposed keys mean anyone can trade our competition account. That is a P&L-destruction and disqualification risk, not a theoretical one.
 - → **Never put Alpaca keys in the deployed frontend.** See [architecture.md](architecture.md) §3.
 
+### 1.6 ⚠️ Paper environment fidelity — what the simulator does NOT model
+
+Verified 2026-08-30 against https://docs.alpaca.markets/us/docs/paper-trading
+
+Paper trading is **not** a faithful execution simulator. It explicitly does not model:
+
+- Dividends
+- **Market impact** of our orders
+- **Price slippage** from latency
+- **Order queue position**
+- Borrow fees, regulatory fees
+- Information leakage
+
+And two behaviours that directly affect agent design:
+
+| Documented behaviour | Consequence for us |
+|---|---|
+| **"Orders are filled only when they become marketable."** | A limit order resting away from the market will simply never fill. Our agent wakes every ~30 min — it must place *marketable* limit orders, and must detect and re-price or cancel unfilled working orders on each run, or it will silently do nothing all week. |
+| **"Partial fills occur randomly 10% of the time when orders are eligible."** | 🔴 **This is the biggest newly-discovered risk in the project.** See below. |
+| **"You can submit and receive a fill for an order that is much larger than the actual available liquidity."** | Our paper P&L will be *flattering* relative to reality. We should say so openly in the write-up rather than let an Alpaca judge point it out. |
+
+#### 🔴 Partial fills on multi-leg orders — a naked-leg hazard
+
+A defined-risk spread is only defined-risk **if all legs fill**. If a short vertical fills its short leg but not its long leg, the position is a **naked short option with theoretically unbounded loss** — on the account we are judged on, overnight, while we are asleep in IST.
+
+Alpaca documents a **random 10% partial-fill rate**, so over a week of multi-leg orders this is close to a certainty rather than an edge case.
+
+**Required mitigations (must be in Stage 1, not deferred):**
+1. On every run, reconcile actual legs held against intended structures.
+2. Detect any unpaired short leg and immediately either complete the structure or flatten it.
+3. Never treat "order submitted" as "position established" — only the reconciliation step may update intended state.
+4. Alert loudly (commit a `DEGRADED` state) when a naked leg is detected.
+
+This single finding justifies the reconcile-first design in [architecture.md](architecture.md) §3 far more concretely than cron drift did.
+
 ---
 
 ## 2. Competitor Analysis — 12 submissions already public
@@ -219,6 +254,8 @@ This is a genuinely good architectural story and it directly answers "how your a
 | Greeks need non-zero bid AND ask | Illiquid contracts silently lack greeks → filter on quote quality | High |
 | Alpaca Trading API allows CORS | Browser *can* call it — but keys would be public | High |
 | GH Actions cron drifts 5–30 min and can drop runs | Strategy must be latency-insensitive + idempotent + self-healing | High |
+| **Paper fills 10% partial at random** → multi-leg spreads can leave a **naked short leg** | Reconciliation + naked-leg detection is mandatory in Stage 1 | High |
+| Paper fills only when marketable; no slippage, no market impact, infinite liquidity | Use marketable limits; expect flattering P&L — disclose it | High |
 | NFP on Fri 4 Sep 08:30 ET, inside the window | Major risk + major unclaimed demo opportunity | High |
 | 12 competitors already submitted; SPY + "risk gates" + "abstain" are saturated | Differentiate on portfolio-level risk & auditability | High |
 
@@ -236,6 +273,9 @@ This is a genuinely good architectural story and it directly answers "how your a
 - https://docs.alpaca.markets/us/docs/options-trading — options trading
 - https://docs.alpaca.markets/us/docs/about-market-data-api — data plans & limits
 - https://docs.alpaca.markets/us/docs/market-data-faq — greeks/IV availability
+- https://docs.alpaca.markets/us/docs/paper-trading — paper account creation, balance, fill semantics
+- https://docs.alpaca.markets/us/docs/authentication — Trading API auth headers
+- https://docs.alpaca.markets/us/reference/issuetokens — OAuth2 token endpoint (Broker API partners; **not** our flow)
 - https://alpaca.markets/blog/websocket-moc-cors/ — CORS enablement
 - https://featherless.ai/docs/quickstart-guide — Featherless API
 - https://www.bls.gov/news.release/empsit.nr0.htm — BLS employment situation schedule

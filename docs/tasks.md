@@ -49,6 +49,8 @@
 | T-015 | Deterministic position sizing + hard risk gates | A | **P0** | Per-trade max loss, per-book cap, concentration cap |
 | T-016 | Multi-leg order submission via `alpaca api POST /v2/orders` with deterministic `--client-order-id` | A | **P0** | Idempotency is mandatory (cron may retry/drop) |
 | T-017 | Position reconciliation ("never assume the last run happened") | A | **P0** | Self-healing loop |
+| T-047 | **Naked-leg detection + auto-remediation** (complete or flatten an unpaired short leg) | A | **P0** | Paper partial-fills 10% at random — a half-filled spread is unbounded risk ([research.md](research.md) §1.6) |
+| T-048 | Working-order management: marketable limits, cancel/re-price unfilled orders each run | A | **P0** | Paper fills only when marketable — otherwise the agent silently does nothing |
 | T-018 | Decision log writer + state snapshot + git commit/push | A | **P0** | The audit trail |
 | T-019 | GitHub Actions workflow: cron at odd minutes + `workflow_dispatch` | A | **P0** | Manual trigger from phone for overnight |
 | T-020 | Drawdown **kill switch** (flatten + halt + commit `HALTED`) | A | **P0** | Non-negotiable before going live |
