@@ -270,6 +270,34 @@ Existing positions are still monitored, hedged and closed in every phase — the
 
 ---
 
+## D-016 — Inventory cost floor: never close a position below what we paid
+**Date:** 2026-09-04 · **Status:** DECIDED — corrects a core-economics defect in D-011's Specialist Mode
+
+**Decision:** The *closing* side of an open position is never quoted worse than its average cost plus a minimum edge (`min_close_edge_bps`, default 25bps of mid, never less than one tick). Opening a position remains priced purely off the market.
+
+**Reasoning:** Analysis of Thursday's live session found **33 round trips and −$85 of gross spread captured**. A market maker that loses on its round trips is being picked off, not providing liquidity — the entire thesis of D-011 was inverted in practice.
+
+The cause: `_quote_put` priced both sides off the current market mid. The position's average cost was read from the ledger and never used. So the moment the agent held inventory, `_pick_quote_side` selected the flattening side and the agent quoted it at wherever the mid had drifted — repeatedly locking in losses:
+
+```
+18:38:17  buy  @ 11.10
+18:38:22  -> quotes SELL at 10.92     (18c below its own cost)
+18:39:26  sell @ 10.95                 LOSS
+```
+
+Flooring the closing side means that when the market moves against us we simply do not get filled and keep the inventory. That is safe **because** every fill is delta-hedged: holding is a vol/theta position, not a directional bet. This is what actually distinguishes a market maker from a spread-payer, and it is why inventory limits exist.
+
+Verified by replaying the real `TSLA260911P00382500` tape through the floor: 5 of 13 loss-making fills prevented, and the completed round trip realises +$5 rather than a loss.
+
+**Alternatives considered:**
+- *Widen `target_spread_bps` instead.* Rejected — it makes the opening quote less competitive without addressing the actual defect, which is on the closing side.
+- *Add a stop-loss on inventory.* Rejected — that institutionalises selling at a loss, which is the behaviour being removed. Inventory risk is already managed by delta hedging and the per-underlying notional cap.
+- *Leave it and accept the loss rate.* Rejected — negative captured spread invalidates the concept we are presenting.
+
+**Impact:** Fewer round trips, each with positive expected edge. Stated openly as a tradeoff: if fill count collapses in the final session, `min_close_edge_bps` can be lowered from 25 to 10. Inventory growth remains bounded by the existing per-underlying notional cap. 8 new tests (63 total), including the exact live failure case as a regression.
+
+---
+
 ## Pending decisions (not yet made)
 
 | # | Decision needed | Blocks | Owner |

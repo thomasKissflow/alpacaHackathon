@@ -6,6 +6,10 @@
 
 ---
 
+> 📌 **New overnight (4 Sep):** read [MORNING-BRIEF.md](MORNING-BRIEF.md) first — it covers a
+> major economics bug found and fixed in Specialist Mode (D-016), plus the finished write-ups
+> and slide content.
+
 ## ⏰ Where we are
 
 **Fri 4 Sep, ~02:15 IST. SUBMISSION DEADLINE TODAY 20:30 IST (~18h).**
