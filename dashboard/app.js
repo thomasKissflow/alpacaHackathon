@@ -42,7 +42,156 @@ function fmtAge(iso) {
 function pnlColor(n) { return n >= 0 ? "var(--green)" : "var(--red)"; }
 function esc(s) { return String(s ?? "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])); }
 
-let equityChart;
+// ==================================================== candlestick chart ===
+// Hand-rolled canvas renderer (no charting library) so there's no CDN
+// version-compatibility gamble on demo day. Candles are REAL OHLC data --
+// agent/dashboard_export.py buckets real equity snapshots by time, it does
+// not fabricate price action. Moving averages are simple averages of that
+// same real equity series; "volume" is real trade-activity count per
+// bucket (fills + hedges + new orders), not fabricated share volume.
+
+function _sma(values, window) {
+  const out = new Array(values.length).fill(null);
+  for (let i = window - 1; i < values.length; i++) {
+    let sum = 0;
+    for (let j = i - window + 1; j <= i; j++) sum += values[j];
+    out[i] = sum / window;
+  }
+  return out;
+}
+
+function _setupCanvasDPR(canvas) {
+  const dpr = window.devicePixelRatio || 1;
+  const cssWidth = canvas.parentElement.clientWidth || canvas.width;
+  const cssHeight = canvas.height / (canvas.width / cssWidth) || canvas.height;
+  const targetHeight = canvas.dataset.cssHeight ? parseInt(canvas.dataset.cssHeight, 10) : canvas.height;
+  canvas.style.width = cssWidth + "px";
+  canvas.style.height = targetHeight + "px";
+  canvas.width = cssWidth * dpr;
+  canvas.height = targetHeight * dpr;
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, width: cssWidth, height: targetHeight };
+}
+
+function renderCandleChart(snapshot) {
+  const candles = snapshot.equity_candles || [];
+  const priceCanvas = document.getElementById("candle-price");
+  const volCanvas = document.getElementById("candle-volume");
+  priceCanvas.dataset.cssHeight = "280";
+  volCanvas.dataset.cssHeight = "56";
+
+  const { ctx: pctx, width: W, height: PH } = _setupCanvasDPR(priceCanvas);
+  const { ctx: vctx, width: _VW, height: VH } = _setupCanvasDPR(volCanvas);
+  pctx.clearRect(0, 0, W, PH);
+  vctx.clearRect(0, 0, W, VH);
+
+  if (candles.length === 0) {
+    pctx.fillStyle = "#8b93a7";
+    pctx.font = "12px -apple-system, sans-serif";
+    pctx.fillText("Waiting for enough equity history to draw a candle…", 12, PH / 2);
+    document.getElementById("ma-legend").innerHTML = "";
+    return;
+  }
+
+  const RIGHT = 58, LEFT = 6, TOP = 10, BOTTOM = 18;
+  const plotW = W - LEFT - RIGHT;
+  const plotH = PH - TOP - BOTTOM;
+
+  let lo = Math.min(...candles.map((c) => c.l));
+  let hi = Math.max(...candles.map((c) => c.h));
+  if (hi === lo) { hi += 1; lo -= 1; }
+  const pad = (hi - lo) * 0.12;
+  lo -= pad; hi += pad;
+
+  const n = candles.length;
+  const slot = plotW / n;
+  const bodyW = Math.max(2, Math.min(16, slot * 0.62));
+  const xAt = (i) => LEFT + slot * i + slot / 2;
+  const yAt = (price) => TOP + plotH - ((price - lo) / (hi - lo)) * plotH;
+
+  // grid + price labels
+  pctx.strokeStyle = "#171b27";
+  pctx.fillStyle = "#8b93a7";
+  pctx.font = "10.5px SFMono-Regular, Menlo, monospace";
+  pctx.textBaseline = "middle";
+  const gridLines = 4;
+  for (let g = 0; g <= gridLines; g++) {
+    const price = lo + ((hi - lo) * g) / gridLines;
+    const y = yAt(price);
+    pctx.beginPath();
+    pctx.moveTo(LEFT, y);
+    pctx.lineTo(LEFT + plotW, y);
+    pctx.lineWidth = 1;
+    pctx.stroke();
+    pctx.fillText("$" + price.toLocaleString(undefined, { maximumFractionDigits: 0 }), LEFT + plotW + 6, y);
+  }
+
+  // candles
+  for (let i = 0; i < n; i++) {
+    const c = candles[i];
+    const up = c.c >= c.o;
+    const color = up ? "#2fd096" : "#ff5c72";
+    const x = xAt(i);
+    pctx.strokeStyle = color;
+    pctx.fillStyle = color;
+    pctx.lineWidth = 1;
+    pctx.beginPath();
+    pctx.moveTo(x, yAt(c.h));
+    pctx.lineTo(x, yAt(c.l));
+    pctx.stroke();
+    const yOpen = yAt(c.o), yClose = yAt(c.c);
+    const bodyTop = Math.min(yOpen, yClose);
+    const bodyH = Math.max(1.4, Math.abs(yClose - yOpen));
+    pctx.fillRect(x - bodyW / 2, bodyTop, bodyW, bodyH);
+  }
+
+  // moving average overlays
+  const closes = candles.map((c) => c.c);
+  const maSpecs = [
+    { window: Math.min(5, n), color: "#4f8cff", label: `MA${Math.min(5, n)}` },
+    { window: Math.min(10, n), color: "#8b7bff", label: `MA${Math.min(10, n)}` },
+  ].filter((m, idx, arr) => m.window >= 2 && (idx === 0 || m.window !== arr[0].window));
+
+  const legend = document.getElementById("ma-legend");
+  legend.innerHTML = maSpecs.map((m) => `<span><span class="sw" style="background:${m.color}"></span>${m.label}</span>`).join("");
+
+  for (const spec of maSpecs) {
+    const series = _sma(closes, spec.window);
+    pctx.strokeStyle = spec.color;
+    pctx.lineWidth = 1.4;
+    pctx.beginPath();
+    let started = false;
+    for (let i = 0; i < n; i++) {
+      if (series[i] === null) continue;
+      const x = xAt(i), y = yAt(series[i]);
+      if (!started) { pctx.moveTo(x, y); started = true; } else { pctx.lineTo(x, y); }
+    }
+    pctx.stroke();
+  }
+
+  // time labels (a handful, evenly spaced)
+  pctx.fillStyle = "#8b93a7";
+  const labelEvery = Math.max(1, Math.ceil(n / 6));
+  for (let i = 0; i < n; i += labelEvery) {
+    const d = new Date(candles[i].t);
+    const label = d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+    pctx.fillText(label, xAt(i) - 14, TOP + plotH + 12);
+  }
+
+  // volume bars, aligned to the same x mapping
+  const volByTime = Object.fromEntries((snapshot.activity_volume || []).map((v) => [v.t, v.v]));
+  const maxVol = Math.max(1, ...candles.map((c) => volByTime[c.t] || 0));
+  for (let i = 0; i < n; i++) {
+    const c = candles[i];
+    const v = volByTime[c.t] || 0;
+    const up = c.c >= c.o;
+    const x = xAt(i);
+    const h = (v / maxVol) * (VH - 4);
+    vctx.fillStyle = up ? "rgba(47,208,150,0.55)" : "rgba(255,92,114,0.55)";
+    vctx.fillRect(x - bodyW / 2, VH - h, bodyW, h);
+  }
+}
 
 // ================================================================ topbar ===
 
@@ -117,44 +266,6 @@ function renderStats(snapshot) {
     convPnlEl.textContent = fmtSigned(last.convexity_pnl);
     convPnlEl.style.color = pnlColor(last.convexity_pnl ?? 0);
   }
-}
-
-function renderEquityChart(history) {
-  const ctx = document.getElementById("equity-chart");
-  const labels = history.map((s) => fmtTime(s.ts));
-  const values = history.map((s) => s.equity);
-  const rising = values.length > 1 && values[values.length - 1] >= values[0];
-
-  if (equityChart) equityChart.destroy();
-  equityChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels,
-      datasets: [{
-        data: values,
-        borderColor: rising ? "#2fd096" : "#ff5c72",
-        backgroundColor: (c) => {
-          const g = c.chart.ctx.createLinearGradient(0, 0, 0, 240);
-          const color = rising ? "47,208,150" : "255,92,114";
-          g.addColorStop(0, `rgba(${color},0.22)`);
-          g.addColorStop(1, `rgba(${color},0)`);
-          return g;
-        },
-        fill: true,
-        tension: 0.3,
-        pointRadius: 0,
-        borderWidth: 1.75,
-      }],
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => fmtMoney(c.parsed.y) } } },
-      scales: {
-        x: { ticks: { color: "#565d70", maxTicksLimit: 8, font: { size: 10 } }, grid: { color: "#171b27" } },
-        y: { ticks: { color: "#565d70", font: { size: 10 }, callback: (v) => fmtMoney(v) }, grid: { color: "#171b27" } },
-      },
-    },
-  });
 }
 
 // ================================================================== risk ===
@@ -396,7 +507,7 @@ async function refresh() {
     renderTickers(snapshot.tickers);
     renderTopStatus(snapshot);
     renderStats(snapshot);
-    if (snapshot.account_history.length) renderEquityChart(snapshot.account_history);
+    renderCandleChart(snapshot);
     renderGauges(snapshot);
     renderIntent(snapshot);
     renderInventory(snapshot.inventory);

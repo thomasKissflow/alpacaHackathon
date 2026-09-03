@@ -5,12 +5,60 @@ fetches -- zero backend needed at demo time. GitHub Pages (or
 repo, and dashboard/app.js re-fetches it on an interval.
 """
 import json
+from collections import OrderedDict
 from datetime import datetime, timezone
 
 from agent import ledger, risk_gate
 from agent.config import DATA_DIR, RISK
 
 OUT_PATH = DATA_DIR / "dashboard.json"
+CANDLE_BUCKET_MINUTES = 3
+
+
+def _bucket_key(ts_iso: str, bucket_minutes: int) -> str:
+    ts = datetime.fromisoformat(ts_iso)
+    floored_minute = (ts.minute // bucket_minutes) * bucket_minutes
+    return ts.replace(minute=floored_minute, second=0, microsecond=0).isoformat()
+
+
+def _build_equity_candles(account_history: list[dict], bucket_minutes: int = CANDLE_BUCKET_MINUTES) -> list[dict]:
+    """Real OHLC candles built from real equity snapshots bucketed by time --
+    not fabricated data, just a richer view of the same account_history the
+    line chart used. A bucket's open/close are literally the first/last
+    equity reading Alpaca gave us in that window; high/low are the actual
+    min/max readings. Sparse history just means fewer, wider candles."""
+    buckets: OrderedDict[str, dict] = OrderedDict()
+    for snap in account_history:
+        key = _bucket_key(snap["ts"], bucket_minutes)
+        eq = snap["equity"]
+        b = buckets.get(key)
+        if b is None:
+            buckets[key] = {"t": key, "o": eq, "h": eq, "l": eq, "c": eq}
+        else:
+            b["h"] = max(b["h"], eq)
+            b["l"] = min(b["l"], eq)
+            b["c"] = eq
+    return list(buckets.values())
+
+
+def _build_activity_volume(fills: list[dict], hedges: list[dict], orders: list[dict],
+                            bucket_minutes: int = CANDLE_BUCKET_MINUTES) -> list[dict]:
+    """Real trade-activity count per time bucket (fills + hedges + new resting
+    orders placed) -- an honest stand-in for share "volume" on an account
+    that doesn't trade a single instrument, used to fill the volume-bars
+    slot in the chart the same way a price chart would."""
+    counts: dict[str, int] = {}
+    for row in fills:
+        counts[_bucket_key(row["ts"], bucket_minutes)] = counts.get(_bucket_key(row["ts"], bucket_minutes), 0) + 1
+    for row in hedges:
+        k = _bucket_key(row["ts"], bucket_minutes)
+        counts[k] = counts.get(k, 0) + 1
+    for row in orders:
+        if row["status"] != "new":
+            continue
+        k = _bucket_key(row["ts"], bucket_minutes)
+        counts[k] = counts.get(k, 0) + 1
+    return [{"t": k, "v": v} for k, v in sorted(counts.items())]
 
 
 def export() -> None:
@@ -31,6 +79,10 @@ def export() -> None:
 
     all_orders = ledger.recent("orders", limit=150)
     working_orders = [o for o in all_orders if o["status"] in ("new", "partially_filled")]
+    fills_for_volume = ledger.recent("fills", limit=300)
+    hedges_for_volume = ledger.recent("hedges", limit=300)
+    equity_candles = _build_equity_candles(account_history)
+    activity_volume = _build_activity_volume(fills_for_volume, hedges_for_volume, all_orders)
 
     latest_plan = ledger.latest_market_plan()
     latest_plan_parsed = None
@@ -53,6 +105,9 @@ def export() -> None:
         },
         "tickers": ledger.all_underlying_marks(),
         "account_history": account_history,
+        "equity_candles": equity_candles,
+        "activity_volume": activity_volume,
+        "candle_bucket_minutes": CANDLE_BUCKET_MINUTES,
         "inventory": inventory,
         "working_orders": working_orders,
         "quote_feed": all_orders,
