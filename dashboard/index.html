@@ -3,152 +3,78 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
   <title>The Specialist — Live Dashboard</title>
-  <link rel="stylesheet" href="style.css?v=2" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 </head>
 <body>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark">S</div>
-        <div class="brand-text">
-          <div class="name">The Specialist</div>
-          <div class="sub">Options market-maker + convexity desk</div>
-        </div>
-      </div>
-      <div class="ticker-strip" id="ticker-strip"></div>
-      <div class="topbar-right">
-        <span class="badge env-paper"><span class="dot"></span>Paper</span>
-        <span class="badge" id="kill-switch-badge"><span class="dot"></span>Risk Engine</span>
-        <span class="updated-at" id="updated-at">—</span>
-      </div>
-    </header>
+  <header>
+    <h1>The Specialist</h1>
+    <p class="subtitle">Autonomous options market-making (Specialist Mode) + defined-risk convexity selling (Convexity Mode) on Alpaca paper trading.</p>
+  </header>
 
-    <nav class="sidebar">
-      <a class="nav-item active" href="#cockpit"><span class="ic">◆</span>Cockpit</a>
-      <a class="nav-item" href="#risk"><span class="ic">▲</span>Risk</a>
-      <a class="nav-item" href="#strategy"><span class="ic">◈</span>Strategy</a>
-      <a class="nav-item" href="#positions"><span class="ic">■</span>Positions</a>
-      <a class="nav-item" href="#orders"><span class="ic">↕</span>Orders &amp; Fills</a>
-      <a class="nav-item" href="#convexity"><span class="ic">◇</span>Convexity</a>
-      <a class="nav-item" href="#events"><span class="ic">!</span>Risk Log</a>
-      <a class="nav-item" href="#postmortems"><span class="ic">✎</span>Desk Notes</a>
-      <div class="sidebar-spacer"></div>
-      <div class="system-health">
-        <div class="label">System</div>
-        <div class="row" id="health-feed"><span class="dot"></span>Data feed</div>
-        <div class="row" id="health-engine"><span class="dot"></span>Risk engine</div>
-        <div class="row" id="health-mode"><span class="dot"></span>Autonomous — no manual orders</div>
-      </div>
-    </nav>
+  <section class="stat-row" id="stat-row">
+    <div class="stat-card"><div class="label">Equity</div><div class="value" id="stat-equity">—</div></div>
+    <div class="stat-card"><div class="label">Day P&amp;L</div><div class="value" id="stat-day-pnl">—</div></div>
+    <div class="stat-card"><div class="label">Specialist P&amp;L</div><div class="value" id="stat-specialist-pnl">—</div></div>
+    <div class="stat-card"><div class="label">Convexity P&amp;L</div><div class="value" id="stat-convexity-pnl">—</div></div>
+    <div class="stat-card"><div class="label">Last snapshot</div><div class="value" id="stat-updated">—</div></div>
+  </section>
 
-    <main class="main">
-      <section class="block" id="cockpit">
-        <div class="section-title">Account</div>
-        <div class="stat-row" id="stat-row">
-          <div class="stat-card"><div class="label">Equity</div><div class="value mono" id="stat-equity">—</div></div>
-          <div class="stat-card"><div class="label">Day P&amp;L</div><div class="value mono" id="stat-day-pnl">—</div></div>
-          <div class="stat-card"><div class="label">Specialist P&amp;L</div><div class="value mono" id="stat-specialist-pnl">—</div></div>
-          <div class="stat-card"><div class="label">Convexity P&amp;L</div><div class="value mono" id="stat-convexity-pnl">—</div></div>
-        </div>
-      </section>
+  <section class="panel">
+    <h2>Equity curve</h2>
+    <canvas id="equity-chart" height="80"></canvas>
+  </section>
 
-      <section class="block">
-        <div class="panel chart-wrap">
-          <h2>Equity <span class="hint" id="candle-hint">real OHLC candles, bucketed from account snapshots</span></h2>
-          <div class="price-chart-frame">
-            <canvas id="candle-price" width="1100" height="280"></canvas>
-            <div class="ma-legend" id="ma-legend"></div>
-          </div>
-          <canvas id="candle-volume" width="1100" height="56"></canvas>
-        </div>
-      </section>
+  <section class="panel">
+    <h2>Portfolio Greeks vs. risk gate caps</h2>
+    <div class="gauge-row" id="gauge-row"></div>
+  </section>
 
-      <section class="block" id="risk">
-        <div class="panel">
-          <h2>Portfolio Greeks vs. risk gate caps <span class="hint">deterministic, zero LLM in this path</span></h2>
-          <div class="gauge-row" id="gauge-row"></div>
-        </div>
-      </section>
+  <section class="grid-2">
+    <div class="panel">
+      <h2>Specialist Mode inventory</h2>
+      <table id="inventory-table">
+        <thead>
+          <tr><th>Symbol</th><th>Mode</th><th>Qty</th><th>Delta $</th><th>Gamma</th><th>Vega $</th><th>Theta $</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-      <section class="block" id="strategy">
-        <div class="panel">
-          <h2>Strategy Intent <span class="hint">latest LLM MarketPlan, risk-gate approved</span></h2>
-          <div id="intent-card"></div>
-        </div>
-      </section>
+    <div class="panel">
+      <h2>Quote / hedge activity feed</h2>
+      <div id="activity-feed" class="feed"></div>
+    </div>
+  </section>
 
-      <section class="block grid-2" id="positions">
-        <div class="panel">
-          <h2>Specialist Mode inventory</h2>
-          <div class="table-scroll">
-            <table id="inventory-table">
-              <thead><tr><th>Symbol</th><th>Mode</th><th class="num">Qty</th><th class="num">Delta $</th><th class="num">Gamma</th><th class="num">Vega $</th><th class="num">Theta $</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="panel">
-          <h2>Convexity Mode positions</h2>
-          <div class="table-scroll" id="convexity">
-            <table id="convexity-table">
-              <thead><tr><th>Underlying</th><th>Type</th><th>Status</th><th class="num">Entry credit</th><th class="num">Max loss / Exit P&amp;L</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+  <section class="grid-2">
+    <div class="panel">
+      <h2>Convexity Mode positions</h2>
+      <table id="convexity-table">
+        <thead>
+          <tr><th>Underlying</th><th>Type</th><th>Status</th><th>Entry credit ($/contract)</th><th>Max loss / Exit P&amp;L</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-      <section class="block grid-2" id="orders">
-        <div class="panel">
-          <h2>Working orders <span class="hint" id="working-count"></span></h2>
-          <div class="table-scroll">
-            <table id="working-table">
-              <thead><tr><th>Symbol</th><th>Side</th><th class="num">Qty</th><th class="num">Price</th><th>Status</th><th>Age</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="panel">
-          <h2>Recent fills &amp; hedges</h2>
-          <div class="feed" id="activity-feed"></div>
-        </div>
-      </section>
+    <div class="panel">
+      <h2>Risk gate event log</h2>
+      <div id="risk-feed" class="feed"></div>
+    </div>
+  </section>
 
-      <section class="block" id="events">
-        <div class="panel">
-          <h2>Risk gate event log <span class="hint">every rejection/clamp, with a reason</span></h2>
-          <div class="feed" id="risk-feed"></div>
-        </div>
-      </section>
+  <section class="panel">
+    <h2>Daily LLM post-mortem</h2>
+    <div id="postmortem-feed" class="feed"></div>
+  </section>
 
-      <section class="block" id="postmortems">
-        <div class="panel">
-          <h2>Desk notes <span class="hint">daily LLM post-mortem</span></h2>
-          <div class="feed" id="postmortem-feed"></div>
-        </div>
-      </section>
+  <section class="panel">
+    <h2>MarketPlan history</h2>
+    <div id="plan-feed" class="feed"></div>
+  </section>
 
-      <section class="block">
-        <div class="panel">
-          <h2>MarketPlan history</h2>
-          <div class="feed" id="plan-feed"></div>
-        </div>
-      </section>
-
-      <div class="status-footer">
-        <span class="item"><span class="dot" id="dot-feed"></span>Data feed <span id="feed-age">—</span></span>
-        <span class="item"><span class="dot" id="dot-engine"></span>Risk engine <span id="engine-status">—</span></span>
-        <span class="item">Basket: SPY · QQQ · AAPL · NVDA · TSLA</span>
-        <span class="spacer"></span>
-        <span class="disclaimer">Paper trading, free indicative data feed. Fully autonomous — this page has no order-entry controls by design.</span>
-      </div>
-    </main>
-  </div>
-
-  <script src="app.js?v=2"></script>
+  <script src="app.js"></script>
 </body>
 </html>
