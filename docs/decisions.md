@@ -214,6 +214,36 @@
 
 ---
 
+## D-014 — Scheduled-event rule: de-risk into NFP, blackout across it, re-engage after
+**Date:** 2026-09-04 · **Status:** DECIDED — implements the D-004/B5 event-awareness item that D-011 left open
+
+**Decision:** `agent/event_calendar.py` gives the agent a calendar of scheduled macro releases and four postures around each one. For Non-Farm Payrolls (Fri 4 Sep 2026, 08:30 ET / 12:30 UTC):
+
+| Phase | Window | Behaviour |
+|---|---|---|
+| `derisk` | T-20h → T-45m | Quotes widened 1.6x, size cut 25%, **no new short premium opened** that would be held across the release |
+| `blackout` | T-45m → T+75m | Place nothing. Covers the print and the first ~15 min of the open |
+| `reengage` | T+75m → T+5h | Quotes tightened to 0.85x, full size, short premium allowed again |
+| `normal` | otherwise | Unchanged |
+
+Existing positions are still monitored, hedged and closed in every phase — the rule only gates *opening* new risk. The posture is applied **after** the LLM MarketPlan is approved, so the model can neither widen its way out of nor argue past an event rule (consistent with D-008).
+
+**Reasoning:**
+1. **It is the only thing a trading agent can know in advance.** Every other input this system uses is reactive — prices and Greeks that have already moved. A scheduled release is genuinely forecastable, and the largest of the month lands inside the judging window, one hour before the final session opens and 2.5 hours before the submission deadline.
+2. **The overnight gap is the one loss this account cannot recover from.** A short-gamma book gapping through its strikes on Friday's open would end the P&L story with no session left to repair it. De-risking into the print is the conservative posture and is consistent with D-003's "high-probability modest positive with a hard floor."
+3. **Post-event is genuinely safer, not riskier.** Once the number is known the uncertainty premium collapses, so quoting *tighter* to win fills after the print is the correct market-making response — and the re-engage window (13:45–15:00 UTC) is exactly the final session before judging.
+4. **Unclaimed.** None of the 12 published competitor submissions mentions event awareness at all ([research.md](research.md) §5). This is differentiation that costs one module.
+5. It is not a directional bet. The agent has no opinion on payrolls — only on the fact that uncertainty is scheduled, priced, and then resolved.
+
+**Alternatives considered:**
+- **Deliberately sell premium into the print to harvest the IV crush** (the aggressive version). Rejected: it is a coin flip on one number, on the last morning, with the whole P&L riding on it. Directly contradicts D-003. The crush is real, but capturing it requires carrying gap risk we cannot afford with no session left to recover.
+- **Flatten the book entirely before the print.** Rejected: zero positions means zero trading activity in the final session, which judging criterion 1 explicitly weighs ("P&L *and how effectively the strategy performs through its trading activity*"). This is the abstention trap in a different costume.
+- **Halve quote size during de-risk** (initial calibration). Softened to 0.75x: with only ~4 hours of market left in the whole competition, over-throttling Thursday costs fills we cannot replace.
+
+**Impact:** New module + 7 tests. `cycle.py` computes the posture each cycle, folds it into the approved plan, logs it as a risk event (so it is visible in the dashboard risk log and reconstructable from the ledger), and passes it to both modes. Verified firing live on the competition account: `[event] DERISK: Non-Farm Payrolls (Aug 2026) in 17.8h`.
+
+---
+
 ## Pending decisions (not yet made)
 
 | # | Decision needed | Blocks | Owner |

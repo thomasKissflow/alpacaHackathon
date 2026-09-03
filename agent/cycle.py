@@ -18,7 +18,8 @@ per day, near the close) -> dashboard export.
 import json
 from datetime import datetime, timedelta, timezone
 
-from agent import convexity_mode, dashboard_export, ledger, llm_agent, risk_gate, specialist_mode
+from agent import (convexity_mode, dashboard_export, event_calendar, ledger, llm_agent,
+                   risk_gate, specialist_mode)
 from agent.clients import cli_get, trading_client
 from agent.config import RISK
 
@@ -31,7 +32,8 @@ def _get_account() -> dict:
     except Exception as exc:  # noqa: BLE001 - CLI unavailable locally is fine, fall back to the SDK
         print(f"[cycle] Alpaca CLI unavailable ({exc}), falling back to SDK for account telemetry")
         acct = trading_client.get_account()
-        return {"equity": str(acct.equity), "cash": str(acct.cash), "buying_power": str(acct.buying_power)}
+        return {"equity": str(acct.equity), "cash": str(acct.cash),
+                "buying_power": str(acct.buying_power), "account_number": str(acct.account_number)}
 
 
 def _get_or_refresh_market_plan(equity: float) -> dict:
@@ -66,24 +68,39 @@ def run_cycle() -> None:
 
     approved_plan = _get_or_refresh_market_plan(equity)
 
-    tripped, drawdown_pct = risk_gate.circuit_breaker_tripped(equity)
+    tripped, drawdown_pct = risk_gate.circuit_breaker_tripped(equity, account.get("account_number"))
     if tripped:
         print(f"[cycle] circuit breaker tripped ({drawdown_pct:.2%} drawdown) -- halting NEW entries this cycle")
 
+    # Scheduled-macro-event posture. Applied AFTER the LLM plan is approved,
+    # so the model can never talk its way past an event rule.
+    posture = event_calendar.current_posture()
+    if posture.phase != "normal":
+        print(f"[event] {posture.phase.upper()}: {posture.reason}")
+        approved_plan = event_calendar.apply_to_plan(approved_plan, posture)
+        ledger.log_risk_event("clamp", posture.reason, mode=None,
+                              details={"gate": "event_calendar", "phase": posture.phase,
+                                       "event": posture.event_name,
+                                       "minutes_to_event": posture.minutes_to_event})
+
     try:
-        specialist_mode.run_specialist_cycle(approved_plan, halt_new_entries=tripped)
+        specialist_mode.run_specialist_cycle(
+            approved_plan, halt_new_entries=tripped or posture.is_blackout)
     except Exception as exc:  # noqa: BLE001 - one mode failing shouldn't kill the other
         print(f"[cycle] specialist mode cycle failed: {exc}")
         ledger.log_risk_event("reject", f"specialist cycle raised: {exc}", mode="specialist")
 
     try:
-        convexity_mode.run_convexity_cycle(account)
+        convexity_mode.run_convexity_cycle(
+            account,
+            block_new_entries=posture.block_new_short_premium,
+            block_reason=posture.reason)
     except Exception as exc:  # noqa: BLE001
         print(f"[cycle] convexity mode cycle failed: {exc}")
         ledger.log_risk_event("reject", f"convexity cycle raised: {exc}", mode="convexity")
 
     convexity_pnl_today = ledger.convexity_pnl_realized_today()
-    day_start_equity = risk_gate.get_or_init_day_start_equity(equity)
+    day_start_equity = risk_gate.get_or_init_day_start_equity(equity, account.get("account_number"))
     day_pnl = equity - day_start_equity
     # approximation: attribute whatever of today's equity change convexity's
     # realized P&L doesn't explain to Specialist Mode (fills + hedges +

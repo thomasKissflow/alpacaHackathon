@@ -192,3 +192,25 @@ def test_flatten_required_true_when_over_cap():
 
 def test_flatten_required_false_when_within_cap():
     assert risk_gate.flatten_required(RISK.max_net_delta_dollars * 0.5) is False
+
+
+def test_day_start_equity_rebaselines_on_account_switch(tmp_path, monkeypatch):
+    """Regression: the baseline was keyed by date alone, so swapping to a
+    different Alpaca account mid-session kept the previous account's equity as
+    the day-start. Live on 2026-09-03 that reported +$248 day P&L while the
+    fresh $100k account was actually down $28."""
+    import json
+    from agent import risk_gate
+
+    state_file = tmp_path / "day_start_equity.json"
+    monkeypatch.setattr(risk_gate, "DAY_START_EQUITY", state_file)
+
+    # dev account establishes a baseline
+    assert risk_gate.get_or_init_day_start_equity(99_723.83, "PA_DEV") == 99_723.83
+
+    # same day, DIFFERENT account -> must re-baseline, not reuse 99,723.83
+    assert risk_gate.get_or_init_day_start_equity(100_000.00, "PA_COMP") == 100_000.00
+    assert json.loads(state_file.read_text())["account_id"] == "PA_COMP"
+
+    # same day, same account -> baseline is sticky as intended
+    assert risk_gate.get_or_init_day_start_equity(99_971.60, "PA_COMP") == 100_000.00

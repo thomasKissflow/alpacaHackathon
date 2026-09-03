@@ -15,7 +15,8 @@ from agent.scanner import scan
 from agent.strategy import build_plan
 
 
-def run_convexity_cycle(account: dict) -> None:
+def run_convexity_cycle(account: dict, block_new_entries: bool = False,
+                        block_reason: str = "") -> None:
     # 0. reconcile actual broker state against what the ledger believes is
     #    open -- BEFORE anything else, even before deciding whether the
     #    circuit breaker allows new entries. Paper multi-leg orders have a
@@ -36,6 +37,16 @@ def run_convexity_cycle(account: dict) -> None:
         return
     if risk_gate.kill_switch_engaged():
         log_decision({"stage": "kill_switch", "mode": "convexity", "action": "halt_new_entries"})
+        return
+
+    # Scheduled-event rule. Existing positions are still monitored and closed
+    # above; this only stops OPENING new short premium that would be held
+    # across a known macro release. See agent/event_calendar.py.
+    if block_new_entries:
+        log_decision({"stage": "event_calendar", "mode": "convexity",
+                      "action": "halt_new_entries", "reason": block_reason})
+        ledger.log_risk_event("clamp", block_reason, mode="convexity",
+                              details={"gate": "event_calendar"})
         return
 
     candidates = scan()

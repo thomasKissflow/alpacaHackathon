@@ -33,20 +33,31 @@ def _today() -> str:
 
 # ============================================================ account-level
 
-def get_or_init_day_start_equity(current_equity: float) -> float:
+def get_or_init_day_start_equity(current_equity: float, account_id: str | None = None) -> float:
+    """Day-start equity baseline for day_pnl and the drawdown circuit breaker.
+
+    Keyed by (date, account) -- NOT date alone. Keying on date only meant that
+    swapping ALPACA_API_KEY to a different account mid-session silently kept
+    the previous account's baseline, so day_pnl was computed against a number
+    from a different account entirely. Found live 2026-09-03: after switching
+    from the retired dev account to the fresh $100k competition account, the
+    dashboard reported +$248 while the account was actually down $28.
+    """
     state = {}
     if DAY_START_EQUITY.exists():
         state = json.loads(DAY_START_EQUITY.read_text())
     today = _today()
-    if state.get("date") != today:
-        state = {"date": today, "equity": current_equity}
+    stale_date = state.get("date") != today
+    stale_account = account_id is not None and state.get("account_id") != account_id
+    if stale_date or stale_account:
+        state = {"date": today, "equity": current_equity, "account_id": account_id}
         DAY_START_EQUITY.parent.mkdir(parents=True, exist_ok=True)
         DAY_START_EQUITY.write_text(json.dumps(state))
     return state["equity"]
 
 
-def circuit_breaker_tripped(current_equity: float) -> tuple[bool, float]:
-    day_start = get_or_init_day_start_equity(current_equity)
+def circuit_breaker_tripped(current_equity: float, account_id: str | None = None) -> tuple[bool, float]:
+    day_start = get_or_init_day_start_equity(current_equity, account_id)
     if day_start <= 0:
         return False, 0.0
     drawdown_pct = (day_start - current_equity) / day_start
