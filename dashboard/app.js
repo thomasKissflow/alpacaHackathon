@@ -167,6 +167,11 @@ function renderActivityFeed(snapshot) {
   if (events.length === 0) feed.innerHTML = `<div class="feed-entry" style="color:var(--muted)">No activity yet</div>`;
 }
 
+// NOTE ON UNITS: ledger stores entry_credit per-share (e.g. 1.42) but
+// max_loss_estimate already x100 (e.g. 358). Scale the credit by the 100x
+// contract multiplier so both columns are total dollars per contract --
+// otherwise the table reads "$1 credit vs $358 max loss" instead of the
+// real ~1:2.5 risk/reward.
 function renderConvexity(snapshot) {
   const tbody = document.querySelector("#convexity-table tbody");
   tbody.innerHTML = "";
@@ -178,7 +183,7 @@ function renderConvexity(snapshot) {
       <td>${c.underlying}</td>
       <td>${c.strategy_type}</td>
       <td>${c.status}</td>
-      <td>${fmtMoney(c.entry_credit)}</td>
+      <td>${fmtMoney((c.entry_credit ?? 0) * 100)}</td>
       <td style="color:${c.status === "closed" ? pnlColor(c.exit_pnl ?? 0) : "inherit"}">${rightCol}</td>
     `;
     tbody.appendChild(tr);
