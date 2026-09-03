@@ -1,105 +1,64 @@
 # Team Handoff Notes
 
-> **Read this first after `git pull`.** It is the fastest path from "just cloned" to "know what to do."
-> **Last updated:** 2026-08-31 18:30 IST by Claude (working with Suryaprakash)
-> **Update rule:** whoever finishes a working session updates this file before pushing. No exceptions.
+> **Read this first after `git pull`.** Fastest path from "just cloned" to "know what to do."
+> **Last updated:** 2026-09-04 ~02:15 IST by Claude (working with Thomas)
+> **Update rule:** whoever finishes a session updates this file before pushing.
 
 ---
 
 ## ⏰ Where we are
 
-**Sun 31 Aug, ~18:30 IST. Deadline Fri 4 Sep 20:30 IST — the agent needs to be live before tonight's US open (19:00 IST) to not immediately lose a session of track record.**
+**Fri 4 Sep, ~02:15 IST. SUBMISSION DEADLINE TODAY 20:30 IST (~18h).**
+US market opens **19:00 IST** — the final session is 19:00→20:30 IST, 90 minutes, and it is the last chance to add P&L.
+**NFP prints 18:00 IST**, one hour before that open. The agent handles this itself (D-014).
 
-We are past research/convergence. **Concept and architecture are decided (D-011, D-012) and code is live.** This session pushed a complete, tested implementation directly to `main` — see "why no PR / review cycle" below if that surprises you.
-
----
-
-## ✅ What has been completed (this session, on top of everything below)
-
-- **D-011 decided:** pivoted the concept from D-004's portfolio-greeks VRP desk to **"The Specialist"** — an options market maker (Specialist Mode: two-sided quoting + delta hedging) with a defined-risk vertical/condor fallback (Convexity Mode). Full reasoning, and — importantly — what was given up in the pivot, is in [decisions.md](decisions.md) D-011. Read it before assuming this replaces D-004 for free.
-- **D-012 decided:** architecture is a SQLite append-only ledger (`agent/ledger.py`) + a static vanilla-JS/Chart.js dashboard (`dashboard/`), superseding D-006's JSON-files + React/Vite sketch. The *principle* D-006 argued for (no server, no DB-as-a-service, git-as-audit-trail, zero secrets in the browser) is unchanged and fully honored.
-- Full agent built: Black-Scholes/IV pricer from scratch (`agent/pricing.py`), risk gate with notional/delta/vega/gamma caps + circuit breaker + kill switch (`agent/risk_gate.py`), Specialist Mode quoting+hedging (`agent/specialist_mode.py`), Convexity Mode (`agent/convexity_mode.py`, `scanner.py`, `strategy.py`, `execution.py`, `monitor.py`), an LLM agent layer for MarketPlan/postmortem generation that never places orders (`agent/llm_agent.py`, tested live against Featherless), and two orchestration entry points (`agent/run.py` for cron, `agent/daemon.py` for a continuous loop).
-- **Naked-leg reconciliation added in direct response to this repo's own research** ([research.md](research.md) §1.6's documented 10% random partial-fill rate on paper mleg orders) — `agent/reconcile.py`, runs first every Convexity Mode cycle, flattens any spread that's missing a leg rather than leaving unbounded naked-option risk sitting overnight.
-- 27 unit tests, all passing, zero live API calls (`tests/`).
-- Static dashboard rebuilt to match the new ledger: equity/mode-split P&L, live Greeks-vs-caps gauges, inventory, activity feed, risk-gate log, LLM postmortem log, MarketPlan history. Visually verified end-to-end with synthetic ledger data before push.
-- Featherless integration verified live: `Meta-Llama-3.1-70B-Instruct` (an obvious default choice) is actually **gated behind HuggingFace OAuth** on Featherless and returns a 403 — switched the default to `Qwen/Qwen2.5-72B-Instruct`, confirmed working for both the MarketPlan and postmortem prompts.
-- `docs/decisions.md`, `docs/project-overview.md`, `docs/tasks.md` updated to reflect what's actually decided/built vs. still open — nothing here was silently changed without a paper trail, per this repo's own D-001.
-
-### Why this pushed straight to `main` without a review cycle
-Thomas's sign-off on D-004/D-006 was still pending when this session started, and the normal move would have been a branch + PR. It went straight to `main` because: (a) this is a complete, tested, working implementation, not a proposal, on a clock where D-005's own logic (a simple correct agent live beats a sophisticated one still being reviewed) argues against waiting; (b) every change that overrides a previous decision is written down with reasoning in `decisions.md`, per D-001 — nothing is hidden or silently assumed. **If this isn't the direction the team wants, that's a completely legitimate reaction — `git revert` is cheap, and D-011/D-012 say exactly what would need to change back.**
+The agent is **built, live-validated, and has traded**. Thursday's session: **69 fills, 93 hedges, 100 quotes, equity $99,513 (−0.49%)**. Daemon and `publish.sh` were stopped at the close — **both need restarting before 19:00 IST**.
 
 ---
 
-## 🔨 What is being worked on right now
+## ✅ Done
 
-Nothing is in flight from this session. Next real blocker is **not a decision anymore** — it's the account (see below).
-
----
-
-## 🚧 Blockers
-
-| Blocker | Who | Why it blocks |
-|---|---|---|
-| **Featherless `ALPACA26` $25 credit code** (T-003) | Thomas | First-come, first-served — separate from the API key itself, which is already wired up and working |
-| **Dev A / Dev B assignment** | Thomas | Task board owners are still placeholders |
-| **The clock** | Everyone | Deadline is tomorrow evening (Fri) — the account exists now, so every hour it isn't actually running costs judged trading history that can't be recovered later |
-
-## 🎉 Update 2026-09-03: competition account created and verified (T-001 done)
-
-A genuinely fresh $100k paper account is live: equity exactly $100,000,
-options level 3, and — checked via `get_orders(status=ALL)` before wiring it
-in — zero orders/positions/activity ever. ID recorded in `docs/credentials.md`
-(ID only, per D-010; keys live only in the account owner's local `.env`).
-
-**The account is no longer the blocker. Running it for the remaining ~1.5
-days is.** Immediate next step: `python -m agent.daemon --once` against it
-once (the real version of T-021, below), then keep `agent/daemon.py` running
-through market hours for the rest of the week — see README "Running it for
-real." Every hour of delay from here is lost judged P&L history.
-
-## 🎉 Update: T-004/T-005/T-021 validated live (with real findings, see D-013)
-
-Ran the full agent against a real Alpaca paper account (dev/sandbox, not competition — see below). It surfaced two genuine platform constraints Specialist Mode's original design didn't account for (Alpaca rejects naked short calls; Alpaca rejects a simultaneous resting buy+sell on the same contract) and three real bugs (a rounding bug that caused a wash-trade rejection, a reconciliation scope gap that left one fill unhedged, and a hedge-orphaning bug on position close) — all found and fixed in the same session, all now covered by tests. Full writeup in [decisions.md](decisions.md) D-013. Portfolio delta converged to within ~$100 of flat after the fixes, against a $25,000 cap.
-
-**Process note:** while probing whether short puts were also restricted (they aren't — only naked calls are), a test order's price direction was set wrong and it filled for real: an inorganic $0.01 sale against a ~$0.59 market, no strategic basis. Caught immediately, position closed. Per D-010's own reasoning, that account is now dev/sandbox-only going forward — **T-001 needs a genuinely untouched account before the account ID goes in the submission.**
+- **Competition account is live and eligible.** `PA318JJN6DXK` — created fresh, verified $100,000 and **0 prior orders** before use. ID recorded in `docs/credentials.md`. R4/R5/R6 satisfied.
+- **Alpaca CLI installed** at `~/.local/bin/alpaca` (built from source — this Mac has no brew/go; Go lives in `~/.local/go`). The `CLI unavailable, falling back to SDK` warning is gone, so **R2 is genuinely satisfied**.
+- **The agent traded a real session** — Specialist Mode quoting and hedging, Convexity Mode holding 3 spreads.
+- **Dashboard is live** at https://thomaskissflow.github.io/alpacaHackathon/dashboard/
+- **The AI layer works** — see the critical note below.
+- **NFP event rule** (D-014), **gold + News Agent + delta cap** (D-015).
+- **One-page write-up drafted** — `docs/write-up.md`.
+- **55 tests passing**, zero live API calls in the suite.
 
 ---
 
-## ⚠️ The five things a newcomer must understand
+## 🔴 CRITICAL CONTEXT: the AI layer was silently dead until 2026-09-04
 
-1. **The judging window is ~4.2 trading sessions**, not 7 days. Mon 31 Aug → Fri 4 Sep 11:00 ET. P&L over that span is mostly noise, so we optimise for a *high-probability modest positive with a hard floor*, and win on the four criteria we fully control.
+Every `market_plan` logged `source='fallback'` and every postmortem said `[LLM call failed]`. **Featherless had never once been called successfully.** Three independent bugs, all now fixed — do not undo any of them:
 
-2. **US market hours are 19:00–01:30 IST.** We are asleep while the agent trades. This is not a detail — it is why the agent must genuinely be autonomous, idempotent and self-healing, and why a browser tab cannot be the runtime.
+1. **`LLM_PROVIDER` resolved to `""`.** `os.environ.get(key, default)` returns `""` when the key exists but is empty, and `.env.example` ships a bare `LLM_PROVIDER=` line. Now empty/whitespace is treated as unset.
+2. **The `openai` SDK could not reach Featherless** (`APIConnectionError`) while an identical direct request returned 200. `_call_featherless` now uses a direct `httpx` POST with 3 retries.
+3. **⚠️ Featherless hard-disconnects above ~1,200 prompt characters.** Reproducible, always at exactly 15.1s. Measured: 700ch → 200 OK in 3.0s; 1,200 / 1,600 / 2,500ch → `RemoteProtocolError` every time.
+   **→ `_LLM_MAX_PROMPT_CHARS = 650`. If you add anything to an LLM prompt, keep the total under that or the AI silently dies again.**
 
-3. **Non-Farm Payrolls lands Fri 4 Sep 08:30 ET**, one hour before the final session's open and 2.5 hours before the submission deadline. It is the biggest scheduled volatility event of the month and it sits inside our judged window. None of the 12 published competitors mention event awareness.
-
-4. **"Frontend only, no backend" as originally stated cannot satisfy the hackathon's hard requirements.** The Alpaca CLI is a Go binary and the MCP server is a self-hosted Python process — neither runs in a browser. The proposed amendment keeps the spirit (no server, no database, static dashboard, zero secrets in the browser) while achieving compliance. See [architecture.md](architecture.md) §2.
-
-5. **Paper trading fills are optimistic and randomly partial.** No slippage, no market impact, unlimited liquidity — but a documented **10% random partial-fill rate**. A half-filled vertical spread is a *naked short option*. Reconciliation is not defensive polish; it is what keeps the account alive overnight.
-
-6. **0DTE options have no greeks on Alpaca** (days-to-expiry is in the Black-Scholes denominator). Any 0DTE-greek strategy is dead on arrival. Stay in the 7–45 DTE band.
+Verified working: `[llm_agent] Featherless OK (Qwen/Qwen2.5-72B-Instruct, 381 tokens)`, `source='llm'`.
 
 ---
 
 ## ▶️ Next actions, in order
 
-**Thomas / whoever can act right now:**
-1. Create the brand-new competition paper account, set balance to $100,000, record the account ID (`docs/setup-guide.md` §3). **Do not trade on it.**
-2. Create/confirm a separate dev sandbox account, generate its keys, put them in a local `.env` (never the competition ones).
-3. Claim Featherless `ALPACA26` credits if not already done — separate from the API key already wired into `.env.example`.
-4. Read [decisions.md](decisions.md) D-011/D-012 and either accept the pivot or say so — it's a real change from what was signed off in your head, even though the reasoning is documented.
-5. Answer Q1, Q4-Q7 in [project-overview.md](project-overview.md) §10 (Q2/Q3 are now resolved by D-011/D-012).
-6. Register the team on lablab.ai and join the Discord, if not already done.
+**Before 19:00 IST (market open) — highest value first:**
+1. **Restart the agent** (it must be running for the final session):
+   ```
+   caffeinate -is python3 -m agent.daemon
+   ```
+   and in a second terminal: `./publish.sh`
+2. **Sanity check first**: `python3 preflight.py` — expects account reachable, market clock, Greeks on the free feed.
+3. **Watch the first few cycles** for gold (`GLD`/`IAU`) quoting and `[news] gold regime ...`. Both are new and have never run in a live session.
 
-**Whoever picks up the agent runtime next:**
-1. T-021 — once a paper account exists: `python -m agent.daemon --once` against it. This is the actual, still-outstanding version of T-004/T-005 — the code assumes the free indicative feed returns greeks/IV on the candidate tickers, but that's never been confirmed live.
-2. T-016/T-049 — add a deterministic idempotent `client_order_id` to submitted orders. Genuine gap, not yet done.
-3. T-027 — the NFP event rule. Still the single highest-severity, highest-differentiation item not yet built, per `research.md` §5.
-
-**Whoever picks up the dashboard/presentation:**
-1. T-030 — the time-travel replay UI is the biggest gap vs. the original plan (see D-012). The ledger has every timestamped row it needs; this is a UI task.
-2. T-032 — deploy `dashboard/` to GitHub Pages and capture the Application URL (required submission field, not yet done).
-3. T-023 — first build-in-public post, if not already out. Day 1's slot may already be gone; post anyway.
+**Presentation (this is now the bulk of the remaining work):**
+4. **Video** — budget 4h, it always overruns. Two of five judging criteria ride on it.
+5. **Slides**, **cover image**.
+6. **Trim `docs/write-up.md`** to one page if they enforce it.
+7. **Social posts** — up to 5, tag @lablabai + @AlpacaHQ. Separately winnable $500, thin competition.
+8. **Submit by 19:45 IST**, not 20:25. Full field list in `docs/submission-checklist.md`.
 
 ---
 
@@ -107,16 +66,27 @@ Ran the full agent against a real Alpaca paper account (dev/sandbox, not competi
 
 | Risk | Severity | Status |
 |---|---|---|
-| Agent not live by Mon open → lose ~25% of the track record | **High** | Mitigated by staged plan (D-005); not yet actioned |
-| Multi-leg order placement is not a documented CLI flag set | Medium | Must validate day 1 (T-004) |
-| GitHub Actions cron drifts 5–30 min and **can silently drop runs** | Medium | Design must be latency-insensitive + idempotent + self-healing |
-| Free-tier data: indicative options feed, IEX equities, last 15 min of history blocked, 200 req/min | Medium | Strategy designed around it; revisit Algo Trader Plus (P-4) |
-| 🔴 **Paper partial-fills (documented 10% random) can leave a naked short leg on a multi-leg spread** | **High** | Reconciliation + naked-leg detection — T-047, mandatory in Stage 1 |
-| Non-marketable limit orders never fill in paper → agent silently trades nothing | Medium | Use marketable limits; cancel/re-price working orders each run — T-048 |
-| Short-premium book gapping through strikes on NFP Friday | **High** | Event rule T-027 — must be built before Thu close |
-| Accidentally trading on the competition account during dev | **High** | Two-account separation (D-010) + env guard (T-002) |
-| Only 2 developers across agent + frontend + video + slides + social | Medium | Presentation tasks are P0 and time-boxed in Stage 5 |
-| ISM/ADP dates and window earnings unconfirmed | Low | T-010 |
+| **`git push` failing** (`RPC failed; curl 52/56`) — network, not code. Commits stack up locally and Pages goes stale | **High** | Retry `git push origin main`. `publish.sh` also retries each cycle |
+| Daemon + publish.sh currently STOPPED (market closed) | **High** | Must restart before 19:00 IST |
+| Gold symbols and News Agent have never run in a live session | Medium | Watch the first cycles closely |
+| P&L is negative (−0.49%); market-making hedge costs exceed captured spread so far | Medium | Expected for a short window; disclosed honestly in the write-up |
+| Per-mode P&L attribution is an approximation (specialist = day P&L − convexity realised) | Low | Documented in the write-up |
+| Paper fills are optimistic (no slippage/impact/queue) | Low | Disclosed in the write-up |
+| Time-travel replay UI (T-030) never built | Low | Dropped deliberately; video matters more |
+| Idempotent `client_order_id` (T-016/T-049) never added | Low | Dropped; only ~1 session remains |
+
+---
+
+## ⚠️ Things that will bite you if you don't know them
+
+1. **Prompt budget is 650 chars.** See the AI section above.
+2. **Quote OTM puts only.** A symmetric strike band picks in-the-money puts, whose delta approaches −1.0 — one ITM SPY contract is ~$75k of delta and the risk gate clamps every quote to zero.
+3. **Alpaca rejects naked short calls** (`not eligible to trade uncovered option contracts`) — the agent quotes puts only, by design.
+4. **Alpaca rejects a simultaneous resting bid + ask on the same contract** (wash-trade protection) — one side per contract per cycle.
+5. **0DTE contracts have no Greeks** (days-to-expiry is in the Black-Scholes denominator). Stay in the 7–45 DTE band.
+6. **Paper multi-leg orders partially fill ~10% of the time at random.** A half-filled vertical is a *naked short option*. `agent/reconcile.py` runs first every Convexity cycle for exactly this reason — don't reorder it.
+7. **`day_start_equity` is keyed by (date, account).** It used to be date-only, which meant switching accounts mid-session reported P&L against the wrong baseline.
+8. **Never commit `.env`.** Competition keys belong in `.env` locally and GitHub Actions Secrets — nowhere else.
 
 ---
 
@@ -124,6 +94,13 @@ Ran the full agent against a real Alpaca paper account (dev/sandbox, not competi
 
 ### 2026-08-29 · Claude
 Analysed the kickoff email and hackathon page (the page carried far more than the email — deadline, judging criteria, full submission field list, judge names, and **12 live competitor submissions**). Researched the Alpaca CLI, MCP server, options API and data-tier limits; found the 0DTE-greeks blocker and the free-tier 15-minute historical restriction. Confirmed NFP falls inside the judging window. Built the full `docs/` structure, generated 16 ideas, evaluated the top 4, and recommended a staged build of a portfolio-greeks options desk with a glass-box dashboard. Challenged the frontend-only constraint with a two-tier alternative. **No code written.** Everything now waits on Thomas's decisions.
+
+### 2026-09-04 · Claude, working with Thomas
+Triage session. Found the agent had **never traded** — no commits since 31 Aug, `orders` table empty, dependencies never installed. Installed deps, built the Alpaca CLI from source (no brew/go on the machine), and wrote `preflight.py` (read-only eligibility/data check). Preflight caught that the account in use was the **retired dev account** — 17 prior orders, $99,742 equity — so a fresh $100k account was created and wired in before any judged trading. Agent then ran a live session: 69 fills, 93 hedges, −0.49%.
+
+Fixed live, in order of severity: **the entire AI layer was dead** (three bugs — empty `LLM_PROVIDER`, openai SDK connection failure, and Featherless's ~1,200-char prompt ceiling); **Specialist Mode quoted in-the-money puts** so the risk gate clamped every quote to zero; **`day_start_equity` survived an account switch** and misreported P&L by $276; the dashboard **misrendered convexity credit** as `$1` vs `$358` max loss (missing 100x contract multiplier); and the LLM context **double-counted Greeks across time**, telling the model the book was 2x over its cap.
+
+Built: `agent/event_calendar.py` (NFP rule, D-014), `agent/news_agent.py` (gold headlines → uncertainty regime, D-015), `publish.sh` (pushes dashboard snapshots — `cycle.py` wrote them to local disk only, so Pages 404'd), and `docs/write-up.md`. Added gold to the baskets and raised the delta cap to $60k (D-015). **55 tests passing.**
 
 ### 2026-08-31 · Claude, working with Suryaprakash
 Arrived with a separately-built, working, tested implementation of a different concept (an options market maker, "The Specialist") already in hand, and was asked to push it to this shared repo. Read the full existing `docs/` tree first rather than pushing over it — found D-004/D-006 still marked PROPOSED and the concept/architecture materially different from what was about to be pushed. Surfaced that conflict explicitly and got an explicit decision to proceed as the concept/architecture sign-off, not silently. Before pushing: read `research.md` closely enough to find that the documented 10% random paper-trading partial-fill rate on multi-leg orders wasn't handled anywhere in the incoming code, and built `agent/reconcile.py` (naked-leg detection + flatten, stale-unfilled-entry cancellation) specifically in response to that finding before pushing, rather than after. Wrote D-011 and D-012 to document the pivot with reasoning **and an honest "what we're giving up" section** (book-level Greeks-budget allocator, regime playbook, time-travel replay UI, NFP rule — all real gaps against the original plan, all listed as open tasks, not glossed over). Updated `project-overview.md`, `tasks.md`, and this file to match. Merged the two READMEs rather than overwriting either. Verified the Featherless LLM integration live (found `Meta-Llama-3.1-70B-Instruct` is gated behind HuggingFace OAuth and switched the default to `Qwen/Qwen2.5-72B-Instruct`). 27 tests passing, zero live API calls in the suite. **Still not done live: T-004/T-005/T-021 (no paper account keys were available this session), T-016/T-049 (idempotent client-order-id), T-027 (NFP rule), T-030/T-032 (replay UI + deploy).**

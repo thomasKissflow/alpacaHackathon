@@ -49,7 +49,11 @@ class RiskConfig:
     # =================================================================
     # Specialist Mode (market making) hard limits
     # =================================================================
-    specialist_symbols: tuple = ("SPY", "QQQ", "AAPL", "NVDA", "TSLA")
+    # Gold ETFs added alongside the equity names (D-015). Gold is genuinely
+    # uncorrelated with the equity indices, so it diversifies the book rather
+    # than concentrating it -- and IAU's small contract size (~$3.8k of delta
+    # per ATM put vs SPY's ~$34.8k) fits comfortably inside the Greeks caps.
+    specialist_symbols: tuple = ("SPY", "QQQ", "AAPL", "NVDA", "TSLA", "GLD", "IAU")
     target_spread_bps: float = 40.0            # target quoted width, in bps of theoretical mid
     min_quote_size: int = 1                    # contracts per side
     max_quote_size: int = 3                    # contracts per side
@@ -71,7 +75,13 @@ class RiskConfig:
     # backstop against a hedge failure or multiple simultaneous fills, not a
     # tripwire on the very first fill -- worth calling out in the write-up as
     # a deliberate deviation, not an oversight.
-    max_net_delta_dollars: float = 25_000.0
+    # Raised 25k -> 60k (D-015). At SPY $773 a single ATM put carries ~$34.8k
+    # of delta, so a $25k cap made the two most liquid underlyings impossible
+    # to quote: 41 of 86 risk events were "clamped 1->0 (delta room=0)".
+    # This is not a loosening of real risk -- Specialist Mode delta-hedges
+    # every fill in the same cycle, and observed POST-hedge net book delta ran
+    # under $200 all session. The cap was blocking entry, not controlling risk.
+    max_net_delta_dollars: float = 60_000.0
     max_net_vega_dollars: float = 3_000.0
     max_net_gamma_shares_per_dollar: float = 400.0
 
@@ -91,7 +101,7 @@ class RiskConfig:
     target_short_leg_delta: float = 0.18       # ~18-delta short strikes = defined-risk, high-probability
     spread_width_dollars: float = 5.0          # width between short and long strike
 
-    candidate_underlyings: tuple = ("SPY", "QQQ", "IWM")
+    candidate_underlyings: tuple = ("SPY", "QQQ", "IWM", "GLD")
 
     # =================================================================
     # Account-level (both modes)

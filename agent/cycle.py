@@ -19,7 +19,7 @@ import json
 from datetime import datetime, timedelta, timezone
 
 from agent import (convexity_mode, dashboard_export, event_calendar, ledger, llm_agent,
-                   risk_gate, specialist_mode)
+                   news_agent, risk_gate, specialist_mode)
 from agent.clients import cli_get, trading_client
 from agent.config import RISK
 
@@ -71,6 +71,23 @@ def run_cycle() -> None:
     tripped, drawdown_pct = risk_gate.circuit_breaker_tripped(equity, account.get("account_number"))
     if tripped:
         print(f"[cycle] circuit breaker tripped ({drawdown_pct:.2%} drawdown) -- halting NEW entries this cycle")
+
+    # Gold news regime -> quote width. This is the only place the system forms
+    # a view, and even here it never picks a direction: turbulent headlines make
+    # the agent charge MORE to provide liquidity, calm ones less.
+    news = news_agent.current_read()
+    if news.spread_multiplier != 1.0:
+        spreads = dict(approved_plan.get("target_spread_bps") or {})
+        approved_plan = dict(approved_plan)
+        approved_plan["target_spread_bps"] = {
+            s: round(bps * news.spread_multiplier, 1) for s, bps in spreads.items()
+        }
+        print(f"[news] gold regime '{news.regime}' -> spreads x{news.spread_multiplier}")
+    ledger.log_risk_event(
+        "clamp" if news.spread_multiplier != 1.0 else "info",
+        f"gold news regime '{news.regime}' ({news.headline_count} headlines, {news.source}): {news.summary}",
+        mode=None, details={"gate": "news_agent", "regime": news.regime,
+                            "spread_multiplier": news.spread_multiplier})
 
     # Scheduled-macro-event posture. Applied AFTER the LLM plan is approved,
     # so the model can never talk its way past an event rule.

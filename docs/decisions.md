@@ -244,6 +244,32 @@ Existing positions are still monitored, hedged and closed in every phase — the
 
 ---
 
+## D-015 — Additive gold exposure + a News Agent, and raise the delta cap to $60k
+**Date:** 2026-09-04 · **Status:** DECIDED (approved by Thomas) — extends D-011, does not replace it
+
+**Decision:** three changes, all additive:
+
+1. **Gold added to the baskets.** Specialist Mode now quotes `GLD` and `IAU` alongside SPY/QQQ/AAPL/NVDA/TSLA; Convexity Mode adds `GLD`.
+2. **A News Agent** (`agent/news_agent.py`) reads gold-market headlines from Alpaca's news API, asks Featherless to classify them into an *uncertainty regime* (`calm` / `mixed` / `turbulent`), and uses that only to scale quote width (0.9x / 1.0x / 1.35x).
+3. **`max_net_delta_dollars` raised $25,000 → $60,000.**
+
+**Reasoning:**
+
+*Gold, additively.* The team asked whether to pivot the whole agent to gold-only news trading. Rejected as a pivot (see Alternatives) but accepted as an addition, because the underlying instinct is sound: gold is genuinely uncorrelated with the equity indices, so it **diversifies** the book rather than concentrating it — which is the same logic as D-003. Verified live: GLD has 6,266 contracts with usable Greeks, IAU 1,301, GDX 2,347. IAU is a particularly good fit — one ATM put carries ~$3.8k of delta vs SPY's ~$34.8k, so it sits comfortably inside the Greeks caps.
+
+*The News Agent is the one place this system forms a view — and even there it does not pick a direction.* Turbulent headlines make the agent charge **more** to provide liquidity; calm headlines less. A market maker does not need to know which way gold goes, only how nervous to be about being on the other side of a trade. This keeps the "AI reads the news" capability the team wanted without adopting the sentiment→direction framing that NewsFlow Trader already occupies and that is the weakest link in most competitors' chains. A test asserts `NewsRead` carries no directional field.
+
+*The delta cap.* At SPY $773.63 a single ATM put carries ~$34,814 of delta, so a $25,000 book cap made the two most liquid underlyings **impossible to quote** — 41 of 86 risk events in the first live session were `clamped 1->0 (delta room=0)`. This is not a loosening of real risk: Specialist Mode delta-hedges every fill within the same cycle, and observed **post-hedge** net book delta ran under $200 all session (TSLA: option −$17,246 vs stock +$17,188 = −$58). The cap was gating entry on unhedged exposure that never persists.
+
+**Alternatives considered:**
+- **Full pivot to gold-only news-directional trading.** Rejected with ~19h to the deadline: it discards a working, live-validated system (55 tests, 69 real fills, three platform bugs already found and fixed); news→sentiment→direction is the most crowded lane in the field; a single asset is maximum variance, the opposite of D-003; and it would replace a differentiator nobody else has (inventory-managed two-sided quoting) with one a dozen teams built.
+- **Adding GDX too.** Deferred — gold miners are equities with idiosyncratic risk, not a gold proxy, and each extra symbol costs a chain fetch against the free tier's 200 req/min.
+- **Leaving the delta cap at $25k and shrinking quote size instead.** Does not help: the problem is one indivisible contract, not the number of them.
+
+**Impact:** New module + 7 tests (55 passing). `cycle.py` applies the news multiplier before the event-calendar posture, so an event rule always wins. Also fixed while wiring this up: `_build_market_plan_context` summed `position_snapshots` across time, double-counting the same positions — it told the model the book was at $120,013 delta against its cap when the true figure was $48.
+
+---
+
 ## Pending decisions (not yet made)
 
 | # | Decision needed | Blocks | Owner |

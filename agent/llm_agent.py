@@ -156,17 +156,33 @@ def _read_iv_history() -> dict:
     return {}
 
 
+def _news_context() -> str:
+    """One short clause from the News Agent. Guarded: the news read must never
+    be able to break plan generation."""
+    try:
+        from agent import news_agent
+        return news_agent.current_read().as_context()
+    except Exception:  # noqa: BLE001
+        return ""
+
+
 def _build_market_plan_context(equity: float) -> str:
     """Compact market context. Kept deliberately terse: Featherless drops the
     connection above ~1,200 prompt chars (see _LLM_MAX_PROMPT_CHARS), so this
     carries only the facts that change a quoting decision."""
     from agent import ledger
 
-    d = v = g = 0.0
-    for row in ledger.recent("position_snapshots", limit=40):
-        d += row.get("delta_dollars") or 0
-        v += row.get("vega_dollars") or 0
-        g += row.get("gamma") or 0
+    # position_snapshots is append-only: the same symbol appears once per
+    # cycle. Summing raw rows double-counts across time -- it reported net
+    # delta of $120,013 against a $60,000 cap while the book was actually
+    # ~$150 net, i.e. it told the model the book was 2x over its limit.
+    # Take the most recent row per symbol only (rows come back id-DESC).
+    latest: dict[str, dict] = {}
+    for row in ledger.recent("position_snapshots", limit=400):
+        latest.setdefault(row["symbol"], row)
+    d = sum(r.get("delta_dollars") or 0 for r in latest.values())
+    v = sum(r.get("vega_dollars") or 0 for r in latest.values())
+    g = sum(r.get("gamma") or 0 for r in latest.values())
     fills = len(ledger.recent("fills", limit=50))
     n_conv = len(ledger.open_convexity_positions())
 
@@ -177,7 +193,8 @@ def _build_market_plan_context(equity: float) -> str:
         f"net delta ${d:,.0f}/cap ${RISK.max_net_delta_dollars:,.0f}. "
         f"net vega ${v:,.0f}/cap ${RISK.max_net_vega_dollars:,.0f}. "
         f"fills today {fills}. open convexity {n_conv}/{RISK.max_concurrent_positions}. "
-        f"default spread {RISK.target_spread_bps:.0f}bps."
+        f"default spread {RISK.target_spread_bps:.0f}bps. "
+        f"{_news_context()}"
     )
 
 
