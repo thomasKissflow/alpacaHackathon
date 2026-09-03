@@ -136,6 +136,13 @@ clearly-labeled deterministic fallback (static default MarketPlan, templated
 post-mortem) if no provider is configured or a call fails. That fallback
 still goes through the same risk gate, so both modes keep trading either way.
 
+### New to options trading or this codebase?
+
+Start with [examples/](examples/) instead of jumping straight into `agent/`
+— heavily-commented, standalone scripts that explain and demo the pricer,
+the risk gate, and a safe read-only account check, plus how to seed the
+dashboard with sample data and how to run the real test suite.
+
 ### 3. Local dev environment
 
 ```bash
