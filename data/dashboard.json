@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-03T18:38:39.575082+00:00",
+  "generated_at": "2026-09-03T18:39:53.323561+00:00",
   "risk_config": {
     "max_net_delta_dollars": 25000.0,
     "max_net_vega_dollars": 3000.0,
@@ -108,63 +108,147 @@
       "specialist_pnl": -38.929999999993015,
       "convexity_pnl": 0.0,
       "day_pnl": -38.929999999993015
+    },
+    {
+      "id": 11,
+      "ts": "2026-09-03T18:39:49.205773+00:00",
+      "equity": 99935.59,
+      "cash": 70866.21,
+      "buying_power": 86379.3,
+      "specialist_pnl": -64.41000000000349,
+      "convexity_pnl": 0.0,
+      "day_pnl": -64.41000000000349
+    },
+    {
+      "id": 12,
+      "ts": "2026-09-03T18:39:53.316141+00:00",
+      "equity": 99939.29,
+      "cash": 70866.21,
+      "buying_power": 86382.45,
+      "specialist_pnl": -60.7100000000064,
+      "convexity_pnl": 0.0,
+      "day_pnl": -60.7100000000064
     }
   ],
   "inventory": [
     {
-      "id": 68,
-      "ts": "2026-09-03T18:38:19.406224+00:00",
-      "mode": "specialist",
-      "symbol": "TSLA",
-      "underlying": "TSLA",
-      "qty": 48,
-      "delta_dollars": 18372.48,
-      "gamma": 0.0,
-      "vega_dollars": 0.0,
-      "theta_dollars": 0.0,
-      "notional": 18372.48
-    },
-    {
-      "id": 67,
-      "ts": "2026-09-03T18:38:19.132366+00:00",
-      "mode": "specialist",
-      "symbol": "TSLA260911P00382500",
-      "underlying": "TSLA",
-      "qty": 1,
-      "delta_dollars": -18227.765866796763,
-      "gamma": 1.3932684124508323,
-      "vega_dollars": 22.566419975556276,
-      "theta_dollars": -68.75726226427984,
-      "notional": 1107.4994131608946
-    },
-    {
-      "id": 66,
-      "ts": "2026-09-03T18:38:18.884197+00:00",
-      "mode": "specialist",
-      "symbol": "NVDA260925P00230000",
-      "underlying": "NVDA",
-      "qty": 1,
-      "delta_dollars": -10842.66332117274,
-      "gamma": 2.106961752355872,
-      "vega_dollars": 22.464670372526015,
-      "theta_dollars": -15.65421948931791,
-      "notional": 723.9983988236503
-    },
-    {
-      "id": 64,
-      "ts": "2026-09-03T18:38:13.287312+00:00",
+      "id": 86,
+      "ts": "2026-09-03T18:39:46.855879+00:00",
       "mode": "specialist",
       "symbol": "NVDA",
       "underlying": "NVDA",
       "qty": 47,
-      "delta_dollars": 10807.65,
+      "delta_dollars": 10805.77,
       "gamma": 0.0,
       "vega_dollars": 0.0,
       "theta_dollars": 0.0,
-      "notional": 10807.65
+      "notional": 10805.77
+    },
+    {
+      "id": 85,
+      "ts": "2026-09-03T18:39:46.454322+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260925P00230000",
+      "underlying": "NVDA",
+      "qty": 1,
+      "delta_dollars": -10861.506000267816,
+      "gamma": 2.1328858956561394,
+      "vega_dollars": 22.464340751130166,
+      "theta_dollars": -15.450533856697135,
+      "notional": 716.9993269142722
     }
   ],
   "quote_feed": [
+    {
+      "id": 38,
+      "ts": "2026-09-03T18:39:49.831785+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260911P00382500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 10.98,
+      "status": "new",
+      "alpaca_order_id": "8f75c9e8-7d24-4f59-a813-6b5a9ff1e98f",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 37,
+      "ts": "2026-09-03T18:39:49.075909+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.87,
+      "status": "new",
+      "alpaca_order_id": "d5fe6c84-28db-417a-a10e-5452ad8fb618",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 36,
+      "ts": "2026-09-03T18:39:48.348989+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260925P00325000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 6.55,
+      "status": "new",
+      "alpaca_order_id": "c3282322-85d5-43f3-8e87-89eeff664c61",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 35,
+      "ts": "2026-09-03T18:39:31.986461+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260911P00382500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 11.04,
+      "status": "cancelled",
+      "alpaca_order_id": "8e3b8dae-6d5a-4fe7-a85b-b141882f1843",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 34,
+      "ts": "2026-09-03T18:39:31.234298+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.93,
+      "status": "cancelled",
+      "alpaca_order_id": "eb5c6af5-f4a6-4aed-ab3c-eba89d5512b0",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 33,
+      "ts": "2026-09-03T18:39:30.487810+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260916P00325000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.85,
+      "status": "cancelled",
+      "alpaca_order_id": "ace84c85-052c-4809-8a3c-b01263e87b3c",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
     {
       "id": 32,
       "ts": "2026-09-03T18:38:22.621600+00:00",
@@ -174,7 +258,7 @@
       "qty": 1,
       "order_type": "limit",
       "limit_price": 10.92,
-      "status": "new",
+      "status": "cancelled",
       "alpaca_order_id": "ff42d9bf-1f38-4906-9126-e13a846f3d16",
       "replaces_order_id": null,
       "legs_json": null,
@@ -189,7 +273,7 @@
       "qty": 1,
       "order_type": "limit",
       "limit_price": 4.74,
-      "status": "new",
+      "status": "cancelled",
       "alpaca_order_id": "526f3d1c-4977-4e5d-a62b-ad001bf864eb",
       "replaces_order_id": null,
       "legs_json": null,
@@ -204,7 +288,7 @@
       "qty": 1,
       "order_type": "limit",
       "limit_price": 4.91,
-      "status": "new",
+      "status": "cancelled",
       "alpaca_order_id": "8436f915-4450-471c-9f72-a92828fea9cd",
       "replaces_order_id": null,
       "legs_json": null,
@@ -648,6 +732,36 @@
   ],
   "fills": [
     {
+      "id": 9,
+      "ts": "2026-09-03T18:39:45.477619+00:00",
+      "order_id": 34,
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "buy",
+      "qty": 1,
+      "fill_price": 4.9
+    },
+    {
+      "id": 8,
+      "ts": "2026-09-03T18:39:27.131575+00:00",
+      "order_id": 31,
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "sell",
+      "qty": 1,
+      "fill_price": 4.75
+    },
+    {
+      "id": 7,
+      "ts": "2026-09-03T18:39:26.641854+00:00",
+      "order_id": 32,
+      "mode": "specialist",
+      "symbol": "TSLA260911P00382500",
+      "side": "sell",
+      "qty": 1,
+      "fill_price": 10.95
+    },
+    {
       "id": 6,
       "ts": "2026-09-03T18:38:17.400546+00:00",
       "order_id": 29,
@@ -709,6 +823,42 @@
     }
   ],
   "hedges": [
+    {
+      "id": 9,
+      "ts": "2026-09-03T18:39:46.853540+00:00",
+      "trigger_fill_id": null,
+      "underlying": "NVDA",
+      "side": "buy",
+      "qty": 41,
+      "price": 229.91,
+      "delta_before": 6.0,
+      "delta_after": 47.0,
+      "alpaca_order_id": "876f91c5-cd23-4377-84b8-accc6ea78a0a"
+    },
+    {
+      "id": 8,
+      "ts": "2026-09-03T18:39:28.901736+00:00",
+      "trigger_fill_id": null,
+      "underlying": "TSLA",
+      "side": "sell",
+      "qty": 48,
+      "price": 382.5,
+      "delta_before": 48.0,
+      "delta_after": 0.0,
+      "alpaca_order_id": "444eca98-5cce-48ba-8292-7a2db4fc4528"
+    },
+    {
+      "id": 7,
+      "ts": "2026-09-03T18:39:28.651760+00:00",
+      "trigger_fill_id": null,
+      "underlying": "NVDA",
+      "side": "sell",
+      "qty": 41,
+      "price": 229.89,
+      "delta_before": 47.0,
+      "delta_after": 6.0,
+      "alpaca_order_id": "b1393dce-2df8-47cb-8c97-2c98da50304b"
+    },
     {
       "id": 6,
       "ts": "2026-09-03T18:38:19.403363+00:00",
@@ -783,6 +933,70 @@
     }
   ],
   "risk_events": [
+    {
+      "id": 46,
+      "ts": "2026-09-03T18:39:53.312133+00:00",
+      "event_type": "clamp",
+      "mode": "convexity",
+      "reason": "Non-Farm Payrolls (Aug 2026) in 17.8h - de-risking: quotes widened 1.6x, size cut 25%, no new short premium held across the release",
+      "details_json": "{\"gate\": \"event_calendar\"}"
+    },
+    {
+      "id": 45,
+      "ts": "2026-09-03T18:39:49.178204+00:00",
+      "event_type": "reject",
+      "mode": "convexity",
+      "reason": "already have an open position on IWM",
+      "details_json": "{\"underlying\": \"IWM\", \"strategy_type\": \"iron_condor\", \"max_loss_estimate\": 423.50000000000006}"
+    },
+    {
+      "id": 44,
+      "ts": "2026-09-03T18:39:49.161522+00:00",
+      "event_type": "reject",
+      "mode": "convexity",
+      "reason": "already have an open position on QQQ",
+      "details_json": "{\"underlying\": \"QQQ\", \"strategy_type\": \"iron_condor\", \"max_loss_estimate\": 383.5}"
+    },
+    {
+      "id": 43,
+      "ts": "2026-09-03T18:39:47.846413+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "QQQ260910P00718000: clamped qty 1->0 by Greeks caps (delta room=0, vega room=1, gamma room=1)",
+      "details_json": "{\"symbol\": \"QQQ260910P00718000\", \"side\": \"buy\", \"requested_qty\": 1, \"approved_qty\": 0}"
+    },
+    {
+      "id": 42,
+      "ts": "2026-09-03T18:39:47.355839+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "SPY260910P00773000: clamped qty 1->0 by Greeks caps (delta room=0, vega room=1, gamma room=1)",
+      "details_json": "{\"symbol\": \"SPY260910P00773000\", \"side\": \"buy\", \"requested_qty\": 1, \"approved_qty\": 0}"
+    },
+    {
+      "id": 41,
+      "ts": "2026-09-03T18:39:29.989521+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "QQQ260910P00718000: clamped qty 1->0 by Greeks caps (delta room=0, vega room=1, gamma room=1)",
+      "details_json": "{\"symbol\": \"QQQ260910P00718000\", \"side\": \"buy\", \"requested_qty\": 1, \"approved_qty\": 0}"
+    },
+    {
+      "id": 40,
+      "ts": "2026-09-03T18:39:29.478724+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "SPY260910P00773000: clamped qty 1->0 by Greeks caps (delta room=0, vega room=1, gamma room=1)",
+      "details_json": "{\"symbol\": \"SPY260910P00773000\", \"side\": \"buy\", \"requested_qty\": 1, \"approved_qty\": 0}"
+    },
+    {
+      "id": 39,
+      "ts": "2026-09-03T18:39:27.363865+00:00",
+      "event_type": "clamp",
+      "mode": null,
+      "reason": "Non-Farm Payrolls (Aug 2026) in 17.8h - de-risking: quotes widened 1.6x, size cut 25%, no new short premium held across the release",
+      "details_json": "{\"gate\": \"event_calendar\", \"phase\": \"derisk\", \"event\": \"Non-Farm Payrolls (Aug 2026)\", \"minutes_to_event\": 1070.5439529333332}"
+    },
     {
       "id": 38,
       "ts": "2026-09-03T18:38:39.546367+00:00",

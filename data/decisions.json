@@ -1542,5 +1542,111 @@
       "already have an open position on IWM"
     ],
     "rationale": "IWM: IV rank 51, trend=neutral -> iron_condor, credit~$0.81, max_loss~$419.00, exp 2026-09-10"
+  },
+  {
+    "timestamp": "2026-09-03T18:39:35.803915+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "9ac8df93-fed1-4ccd-b130-f3edf56c510f",
+    "unrealized_pnl": -0.05999999999999994
+  },
+  {
+    "timestamp": "2026-09-03T18:39:35.806717+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": 0.0
+  },
+  {
+    "timestamp": "2026-09-03T18:39:35.808101+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
+    "unrealized_pnl": -0.009999999999999787
+  },
+  {
+    "timestamp": "2026-09-03T18:39:49.103603+00:00",
+    "stage": "scan",
+    "mode": "convexity",
+    "candidates": [
+      {
+        "symbol": "QQQ",
+        "iv_rank": 100.0,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "IWM",
+        "iv_rank": 79.2,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "SPY",
+        "iv_rank": 48.4,
+        "trend": "bullish"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T18:39:49.162283+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "QQQ",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on QQQ"
+    ],
+    "rationale": "QQQ: IV rank 100, trend=neutral -> iron_condor, credit~$1.17, max_loss~$383.50, exp 2026-09-10"
+  },
+  {
+    "timestamp": "2026-09-03T18:39:49.178920+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "IWM",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on IWM"
+    ],
+    "rationale": "IWM: IV rank 79, trend=neutral -> iron_condor, credit~$0.77, max_loss~$423.50, exp 2026-09-10"
+  },
+  {
+    "timestamp": "2026-09-03T18:39:49.179510+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "SPY",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-03T18:39:53.301679+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "9ac8df93-fed1-4ccd-b130-f3edf56c510f",
+    "unrealized_pnl": 0.020000000000000018
+  },
+  {
+    "timestamp": "2026-09-03T18:39:53.305348+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": 0.029999999999999805
+  },
+  {
+    "timestamp": "2026-09-03T18:39:53.307483+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
+    "unrealized_pnl": -0.05999999999999983
+  },
+  {
+    "timestamp": "2026-09-03T18:39:53.309933+00:00",
+    "stage": "event_calendar",
+    "mode": "convexity",
+    "action": "halt_new_entries",
+    "reason": "Non-Farm Payrolls (Aug 2026) in 17.8h - de-risking: quotes widened 1.6x, size cut 25%, no new short premium held across the release"
   }
 ]
