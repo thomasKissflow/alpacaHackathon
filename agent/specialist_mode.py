@@ -75,7 +75,15 @@ def _pick_atm_put(symbol: str, underlying_price: float) -> tuple[str, object] | 
             p = parse_occ_symbol(symbol, occ_symbol)
         except ValueError:
             continue
-        if p.option_type == "put" and lo <= p.expiration <= hi and abs(p.strike - underlying_price) <= band:
+        # OTM puts only (strike <= spot). A symmetric band picks in-the-money
+        # puts, whose delta approaches -1.0: one ITM SPY contract is ~$75k of
+        # delta against a $25k book cap, so the risk gate clamps it to zero and
+        # we never trade. ITM puts also demand enormous cash-secured-put
+        # buying power (observed live: $22k-$37k required for a single
+        # contract). Quoting OTM is both risk-sane and what a market maker
+        # actually wants to be short.
+        in_band = 0 <= (underlying_price - p.strike) <= band
+        if p.option_type == "put" and lo <= p.expiration <= hi and in_band:
             candidates.append((occ_symbol, p))
 
     if not candidates:

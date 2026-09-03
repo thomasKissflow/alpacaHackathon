@@ -43,3 +43,22 @@ def test_quote_never_exceeds_real_nbbo():
     bid, ask = quote
     assert bid >= 10.00
     assert ask <= 10.50
+
+
+def test_strike_band_excludes_itm_puts():
+    """Regression: the moneyness band used to be symmetric, so _pick_atm_put
+    could select an in-the-money put. ITM puts have delta near -1.0 (~$75k of
+    delta on one SPY contract vs a $25k book cap), so the risk gate clamped
+    every quote to zero and the agent silently stopped trading. Found live
+    2026-09-03. Band must admit strikes at-or-below spot only."""
+    spot, band = 750.0, 750.0 * 0.03  # +/-3% => 22.5
+
+    def in_band(strike):
+        return 0 <= (spot - strike) <= band
+
+    assert in_band(750.0)          # ATM
+    assert in_band(730.0)          # OTM, inside band
+    assert in_band(727.5)          # OTM, at the band edge
+    assert not in_band(727.4)      # OTM, beyond the band
+    assert not in_band(774.0)      # ITM -- the live failure case
+    assert not in_band(751.0)      # even 1 point ITM is excluded
