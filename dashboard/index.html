@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Specialist — Live Dashboard</title>
   <link rel="stylesheet" href="style.css?v=2" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 </head>
 <body>
   <div class="app">
@@ -55,12 +56,8 @@
 
       <section class="block">
         <div class="panel chart-wrap">
-          <h2>Equity <span class="hint" id="candle-hint">real OHLC candles, bucketed from account snapshots</span></h2>
-          <div class="price-chart-frame">
-            <canvas id="candle-price" width="1100" height="280"></canvas>
-            <div class="ma-legend" id="ma-legend"></div>
-          </div>
-          <canvas id="candle-volume" width="1100" height="56"></canvas>
+          <h2>Equity curve <span class="hint">since first snapshot</span></h2>
+          <canvas id="equity-chart" height="90"></canvas>
         </div>
       </section>
 
