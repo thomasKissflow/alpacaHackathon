@@ -28,8 +28,8 @@
 
 | ID | Task | Owner | Pri | Notes |
 |---|---|---|---|---|
-| T-001 | **Create brand-new Alpaca paper account, set balance to $100,000** | T | **P0** | R4/R5. Do not trade on it. Record account ID in `docs/credentials.md` (ID only, never keys) |
-| T-002 | Create a **separate** throwaway paper account for development | T | **P0** | Prevents contaminating the judged account (D-010) |
+| ~~T-001~~ | ~~Create brand-new Alpaca paper account, set balance to $100,000~~ | T | **P0** | ✅ **Done 2026-09-03.** Verified via API: equity exactly $100,000, options level 3, zero orders/positions/activity ever. ID recorded in `docs/credentials.md`. **Do not trade on it manually, ever.** |
+| ~~T-002~~ | ~~Create a **separate** throwaway paper account for development~~ | T | **P0** | ✅ Done (the account used for D-013's live testing now serves this role) |
 | T-003 | **Claim Featherless $25 credits** with code `ALPACA26` | T | **P0** | First-come, first-served — do this before anything else |
 | ~~T-004~~ | Install Alpaca CLI; verify auth; **validate a multi-leg (`mleg`) order via `--dry-run`** on the dev account | A | **P0** | ✅ **Validated live** — see D-013. Also surfaced two real Alpaca constraints (naked calls rejected, no simultaneous same-contract buy+sell) and 3 bugs, all fixed. Ran on a dev/sandbox account, not the competition account — see D-013's process note. |
 | ~~T-005~~ | Verify option chain + snapshot greeks are returned on the free indicative feed for our candidate tickers | A | **P0** | ✅ **Validated live** — Greeks/IV populate correctly, only when bid/ask are both non-zero, exactly as [research.md](research.md) §1.4 documented |
@@ -57,7 +57,7 @@
 | ~~T-018~~ | Decision log writer + state snapshot + git commit/push | A | **P0** | ✅ Done — `agent/ledger.py` (SQLite, superseding the originally-sketched per-run JSON files, see D-012) + `agent/logger.py` for the narrative feed |
 | ~~T-019~~ | GitHub Actions workflow: cron at odd minutes + `workflow_dispatch` | A | **P0** | ✅ Done — `.github/workflows/trading-agent.yml`, 3x/day + manual dispatch. Note: Specialist Mode additionally needs `agent/daemon.py` running somewhere more continuously — cron alone is too sparse for two-sided quoting, see README "Running it for real." |
 | ~~T-020~~ | Drawdown **kill switch** (flatten + halt + commit `HALTED`) | A | **P0** | ✅ Done — `python -m agent.kill_switch execute`, `agent/kill_switch.py` |
-| T-021 | **Go-live smoke test on the competition account** | A + T | **P0** | ⏳ **Blocked on T-001.** The smoke test itself (equivalent of T-004/T-005) has been run and passed on a dev account — see D-013. What's left is purely: create the real competition account, then run `python -m agent.daemon --once` against it once to confirm. |
+| T-021 | **Go-live smoke test on the competition account** | A + T | **P0** | ⏳ **Unblocked as of 2026-09-03** — competition account exists and is verified clean. Next action: run `python -m agent.daemon --once` against it once, then get `agent/daemon.py` running continuously for the rest of the week (see README "Running it for real"). **The clock is now the constraint, not the account** — deadline is tomorrow evening. |
 | ~~T-022~~ | Dashboard skeleton reading fixture JSON | B | P1 | ✅ Done, different stack than originally scoped (static vanilla JS + Chart.js instead of React/Vite/Tailwind/Recharts — see D-012). Visually verified end-to-end with synthetic ledger data. |
 | T-023 | First build-in-public post (X + LinkedIn), tagging @lablabai + @AlpacaHQ | B | P1 | Still open — day 1 content slot may already be missed; post as soon as possible |
 

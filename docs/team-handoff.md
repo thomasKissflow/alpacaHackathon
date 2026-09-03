@@ -40,10 +40,22 @@ Nothing is in flight from this session. Next real blocker is **not a decision an
 
 | Blocker | Who | Why it blocks |
 |---|---|---|
-| **New $100k paper account not created** (T-001) | Thomas | Hard eligibility requirement — **still the single most urgent open item, more so now**: a dev account was used to run the live smoke test below, and picked up one inorganic manual test trade in the process. Per D-010, that account is retired to dev/sandbox use; a genuinely fresh account is needed before an account ID goes anywhere near the submission. |
 | **Featherless `ALPACA26` $25 credit code** (T-003) | Thomas | First-come, first-served — separate from the API key itself, which is already wired up and working |
 | **Dev A / Dev B assignment** | Thomas | Task board owners are still placeholders |
-| **T-021 go-live smoke test** | Whoever has the account | The smoke test itself has now been run and passed (see D-013) — what's left is purely re-running it once against the real competition account after T-001 |
+| **The clock** | Everyone | Deadline is tomorrow evening (Fri) — the account exists now, so every hour it isn't actually running costs judged trading history that can't be recovered later |
+
+## 🎉 Update 2026-09-03: competition account created and verified (T-001 done)
+
+A genuinely fresh $100k paper account is live: equity exactly $100,000,
+options level 3, and — checked via `get_orders(status=ALL)` before wiring it
+in — zero orders/positions/activity ever. ID recorded in `docs/credentials.md`
+(ID only, per D-010; keys live only in the account owner's local `.env`).
+
+**The account is no longer the blocker. Running it for the remaining ~1.5
+days is.** Immediate next step: `python -m agent.daemon --once` against it
+once (the real version of T-021, below), then keep `agent/daemon.py` running
+through market hours for the rest of the week — see README "Running it for
+real." Every hour of delay from here is lost judged P&L history.
 
 ## 🎉 Update: T-004/T-005/T-021 validated live (with real findings, see D-013)
 
