@@ -60,6 +60,12 @@ class RiskConfig:
     quote_dte_min: int = 7
     quote_dte_max: int = 35
     quote_moneyness_band_pct: float = 0.03     # only quote strikes within +/-3% of underlying spot
+    # Minimum edge, in bps of mid, required to CLOSE an existing position.
+    # A market maker earns the spread by selling above what it paid; quoting
+    # the closing side at whatever the mid has drifted to turns every round
+    # trip into a loss. Live evidence 2026-09-03: 33 round trips captured
+    # -$85 gross because the agent quoted sells below its own cost basis.
+    min_close_edge_bps: float = 25.0
     requote_underlying_move_bps: float = 15.0  # replace quotes if underlying moved this much since last quote
 
     # notional / concentration

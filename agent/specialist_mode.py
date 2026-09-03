@@ -282,6 +282,31 @@ def _pick_quote_side(occ_symbol: str, current_qty: int) -> str:
     return "buy"
 
 
+def apply_inventory_cost_floor(side: str, price: float, qty: int, avg_price: float,
+                               mid: float, tick: float = 0.01) -> float:
+    """Never quote the CLOSING side of a position worse than what we paid.
+
+    The whole premise of market making is buy-low/sell-high across the spread.
+    Pricing purely off the current mid means that after buying at 11.10 the
+    agent will happily quote a sell at 10.92 to flatten inventory, locking in
+    the loss. Observed live 2026-09-03: 33 round trips, -$85 gross captured.
+
+    Opening a position is still priced off the market (that is where the edge
+    comes from). Closing is floored at cost +/- a minimum edge. If the market
+    never comes back to us we simply do not get filled and keep the inventory
+    -- which is safe precisely because every fill is delta-hedged, so holding
+    is a vol/theta position, not a directional bet.
+    """
+    if qty == 0 or not avg_price:
+        return price  # opening: market-relative price is correct
+    edge = max(tick, mid * RISK.min_close_edge_bps / 10_000.0)
+    if qty > 0 and side == "sell":
+        return round(max(price, avg_price + edge), 2)
+    if qty < 0 and side == "buy":
+        return round(min(price, avg_price - edge), 2)
+    return price
+
+
 def _quote_put(occ_symbol: str, underlying_symbol: str, underlying_price: float, spread_bps: float) -> None:
     nbbo = clients.get_option_nbbo(occ_symbol)
     if nbbo is None:
@@ -313,6 +338,13 @@ def _quote_put(occ_symbol: str, underlying_symbol: str, underlying_price: float,
 
     side = _pick_quote_side(occ_symbol, inv["qty"])
     price = target_bid if side == "buy" else target_ask
+    floored = apply_inventory_cost_floor(side, price, inv["qty"], inv.get("avg_price") or 0.0, mid)
+    if floored != price:
+        print(f"[specialist] {occ_symbol}: {side} {price:.2f} -> {floored:.2f} "
+              f"(cost floor, avg {inv.get('avg_price'):.2f}, qty {inv['qty']})")
+        price = floored
+    if price <= 0:
+        return
     signed_qty_for_side = 1 if side == "buy" else -1
     incremental = position_dollar_greeks(greeks, signed_qty_for_side, underlying_price)
     approval = risk_gate.pretrade_gate_specialist(
