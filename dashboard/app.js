@@ -501,26 +501,40 @@ function setupScrollSpy() {
 
 // ================================================================== main ===
 
-async function refresh() {
+// Each render step runs in isolation: one section throwing (e.g. a stale
+// cached HTML shell missing an element a newer app.js expects) must not
+// silently block every section after it. Found live: exactly this failure
+// mode made most of the page appear "empty" while the data had loaded fine.
+function _safe(name, fn) {
   try {
-    const snapshot = await fetchSnapshot();
-    renderTickers(snapshot.tickers);
-    renderTopStatus(snapshot);
-    renderStats(snapshot);
-    renderCandleChart(snapshot);
-    renderGauges(snapshot);
-    renderIntent(snapshot);
-    renderInventory(snapshot.inventory);
-    renderConvexity(snapshot);
-    renderWorkingOrders(snapshot);
-    renderActivityFeed(snapshot);
-    renderRiskFeed(snapshot.risk_events);
-    renderPostmortems(snapshot.postmortems);
-    renderPlans(snapshot.market_plans);
-    renderFooter(snapshot);
+    fn();
   } catch (err) {
-    console.error(err);
+    console.error(`[dashboard] render step "${name}" failed:`, err);
   }
+}
+
+async function refresh() {
+  let snapshot;
+  try {
+    snapshot = await fetchSnapshot();
+  } catch (err) {
+    console.error("[dashboard] failed to fetch dashboard.json:", err);
+    return;
+  }
+  _safe("tickers", () => renderTickers(snapshot.tickers));
+  _safe("topStatus", () => renderTopStatus(snapshot));
+  _safe("stats", () => renderStats(snapshot));
+  _safe("candleChart", () => renderCandleChart(snapshot));
+  _safe("gauges", () => renderGauges(snapshot));
+  _safe("intent", () => renderIntent(snapshot));
+  _safe("inventory", () => renderInventory(snapshot.inventory));
+  _safe("convexity", () => renderConvexity(snapshot));
+  _safe("workingOrders", () => renderWorkingOrders(snapshot));
+  _safe("activityFeed", () => renderActivityFeed(snapshot));
+  _safe("riskFeed", () => renderRiskFeed(snapshot.risk_events));
+  _safe("postmortems", () => renderPostmortems(snapshot.postmortems));
+  _safe("plans", () => renderPlans(snapshot.market_plans));
+  _safe("footer", () => renderFooter(snapshot));
 }
 
 setupScrollSpy();
