@@ -10,3 +10,5 @@ venv/
 *.pyc
 .pytest_cache/
 .alpaca/
+data/ledger-devaccount.db
+data/day_start_equity.json
