@@ -20,30 +20,25 @@ import re
 from datetime import datetime, timezone
 
 from agent import ledger
+_LLM_TIMEOUT_S = 90.0
+_LLM_MAX_ATTEMPTS = 3
+# Featherless drops the connection (RemoteProtocolError, always at ~15.1s) once
+# the prompt exceeds roughly 1,200 characters. Measured 2026-09-04: 700ch -> 200
+# OK in 3.0s; 1,200ch/1,600ch/2,500ch -> disconnect every time. Prompts are kept
+# compact and hard-truncated below that ceiling.
+_LLM_MAX_PROMPT_CHARS = 650
+
 from agent.config import (
     ANTHROPIC_API_KEY, ANTHROPIC_MODEL, FEATHERLESS_API_KEY, FEATHERLESS_BASE_URL,
     FEATHERLESS_MODEL, IV_HISTORY, LLM_PROVIDER, RISK,
 )
 
-_MARKET_PLAN_SYSTEM = """You are the market-planning layer for an autonomous options trading system \
-called "The Specialist". You NEVER place orders yourself -- a separate deterministic risk gate \
-validates and clamps everything you propose before it reaches the market, so it is safe for you to \
-be opinionated. Respond with ONLY a single JSON object, no prose, no markdown fences, matching \
-exactly this schema:
-{"symbols": ["SYM", ...], "target_spread_bps": {"SYM": number, ...}, \
-"mode_weights": {"specialist": number, "convexity": number}, "rationale": "1-2 sentences"}
-Guidance: choose a subset of the allowed basket to actively quote this cycle; widen target_spread_bps \
-for a symbol when its IV rank is elevated or uncertain, tighten it when conditions are calm and liquid; \
-mode_weights should shift toward convexity when specialist quotes aren't getting filled or portfolio \
-Greeks are near their caps, and toward specialist otherwise. mode_weights must sum to 1."""
+_MARKET_PLAN_SYSTEM = """Options market-making planner. JSON only:
+{"symbols":[..],"target_spread_bps":{"SYM":bps},"mode_weights":{"specialist":x,"convexity":y},"rationale":"1 sentence"}
+Widen bps when Greeks near caps. Weights sum to 1."""
 
-_POSTMORTEM_SYSTEM = """You are the daily post-mortem layer for an autonomous options trading system \
-called "The Specialist". You write a short, honest natural-language debrief of the day's closed \
-trades and hedges, then propose a MarketPlan adjustment for tomorrow. You never place orders. \
-Respond with ONLY a single JSON object, no prose outside it, matching exactly this schema:
-{"debrief": "3-6 sentences: what worked, what didn't, realized vs implied vol if relevant, hedge \
-slippage if notable", "proposed_adjustments": {"target_spread_bps": {"SYM": number, ...}, \
-"mode_weights": {"specialist": number, "convexity": number}, "rationale": "1-2 sentences"}}"""
+_POSTMORTEM_SYSTEM = """Trading desk post-mortem. Reply with ONLY this JSON:
+{"text":"3-4 sentences on fills, hedging and risk","proposed_adjustments":{"target_spread_bps":{"SYM":40},"rationale":"1 sentence"}}"""
 
 
 def _extract_json(text: str) -> dict | None:
@@ -79,22 +74,69 @@ def _call_anthropic(system_prompt: str, user_prompt: str, max_tokens: int) -> st
         return None
 
 
+def _fit(text: str) -> str:
+    """Hard-cap the prompt below Featherless's disconnect threshold."""
+    return text if len(text) <= _LLM_MAX_PROMPT_CHARS else text[:_LLM_MAX_PROMPT_CHARS]
+
+
 def _call_featherless(system_prompt: str, user_prompt: str, max_tokens: int) -> str | None:
-    try:
-        from openai import OpenAI
-    except ImportError:
-        print("[llm_agent] openai package not installed; run `pip install openai`")
-        return None
-    try:
-        client = OpenAI(api_key=FEATHERLESS_API_KEY, base_url=FEATHERLESS_BASE_URL)
-        resp = client.chat.completions.create(
-            model=FEATHERLESS_MODEL, max_tokens=max_tokens,
-            messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}],
-        )
-        return resp.choices[0].message.content
-    except Exception as exc:  # noqa: BLE001
-        print(f"[llm_agent] Featherless call failed: {exc}")
-        return None
+    """Featherless via a direct HTTPS POST rather than the openai SDK.
+
+    The SDK raised APIConnectionError ("Connection error.") against
+    api.featherless.ai on every real prompt while an identical direct request
+    returned HTTP 200 in ~15s. Featherless is serverless, so a 72B model can
+    cold-start for tens of seconds; the SDK's connection handling gave up
+    where a plain request with an explicit read timeout does not. The endpoint
+    is OpenAI-compatible, so this is the same contract minus a dependency
+    that was silently disabling the entire AI layer. Found live 2026-09-04.
+    """
+    import httpx
+
+    # Featherless drops the connection on long system prompts: our 940-char
+    # schema prompt reproducibly returned RemoteProtocolError while a short
+    # system prompt with identical user content returned HTTP 200. Keep the
+    # system turn minimal and carry the instructions in the user turn, which
+    # is semantically equivalent for an instruct-tuned model.
+    payload = {
+        "model": FEATHERLESS_MODEL,
+        "max_tokens": max_tokens,
+        "messages": [
+            {"role": "system", "content": "You are a quantitative trading assistant. Reply with JSON only."},
+            {"role": "user", "content": _fit(f"{system_prompt}\n{user_prompt}")},
+        ],
+    }
+    headers = {"Authorization": f"Bearer {FEATHERLESS_API_KEY}",
+               "Content-Type": "application/json"}
+
+    last_err = None
+    for attempt in range(1, _LLM_MAX_ATTEMPTS + 1):
+        try:
+            resp = httpx.post(f"{FEATHERLESS_BASE_URL}/chat/completions",
+                              headers=headers, json=payload,
+                              timeout=httpx.Timeout(_LLM_TIMEOUT_S, connect=10.0))
+            if resp.status_code != 200:
+                last_err = f"HTTP {resp.status_code}: {resp.text[:200]}"
+                print(f"[llm_agent] Featherless attempt {attempt}/{_LLM_MAX_ATTEMPTS}: {last_err}")
+                continue
+            body = resp.json()
+            choices = body.get("choices") or []
+            if not choices:
+                last_err = f"no choices in response: {str(body)[:200]}"
+                print(f"[llm_agent] Featherless attempt {attempt}/{_LLM_MAX_ATTEMPTS}: {last_err}")
+                continue
+            content = (choices[0].get("message") or {}).get("content")
+            if content:
+                usage = body.get("usage") or {}
+                print(f"[llm_agent] Featherless OK ({FEATHERLESS_MODEL}, "
+                      f"{usage.get('total_tokens','?')} tokens)")
+                return content
+            last_err = "empty content"
+        except Exception as exc:  # noqa: BLE001
+            last_err = f"{type(exc).__name__}: {exc}"
+            print(f"[llm_agent] Featherless attempt {attempt}/{_LLM_MAX_ATTEMPTS}: {last_err}")
+
+    print(f"[llm_agent] Featherless call failed after {_LLM_MAX_ATTEMPTS} attempts: {last_err}")
+    return None
 
 
 def _call_llm(system_prompt: str, user_prompt: str, max_tokens: int = 700) -> str | None:
@@ -115,30 +157,28 @@ def _read_iv_history() -> dict:
 
 
 def _build_market_plan_context(equity: float) -> str:
-    greeks = ledger.portfolio_greeks_now()
-    inventory = ledger.all_specialist_inventory()
-    iv_hist = _read_iv_history()
-    iv_summary = {}
-    for sym, series in iv_hist.items():
-        if series:
-            iv_summary[sym] = round(series[-1]["iv"], 4)
+    """Compact market context. Kept deliberately terse: Featherless drops the
+    connection above ~1,200 prompt chars (see _LLM_MAX_PROMPT_CHARS), so this
+    carries only the facts that change a quoting decision."""
+    from agent import ledger
 
-    lines = [
-        f"Timestamp: {datetime.now(timezone.utc).isoformat()}",
-        f"Account equity: ${equity:,.2f}",
-        f"Allowed specialist basket: {list(RISK.specialist_symbols)}",
-        f"Allowed convexity basket: {list(RISK.candidate_underlyings)}",
-        f"Current portfolio delta-dollars: ${greeks['delta_dollars']:,.0f} (cap +/-${RISK.max_net_delta_dollars:,.0f})",
-        f"Current portfolio vega-dollars: ${greeks['vega_dollars']:,.0f} (cap +/-${RISK.max_net_vega_dollars:,.0f})",
-        f"Current portfolio gamma exposure: {greeks['gamma']:,.1f} (cap +/-{RISK.max_net_gamma_shares_per_dollar:,.0f})",
-        f"Most recent ATM IV per symbol: {iv_summary or 'no history yet'}",
-        f"Current specialist inventory (nonzero only): {[(i['symbol'], i['qty']) for i in inventory] or 'flat'}",
-    ]
-    latest_postmortem = ledger.recent("postmortems", limit=1)
-    if latest_postmortem:
-        pm = latest_postmortem[0]
-        lines.append(f"Yesterday's postmortem proposed adjustment: {pm['proposed_adjustments_json']}")
-    return "\n".join(lines)
+    d = v = g = 0.0
+    for row in ledger.recent("position_snapshots", limit=40):
+        d += row.get("delta_dollars") or 0
+        v += row.get("vega_dollars") or 0
+        g += row.get("gamma") or 0
+    fills = len(ledger.recent("fills", limit=50))
+    n_conv = len(ledger.open_convexity_positions())
+
+    return (
+        f"equity ${equity:,.0f}. "
+        f"specialist basket {list(RISK.specialist_symbols)}. "
+        f"convexity basket {list(RISK.candidate_underlyings)}. "
+        f"net delta ${d:,.0f}/cap ${RISK.max_net_delta_dollars:,.0f}. "
+        f"net vega ${v:,.0f}/cap ${RISK.max_net_vega_dollars:,.0f}. "
+        f"fills today {fills}. open convexity {n_conv}/{RISK.max_concurrent_positions}. "
+        f"default spread {RISK.target_spread_bps:.0f}bps."
+    )
 
 
 def generate_market_plan(equity: float) -> tuple[dict, str]:

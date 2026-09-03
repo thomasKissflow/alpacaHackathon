@@ -29,9 +29,14 @@ FEATHERLESS_API_KEY = os.environ.get("FEATHERLESS_API_KEY", "")
 FEATHERLESS_BASE_URL = os.environ.get("FEATHERLESS_BASE_URL", "https://api.featherless.ai/v1")
 FEATHERLESS_MODEL = os.environ.get("FEATHERLESS_MODEL", "Qwen/Qwen2.5-72B-Instruct")
 
-LLM_PROVIDER = os.environ.get(
-    "LLM_PROVIDER",
-    "anthropic" if ANTHROPIC_API_KEY else ("featherless" if FEATHERLESS_API_KEY else "none"),
+# NOTE: os.environ.get(key, default) returns "" when the key EXISTS but is
+# empty -- the default is only used when the key is ABSENT. .env.example ships
+# with a bare `LLM_PROVIDER=` line, so every .env copied from it set the
+# provider to "" and silently disabled the entire LLM layer: every MarketPlan
+# logged source='fallback' and every postmortem read "[LLM call failed]".
+# Found live 2026-09-04. Treat empty/whitespace as unset.
+LLM_PROVIDER = (os.environ.get("LLM_PROVIDER") or "").strip() or (
+    "anthropic" if ANTHROPIC_API_KEY else ("featherless" if FEATHERLESS_API_KEY else "none")
 )
 
 RISK_FREE_RATE = float(os.environ.get("RISK_FREE_RATE", "0.045"))
