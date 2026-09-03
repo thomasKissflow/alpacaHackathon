@@ -347,6 +347,7 @@ def run_specialist_cycle(approved_plan: dict, halt_new_entries: bool = False) ->
             print(f"[specialist] {symbol}: no underlying quote, skipping")
             continue
         underlying_prices[symbol] = underlying_price
+        ledger.record_underlying_mark(symbol, underlying_price)
 
         eq = ledger.get_equity_inventory(symbol)
         ledger.log_position_snapshot("specialist", symbol, symbol, eq["qty"],

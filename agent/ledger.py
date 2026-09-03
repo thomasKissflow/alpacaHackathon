@@ -123,6 +123,13 @@ CREATE TABLE IF NOT EXISTS specialist_inventory (
     updated_ts TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS underlying_marks (
+    symbol TEXT PRIMARY KEY,
+    price REAL NOT NULL,
+    prev_close REAL,
+    updated_ts TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS equity_inventory (
     underlying TEXT PRIMARY KEY,
     qty INTEGER NOT NULL DEFAULT 0,
@@ -339,6 +346,32 @@ def upsert_specialist_inventory(symbol: str, underlying: str, new_qty: int, new_
 def all_specialist_inventory() -> list[dict]:
     with get_conn() as conn:
         return [dict(r) for r in conn.execute("SELECT * FROM specialist_inventory WHERE qty != 0")]
+
+
+def record_underlying_mark(symbol: str, price: float) -> None:
+    """Latest observed underlying price, for the dashboard's ticker strip.
+    prev_close is a same-day-open proxy (first price seen each UTC day) --
+    cheap and good enough for a day-change indicator; not a real prior
+    session close, which would need a separate API call this project
+    doesn't otherwise need."""
+    today = _now()[:10]
+    with get_conn() as conn:
+        row = conn.execute("SELECT * FROM underlying_marks WHERE symbol=?", (symbol,)).fetchone()
+        if row is None or row["updated_ts"][:10] != today:
+            prev_close = price
+        else:
+            prev_close = row["prev_close"]
+        conn.execute(
+            """INSERT INTO underlying_marks (symbol, price, prev_close, updated_ts) VALUES (?,?,?,?)
+               ON CONFLICT(symbol) DO UPDATE SET price=excluded.price, prev_close=excluded.prev_close,
+                   updated_ts=excluded.updated_ts""",
+            (symbol, price, prev_close, _now()),
+        )
+
+
+def all_underlying_marks() -> list[dict]:
+    with get_conn() as conn:
+        return [dict(r) for r in conn.execute("SELECT * FROM underlying_marks ORDER BY symbol")]
 
 
 def get_equity_inventory(underlying: str) -> dict:
