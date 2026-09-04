@@ -1,13 +1,14 @@
 {
-  "generated_at": "2026-09-03T19:59:38.744756+00:00",
+  "generated_at": "2026-09-04T12:48:48.222533+00:00",
   "risk_config": {
-    "max_net_delta_dollars": 25000.0,
+    "max_net_delta_dollars": 60000.0,
     "max_net_vega_dollars": 3000.0,
     "max_net_gamma_shares_per_dollar": 400.0,
     "max_notional_pct_per_underlying": 0.05,
     "daily_loss_circuit_breaker_pct": 0.02,
     "max_risk_per_trade_pct": 0.02
   },
+  "tickers": [],
   "account_history": [
     {
       "id": 1,
@@ -850,6 +851,348 @@
       "day_pnl": -485.24000000000524
     }
   ],
+  "equity_candles": [
+    {
+      "t": "2026-09-03T18:27:00+00:00",
+      "o": 100000.0,
+      "h": 100000.0,
+      "l": 99989.9,
+      "c": 99989.9
+    },
+    {
+      "t": "2026-09-03T18:30:00+00:00",
+      "o": 99980.82,
+      "h": 99980.82,
+      "l": 99972.76,
+      "c": 99972.76
+    },
+    {
+      "t": "2026-09-03T18:33:00+00:00",
+      "o": 99986.66,
+      "h": 99986.66,
+      "l": 99971.6,
+      "c": 99971.6
+    },
+    {
+      "t": "2026-09-03T18:36:00+00:00",
+      "o": 99972.16,
+      "h": 99982.07,
+      "l": 99961.07,
+      "c": 99961.07
+    },
+    {
+      "t": "2026-09-03T18:39:00+00:00",
+      "o": 99935.59,
+      "h": 99939.29,
+      "l": 99914.98,
+      "c": 99914.98
+    },
+    {
+      "t": "2026-09-03T18:42:00+00:00",
+      "o": 99916.2,
+      "h": 99916.2,
+      "l": 99881.91,
+      "c": 99881.91
+    },
+    {
+      "t": "2026-09-03T18:45:00+00:00",
+      "o": 99875.21,
+      "h": 99875.21,
+      "l": 99852.95,
+      "c": 99852.95
+    },
+    {
+      "t": "2026-09-03T18:48:00+00:00",
+      "o": 99854.83,
+      "h": 99867.91,
+      "l": 99842.0,
+      "c": 99845.18
+    },
+    {
+      "t": "2026-09-03T18:51:00+00:00",
+      "o": 99846.26,
+      "h": 99856.87,
+      "l": 99838.32,
+      "c": 99856.87
+    },
+    {
+      "t": "2026-09-03T18:54:00+00:00",
+      "o": 99852.91,
+      "h": 99852.91,
+      "l": 99852.05,
+      "c": 99852.05
+    },
+    {
+      "t": "2026-09-03T18:57:00+00:00",
+      "o": 99849.4,
+      "h": 99849.4,
+      "l": 99839.23,
+      "c": 99839.58
+    },
+    {
+      "t": "2026-09-03T19:00:00+00:00",
+      "o": 99834.54,
+      "h": 99840.93,
+      "l": 99833.56,
+      "c": 99840.93
+    },
+    {
+      "t": "2026-09-03T19:03:00+00:00",
+      "o": 99838.15,
+      "h": 99840.68,
+      "l": 99838.15,
+      "c": 99840.68
+    },
+    {
+      "t": "2026-09-03T19:06:00+00:00",
+      "o": 99846.61,
+      "h": 99846.61,
+      "l": 99814.76,
+      "c": 99814.76
+    },
+    {
+      "t": "2026-09-03T19:09:00+00:00",
+      "o": 99811.3,
+      "h": 99824.94,
+      "l": 99811.3,
+      "c": 99824.94
+    },
+    {
+      "t": "2026-09-03T19:12:00+00:00",
+      "o": 99792.31,
+      "h": 99808.37,
+      "l": 99792.31,
+      "c": 99808.37
+    },
+    {
+      "t": "2026-09-03T19:15:00+00:00",
+      "o": 99783.46,
+      "h": 99792.71,
+      "l": 99783.46,
+      "c": 99788.77
+    },
+    {
+      "t": "2026-09-03T19:18:00+00:00",
+      "o": 99785.28,
+      "h": 99785.28,
+      "l": 99744.08,
+      "c": 99744.08
+    },
+    {
+      "t": "2026-09-03T19:21:00+00:00",
+      "o": 99743.26,
+      "h": 99743.26,
+      "l": 99737.0,
+      "c": 99737.0
+    },
+    {
+      "t": "2026-09-03T19:24:00+00:00",
+      "o": 99729.47,
+      "h": 99729.47,
+      "l": 99724.51,
+      "c": 99724.51
+    },
+    {
+      "t": "2026-09-03T19:27:00+00:00",
+      "o": 99672.28,
+      "h": 99677.97,
+      "l": 99672.28,
+      "c": 99677.97
+    },
+    {
+      "t": "2026-09-03T19:30:00+00:00",
+      "o": 99688.06,
+      "h": 99694.27,
+      "l": 99688.06,
+      "c": 99694.27
+    },
+    {
+      "t": "2026-09-03T19:33:00+00:00",
+      "o": 99692.39,
+      "h": 99692.39,
+      "l": 99691.82,
+      "c": 99691.82
+    },
+    {
+      "t": "2026-09-03T19:36:00+00:00",
+      "o": 99690.12,
+      "h": 99699.44,
+      "l": 99690.12,
+      "c": 99691.73
+    },
+    {
+      "t": "2026-09-03T19:39:00+00:00",
+      "o": 99692.73,
+      "h": 99692.73,
+      "l": 99681.6,
+      "c": 99689.73
+    },
+    {
+      "t": "2026-09-03T19:42:00+00:00",
+      "o": 99677.67,
+      "h": 99686.6,
+      "l": 99677.67,
+      "c": 99686.6
+    },
+    {
+      "t": "2026-09-03T19:45:00+00:00",
+      "o": 99697.0,
+      "h": 99701.55,
+      "l": 99681.92,
+      "c": 99701.55
+    },
+    {
+      "t": "2026-09-03T19:48:00+00:00",
+      "o": 99669.12,
+      "h": 99669.12,
+      "l": 99635.49,
+      "c": 99635.49
+    },
+    {
+      "t": "2026-09-03T19:51:00+00:00",
+      "o": 99627.67,
+      "h": 99634.3,
+      "l": 99627.67,
+      "c": 99634.3
+    },
+    {
+      "t": "2026-09-03T19:54:00+00:00",
+      "o": 99638.38,
+      "h": 99638.38,
+      "l": 99497.46,
+      "c": 99497.46
+    },
+    {
+      "t": "2026-09-03T19:57:00+00:00",
+      "o": 99513.13,
+      "h": 99518.16,
+      "l": 99513.13,
+      "c": 99514.76
+    }
+  ],
+  "activity_volume": [
+    {
+      "t": "2026-09-03T18:30:00+00:00",
+      "v": 4
+    },
+    {
+      "t": "2026-09-03T18:33:00+00:00",
+      "v": 4
+    },
+    {
+      "t": "2026-09-03T18:36:00+00:00",
+      "v": 4
+    },
+    {
+      "t": "2026-09-03T18:39:00+00:00",
+      "v": 10
+    },
+    {
+      "t": "2026-09-03T18:42:00+00:00",
+      "v": 7
+    },
+    {
+      "t": "2026-09-03T18:45:00+00:00",
+      "v": 5
+    },
+    {
+      "t": "2026-09-03T18:48:00+00:00",
+      "v": 8
+    },
+    {
+      "t": "2026-09-03T18:51:00+00:00",
+      "v": 6
+    },
+    {
+      "t": "2026-09-03T18:54:00+00:00",
+      "v": 3
+    },
+    {
+      "t": "2026-09-03T18:57:00+00:00",
+      "v": 7
+    },
+    {
+      "t": "2026-09-03T19:00:00+00:00",
+      "v": 3
+    },
+    {
+      "t": "2026-09-03T19:03:00+00:00",
+      "v": 2
+    },
+    {
+      "t": "2026-09-03T19:06:00+00:00",
+      "v": 6
+    },
+    {
+      "t": "2026-09-03T19:09:00+00:00",
+      "v": 7
+    },
+    {
+      "t": "2026-09-03T19:12:00+00:00",
+      "v": 6
+    },
+    {
+      "t": "2026-09-03T19:15:00+00:00",
+      "v": 6
+    },
+    {
+      "t": "2026-09-03T19:18:00+00:00",
+      "v": 7
+    },
+    {
+      "t": "2026-09-03T19:21:00+00:00",
+      "v": 4
+    },
+    {
+      "t": "2026-09-03T19:24:00+00:00",
+      "v": 4
+    },
+    {
+      "t": "2026-09-03T19:27:00+00:00",
+      "v": 5
+    },
+    {
+      "t": "2026-09-03T19:30:00+00:00",
+      "v": 7
+    },
+    {
+      "t": "2026-09-03T19:33:00+00:00",
+      "v": 3
+    },
+    {
+      "t": "2026-09-03T19:36:00+00:00",
+      "v": 3
+    },
+    {
+      "t": "2026-09-03T19:39:00+00:00",
+      "v": 5
+    },
+    {
+      "t": "2026-09-03T19:42:00+00:00",
+      "v": 8
+    },
+    {
+      "t": "2026-09-03T19:45:00+00:00",
+      "v": 6
+    },
+    {
+      "t": "2026-09-03T19:48:00+00:00",
+      "v": 8
+    },
+    {
+      "t": "2026-09-03T19:51:00+00:00",
+      "v": 6
+    },
+    {
+      "t": "2026-09-03T19:54:00+00:00",
+      "v": 6
+    },
+    {
+      "t": "2026-09-03T19:57:00+00:00",
+      "v": 8
+    }
+  ],
+  "candle_bucket_minutes": 3,
   "inventory": [
     {
       "id": 808,
@@ -928,6 +1271,53 @@
       "vega_dollars": 0.0,
       "theta_dollars": 0.0,
       "notional": 1142.05
+    }
+  ],
+  "working_orders": [
+    {
+      "id": 250,
+      "ts": "2026-09-03T19:59:35.184654+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260916P00375000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 11.43,
+      "status": "new",
+      "alpaca_order_id": "fbecc97f-f9c9-4d22-8611-aae84dd936fd",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 249,
+      "ts": "2026-09-03T19:59:34.414210+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.78,
+      "status": "new",
+      "alpaca_order_id": "9814b392-ae46-440b-8904-e04460ea2463",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 248,
+      "ts": "2026-09-03T19:59:33.631607+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260911P00327500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.57,
+      "status": "new",
+      "alpaca_order_id": "c178bd19-8653-4be4-b74f-d160973fbae1",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
     }
   ],
   "quote_feed": [
@@ -2427,6 +2817,756 @@
       "limit_price": 5.04,
       "status": "cancelled",
       "alpaca_order_id": "906151e1-f0a2-4369-9756-3838c7909a71",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 150,
+      "ts": "2026-09-03T19:22:03.209990+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260918P00327500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 6.54,
+      "status": "cancelled",
+      "alpaca_order_id": "cf2ddde8-b4a2-430e-9ede-e8eded0b0b4f",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 149,
+      "ts": "2026-09-03T19:20:54.381666+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260916P00380000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 12.21,
+      "status": "cancelled",
+      "alpaca_order_id": "292848c2-e41f-415d-a02a-32547eadd955",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 148,
+      "ts": "2026-09-03T19:20:53.603942+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.93,
+      "status": "cancelled",
+      "alpaca_order_id": "78890cb6-a7a9-48d1-a01e-560b5cde1e52",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 147,
+      "ts": "2026-09-03T19:20:52.838619+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260916P00325000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.8,
+      "status": "cancelled",
+      "alpaca_order_id": "b82b0b29-72ab-4512-b979-4ef8d80a8cb0",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 146,
+      "ts": "2026-09-03T19:19:47.103625+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260916P00380000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 12.23,
+      "status": "cancelled",
+      "alpaca_order_id": "e22ec14b-c795-410f-bb3f-8b7a7737b1d0",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 145,
+      "ts": "2026-09-03T19:19:46.389792+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.91,
+      "status": "cancelled",
+      "alpaca_order_id": "40b0ea6f-7ab3-4471-b853-55d5a68286aa",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 144,
+      "ts": "2026-09-03T19:19:45.637261+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL261002P00325000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 7.27,
+      "status": "cancelled",
+      "alpaca_order_id": "6a6398cc-9590-4d37-a353-1f201d73b72f",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 143,
+      "ts": "2026-09-03T19:18:41.830679+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260914P00380000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 11.02,
+      "status": "cancelled",
+      "alpaca_order_id": "264a8539-4fc1-4d63-b426-f395d8943c09",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 142,
+      "ts": "2026-09-03T19:18:41.103667+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.21,
+      "status": "cancelled",
+      "alpaca_order_id": "88c2af15-6f95-4efc-ac18-39731df42e45",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 141,
+      "ts": "2026-09-03T19:18:40.376524+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260918P00327500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 6.54,
+      "status": "cancelled",
+      "alpaca_order_id": "9a374bde-f84b-494d-a167-0ea495c2544c",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 140,
+      "ts": "2026-09-03T19:17:29.186804+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260911P00380000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 10.21,
+      "status": "cancelled",
+      "alpaca_order_id": "fcbc9c2d-a07a-4796-a227-8f72eca18f16",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 139,
+      "ts": "2026-09-03T19:17:28.455826+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.36,
+      "status": "cancelled",
+      "alpaca_order_id": "dbda6471-cc34-4105-b85e-845f169fc03e",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 138,
+      "ts": "2026-09-03T19:17:27.736524+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260918P00327500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 6.46,
+      "status": "cancelled",
+      "alpaca_order_id": "e537ab2d-4d03-4e56-992b-732f67684b53",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 137,
+      "ts": "2026-09-03T19:16:23.976729+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260916P00380000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 12.23,
+      "status": "cancelled",
+      "alpaca_order_id": "aea224ab-e052-4342-91cf-264e722833fe",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 136,
+      "ts": "2026-09-03T19:16:23.221353+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.98,
+      "status": "cancelled",
+      "alpaca_order_id": "3bd112db-5016-4434-a401-2dd72b729ce9",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 135,
+      "ts": "2026-09-03T19:16:22.491604+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260911P00325000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.91,
+      "status": "cancelled",
+      "alpaca_order_id": "7018f1cf-8bae-4974-81d4-30609926115d",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 134,
+      "ts": "2026-09-03T19:15:11.532734+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260916P00380000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 12.16,
+      "status": "cancelled",
+      "alpaca_order_id": "6616e55c-2fc8-4be9-85ca-33b46eb1fe72",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 133,
+      "ts": "2026-09-03T19:15:10.740208+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.37,
+      "status": "cancelled",
+      "alpaca_order_id": "a58e2109-b2f4-4646-bf4a-50979d3ae410",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 132,
+      "ts": "2026-09-03T19:15:10.024571+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260916P00325000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.88,
+      "status": "cancelled",
+      "alpaca_order_id": "5ac90909-a11e-4a0d-a6fa-f81e2f6fa15a",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 131,
+      "ts": "2026-09-03T19:14:00.069475+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260916P00380000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 12.37,
+      "status": "cancelled",
+      "alpaca_order_id": "81c3271f-671e-468c-8d03-cc9cbb8531dd",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 130,
+      "ts": "2026-09-03T19:13:59.324336+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.34,
+      "status": "cancelled",
+      "alpaca_order_id": "db49072a-d2ab-4195-80e9-5bbc1e211164",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 129,
+      "ts": "2026-09-03T19:13:58.572416+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260911P00327500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.98,
+      "status": "cancelled",
+      "alpaca_order_id": "940fc7bb-ecb3-4105-8429-1704d72d031e",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 128,
+      "ts": "2026-09-03T19:12:49.235803+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260914P00380000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 10.88,
+      "status": "cancelled",
+      "alpaca_order_id": "732a3f6d-cc98-4033-93e2-367cf49fd3c8",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 127,
+      "ts": "2026-09-03T19:12:48.526340+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.34,
+      "status": "cancelled",
+      "alpaca_order_id": "dfc57e42-ed14-4f9f-b37d-16bb8ca5f4fe",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 126,
+      "ts": "2026-09-03T19:12:47.793860+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260918P00327500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 6.53,
+      "status": "cancelled",
+      "alpaca_order_id": "5c640c70-7e20-42f6-9ff8-54a47888e8f8",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 125,
+      "ts": "2026-09-03T19:11:36.229518+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260914P00380000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 11.16,
+      "status": "cancelled",
+      "alpaca_order_id": "d3e9add7-cae8-4f5a-892b-1fb56b004c94",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 124,
+      "ts": "2026-09-03T19:11:35.401376+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.25,
+      "status": "cancelled",
+      "alpaca_order_id": "34cdff0a-7e1b-4a28-b6aa-6048bb4194a0",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 123,
+      "ts": "2026-09-03T19:11:34.682091+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260916P00325000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.81,
+      "status": "cancelled",
+      "alpaca_order_id": "430d4e9c-3f81-4ed0-b362-0b9c4664791e",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 122,
+      "ts": "2026-09-03T19:10:27.916689+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260916P00380000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 12.39,
+      "status": "cancelled",
+      "alpaca_order_id": "3c44ca81-1457-4e84-9529-6001a5b97c2a",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 121,
+      "ts": "2026-09-03T19:10:27.088758+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 5.11,
+      "status": "cancelled",
+      "alpaca_order_id": "3038aa7b-e80d-45b3-85f4-62b8990ed5c8",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 120,
+      "ts": "2026-09-03T19:10:26.369077+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260911P00327500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.97,
+      "status": "cancelled",
+      "alpaca_order_id": "35ce3c2e-1f8f-4e3e-9142-61db6fceaae8",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 119,
+      "ts": "2026-09-03T19:09:22.029478+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260916P00380000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 12.49,
+      "status": "cancelled",
+      "alpaca_order_id": "16ac8297-fc7e-43b4-be2d-23bf4b513a96",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 118,
+      "ts": "2026-09-03T19:09:21.308347+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.4,
+      "status": "cancelled",
+      "alpaca_order_id": "f756f2fa-e8c8-40aa-bf7e-69b9364f382c",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 117,
+      "ts": "2026-09-03T19:09:20.600932+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260911P00327500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.89,
+      "status": "cancelled",
+      "alpaca_order_id": "efb04f76-8cb6-4c81-87c2-19ea84b64171",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 116,
+      "ts": "2026-09-03T19:08:16.789143+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260911P00380000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 10.12,
+      "status": "cancelled",
+      "alpaca_order_id": "e3db8036-4bb0-4714-a8ca-f21ab148b036",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 115,
+      "ts": "2026-09-03T19:08:16.074955+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 5.05,
+      "status": "cancelled",
+      "alpaca_order_id": "a3b42cf9-c7ea-44dc-907a-65bf6a50bbd2",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 114,
+      "ts": "2026-09-03T19:08:15.281707+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260918P00327500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 6.47,
+      "status": "cancelled",
+      "alpaca_order_id": "dba8bebb-c291-4d07-bb5d-2491631704c9",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 113,
+      "ts": "2026-09-03T19:07:11.337599+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260916P00380000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 12.38,
+      "status": "cancelled",
+      "alpaca_order_id": "97f5b0b8-05d5-4ed1-9855-302ea0d467fe",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 112,
+      "ts": "2026-09-03T19:07:10.603695+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.41,
+      "status": "cancelled",
+      "alpaca_order_id": "cd74ac1c-b5c2-4fb0-95d9-62796ff2464a",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 111,
+      "ts": "2026-09-03T19:07:09.854088+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260914P00325000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.38,
+      "status": "cancelled",
+      "alpaca_order_id": "10aff807-9502-41d0-a247-15b26cbd1ca7",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 110,
+      "ts": "2026-09-03T19:06:06.153729+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260914P00380000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 10.97,
+      "status": "rejected",
+      "alpaca_order_id": null,
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 109,
+      "ts": "2026-09-03T19:06:05.370810+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 4.98,
+      "status": "cancelled",
+      "alpaca_order_id": "a2ec85dc-526f-47d5-9fdc-81a851cc1134",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 108,
+      "ts": "2026-09-03T19:06:04.547578+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL261002P00325000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 7.57,
+      "status": "cancelled",
+      "alpaca_order_id": "8147ac75-8d2a-4e04-a36a-8f8bc9d76de6",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 107,
+      "ts": "2026-09-03T19:04:59.803319+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260911P00380000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 9.99,
+      "status": "rejected",
+      "alpaca_order_id": null,
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 106,
+      "ts": "2026-09-03T19:04:59.059396+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260918P00227500",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 5.0,
+      "status": "cancelled",
+      "alpaca_order_id": "6237a794-8e41-4f5e-84e5-61e1252c288f",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 105,
+      "ts": "2026-09-03T19:04:58.338646+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260925P00325000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 6.5,
+      "status": "cancelled",
+      "alpaca_order_id": "699707fc-31d3-425f-9a7f-7867831bc6fe",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 104,
+      "ts": "2026-09-03T19:03:55.174188+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260911P00380000",
+      "side": "sell",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 10.23,
+      "status": "cancelled",
+      "alpaca_order_id": "75927beb-fce2-4392-9c5d-dc16eb1e1314",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 103,
+      "ts": "2026-09-03T19:03:54.364852+00:00",
+      "mode": "specialist",
+      "symbol": "NVDA260911P00227500",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 3.35,
+      "status": "cancelled",
+      "alpaca_order_id": "f8016912-bf3e-4340-8841-699c709f44b0",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 102,
+      "ts": "2026-09-03T19:03:53.634121+00:00",
+      "mode": "specialist",
+      "symbol": "AAPL260918P00325000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 5.42,
+      "status": "cancelled",
+      "alpaca_order_id": "53fcd2d7-c0a9-4ba8-9a38-82df33abe17c",
+      "replaces_order_id": null,
+      "legs_json": null,
+      "note": null
+    },
+    {
+      "id": 101,
+      "ts": "2026-09-03T19:02:48.905366+00:00",
+      "mode": "specialist",
+      "symbol": "TSLA260911P00380000",
+      "side": "buy",
+      "qty": 1,
+      "order_type": "limit",
+      "limit_price": 9.96,
+      "status": "cancelled",
+      "alpaca_order_id": "e7139cfb-1384-494c-b7b2-bc2851591f0d",
       "replaces_order_id": null,
       "legs_json": null,
       "note": null
@@ -5089,6 +6229,14 @@
   ],
   "market_plans": [
     {
+      "id": 4,
+      "ts": "2026-09-04T12:48:48.184317+00:00",
+      "source": "llm",
+      "proposed_json": "{\"symbols\": [\"SPY\", \"QQQ\", \"AAPL\", \"NVDA\", \"TSLA\", \"GLD\", \"IWM\"], \"target_spread_bps\": {\"SPY\": 42, \"QQQ\": 42, \"AAPL\": 45, \"NVDA\": 45, \"TSLA\": 45, \"GLD\": 42, \"IWM\": 40}, \"mode_weights\": {\"specialist\": 0.7, \"convexity\": 0.3}, \"rationale\": \"Increased specialist weight due to high fills and open convexity, with widened spreads on higher delta and vega exposure symbols.\"}",
+      "approved_json": "{\"symbols\": [\"SPY\", \"QQQ\", \"AAPL\", \"NVDA\", \"TSLA\", \"GLD\", \"IWM\"], \"target_spread_bps\": {\"SPY\": 42.0, \"QQQ\": 42.0, \"AAPL\": 45.0, \"NVDA\": 45.0, \"TSLA\": 45.0, \"GLD\": 42.0, \"IWM\": 40.0}, \"mode_weights\": {\"specialist\": 0.7, \"convexity\": 0.3}, \"rationale\": \"Increased specialist weight due to high fills and open convexity, with widened spreads on higher delta and vega exposure symbols.\"}",
+      "was_clamped": 0
+    },
+    {
       "id": 3,
       "ts": "2026-09-03T19:59:15.014776+00:00",
       "source": "fallback",
@@ -5113,6 +6261,64 @@
       "was_clamped": 1
     }
   ],
+  "latest_plan": {
+    "id": 4,
+    "ts": "2026-09-04T12:48:48.184317+00:00",
+    "source": "llm",
+    "proposed_json": "{\"symbols\": [\"SPY\", \"QQQ\", \"AAPL\", \"NVDA\", \"TSLA\", \"GLD\", \"IWM\"], \"target_spread_bps\": {\"SPY\": 42, \"QQQ\": 42, \"AAPL\": 45, \"NVDA\": 45, \"TSLA\": 45, \"GLD\": 42, \"IWM\": 40}, \"mode_weights\": {\"specialist\": 0.7, \"convexity\": 0.3}, \"rationale\": \"Increased specialist weight due to high fills and open convexity, with widened spreads on higher delta and vega exposure symbols.\"}",
+    "approved_json": "{\"symbols\": [\"SPY\", \"QQQ\", \"AAPL\", \"NVDA\", \"TSLA\", \"GLD\", \"IWM\"], \"target_spread_bps\": {\"SPY\": 42.0, \"QQQ\": 42.0, \"AAPL\": 45.0, \"NVDA\": 45.0, \"TSLA\": 45.0, \"GLD\": 42.0, \"IWM\": 40.0}, \"mode_weights\": {\"specialist\": 0.7, \"convexity\": 0.3}, \"rationale\": \"Increased specialist weight due to high fills and open convexity, with widened spreads on higher delta and vega exposure symbols.\"}",
+    "was_clamped": 0,
+    "approved": {
+      "symbols": [
+        "SPY",
+        "QQQ",
+        "AAPL",
+        "NVDA",
+        "TSLA",
+        "GLD",
+        "IWM"
+      ],
+      "target_spread_bps": {
+        "SPY": 42.0,
+        "QQQ": 42.0,
+        "AAPL": 45.0,
+        "NVDA": 45.0,
+        "TSLA": 45.0,
+        "GLD": 42.0,
+        "IWM": 40.0
+      },
+      "mode_weights": {
+        "specialist": 0.7,
+        "convexity": 0.3
+      },
+      "rationale": "Increased specialist weight due to high fills and open convexity, with widened spreads on higher delta and vega exposure symbols."
+    },
+    "proposed": {
+      "symbols": [
+        "SPY",
+        "QQQ",
+        "AAPL",
+        "NVDA",
+        "TSLA",
+        "GLD",
+        "IWM"
+      ],
+      "target_spread_bps": {
+        "SPY": 42,
+        "QQQ": 42,
+        "AAPL": 45,
+        "NVDA": 45,
+        "TSLA": 45,
+        "GLD": 42,
+        "IWM": 40
+      },
+      "mode_weights": {
+        "specialist": 0.7,
+        "convexity": 0.3
+      },
+      "rationale": "Increased specialist weight due to high fills and open convexity, with widened spreads on higher delta and vega exposure symbols."
+    }
+  },
   "convexity_open": [
     {
       "id": 1,
@@ -5213,5 +6419,6 @@
       ]
     }
   ],
-  "convexity_closed": []
+  "convexity_closed": [],
+  "kill_switch_engaged": false
 }
