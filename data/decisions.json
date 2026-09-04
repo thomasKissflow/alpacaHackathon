@@ -4170,5 +4170,37 @@
     "mode": "convexity",
     "symbol": "SPY",
     "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-04T14:52:43.459435+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "9ac8df93-fed1-4ccd-b130-f3edf56c510f",
+    "unrealized_pnl": 0.16000000000000014
+  },
+  {
+    "timestamp": "2026-09-04T14:52:43.467000+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.28000000000000014
+  },
+  {
+    "timestamp": "2026-09-04T14:52:43.472267+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
+    "unrealized_pnl": 0.40000000000000024
+  },
+  {
+    "timestamp": "2026-09-04T14:52:43.475478+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "5a61d8bb-3b1e-44f2-8dd4-97d19a35b116",
+    "unrealized_pnl": -0.1150000000000001
   }
 ]
