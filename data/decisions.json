@@ -4043,5 +4043,37 @@
     "action": "entered",
     "rationale": "GLD: IV rank 50, trend=bullish -> bull_put_spread, credit~$0.59, max_loss~$440.50, exp 2026-09-11",
     "strategy_id": "5a61d8bb-3b1e-44f2-8dd4-97d19a35b116"
+  },
+  {
+    "timestamp": "2026-09-04T14:07:33.572359+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "9ac8df93-fed1-4ccd-b130-f3edf56c510f",
+    "unrealized_pnl": 0.2300000000000001
+  },
+  {
+    "timestamp": "2026-09-04T14:07:33.581007+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.07000000000000017
+  },
+  {
+    "timestamp": "2026-09-04T14:07:33.585488+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
+    "unrealized_pnl": 0.2100000000000002
+  },
+  {
+    "timestamp": "2026-09-04T14:07:33.589021+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "5a61d8bb-3b1e-44f2-8dd4-97d19a35b116",
+    "unrealized_pnl": -0.10499999999999998
   }
 ]
