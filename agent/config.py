@@ -53,7 +53,10 @@ class RiskConfig:
     # uncorrelated with the equity indices, so it diversifies the book rather
     # than concentrating it -- and IAU's small contract size (~$3.8k of delta
     # per ATM put vs SPY's ~$34.8k) fits comfortably inside the Greeks caps.
-    specialist_symbols: tuple = ("SPY", "QQQ", "AAPL", "NVDA", "TSLA", "GLD", "IAU")
+    # IAU was dropped 2026-09-04: its market measured 11.5% wide (bid 1.89 /
+    # ask 2.12), so a 40bps quote sits far inside the real spread and gets
+    # picked off. GLD (3.6% wide) carries the gold exposure instead.
+    specialist_symbols: tuple = ("SPY", "QQQ", "AAPL", "NVDA", "TSLA", "GLD")
     target_spread_bps: float = 40.0            # target quoted width, in bps of theoretical mid
     min_quote_size: int = 1                    # contracts per side
     max_quote_size: int = 3                    # contracts per side
@@ -65,7 +68,7 @@ class RiskConfig:
     # the closing side at whatever the mid has drifted to turns every round
     # trip into a loss. Live evidence 2026-09-03: 33 round trips captured
     # -$85 gross because the agent quoted sells below its own cost basis.
-    min_close_edge_bps: float = 25.0
+    min_close_edge_bps: float = 10.0
     requote_underlying_move_bps: float = 15.0  # replace quotes if underlying moved this much since last quote
 
     # notional / concentration

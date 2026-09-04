@@ -6,7 +6,10 @@
 
 ---
 
-> 📌 **New overnight (4 Sep):** read [MORNING-BRIEF.md](MORNING-BRIEF.md) first — it covers a
+> 📌 **New overnight (4 Sep):** read [MORNING-BRIEF.md](MORNING-BRIEF.md) first, then
+> [video-script.md](video-script.md) if you are recording. Config is now: specialist basket
+> SPY/QQQ/AAPL/NVDA/TSLA/**GLD** (IAU dropped — 11.5% wide market), convexity
+> SPY/QQQ/IWM/GLD, delta cap **$60k**, `min_close_edge_bps` **10** (D-015/016/017) — it covers a
 > major economics bug found and fixed in Specialist Mode (D-016), plus the finished write-ups
 > and slide content.
 

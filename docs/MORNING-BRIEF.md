@@ -31,7 +31,7 @@ A market maker that loses on its round trips is being picked off, not making a m
 
 **Verified by replaying the real tape through it:** 5 of 13 loss-making fills prevented; the completed round trip realises +$5 instead of a loss.
 
-**Tradeoff you should know about:** fewer fills. Losing money on all of them was worse. Watch this during the final session — if fill count collapses to near zero, drop `min_close_edge_bps` from 25 to 10 in `agent/config.py`.
+**Tradeoff you should know about:** fewer fills. Losing money on all of them was worse. **Set to 10bps (D-017)** so closes happen more readily while still guaranteeing positive edge. If fills still look sparse mid-session, the knob is `min_close_edge_bps` in `agent/config.py`.
 
 ---
 
@@ -54,7 +54,7 @@ A market maker that loses on its round trips is being picked off, not making a m
 ## ⚠️ Known weaknesses (do not be surprised by these)
 
 1. **P&L is negative** — Thursday closed at **$99,513 (−0.49%)**. One session of history against competitors who have had a week. The cost-floor fix should improve the economics but 90 minutes cannot build a track record.
-2. **IAU's market is 11.5% wide** — very illiquid. Our 40bps target quote is far inside that, so we'd be picked off. Consider dropping IAU and keeping GLD if you want to be safe.
+2. ~~**IAU's market is 11.5% wide**~~ — **RESOLVED (D-017):** IAU dropped, GLD retained.
 3. **The SPY bull put spread has a poor credit/risk ratio** — $50 credit against $450 max loss (1:9). Entered when IV was low. Not worth changing now.
 4. **Social workstream skipped** (your call). That forfeits one of five judging criteria *and* a separately-winnable $500 + Algo Trader Plus. **If you find a spare hour, this is still the highest return-per-hour work available** — the competition for it is thin because most teams ignore it.
 
@@ -102,4 +102,4 @@ A market maker that loses on its round trips is being picked off, not making a m
 | `docs/slides.md` | 10 slides with speaker notes, cover-image spec, 3-min video running order |
 | `docs/MORNING-BRIEF.md` | This file |
 
-**Open decisions for you:** drop IAU? lower `min_close_edge_bps` if fills dry up? reinstate the social workstream?
+**Resolved since:** IAU dropped, `min_close_edge_bps` = 10 (D-017). **Still open:** reinstate the social workstream?

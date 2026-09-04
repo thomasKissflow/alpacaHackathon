@@ -298,6 +298,21 @@ Verified by replaying the real `TSLA260911P00382500` tape through the floor: 5 o
 
 ---
 
+## D-017 — Drop IAU; lower the close-edge requirement to 10bps
+**Date:** 2026-09-04 · **Status:** DECIDED (approved by Thomas) — tunes D-015 and D-016
+
+**Decision:** Remove `IAU` from the Specialist basket (GLD stays, and remains in the Convexity basket). Lower `min_close_edge_bps` from 25 to 10.
+
+**Reasoning:**
+- **IAU's market measured 11.5% wide** (bid $1.89 / ask $2.12) against GLD's 3.6%. Our target quote of 40bps sits far inside a spread that wide, which means we would consistently be the best price on both sides of an illiquid book — the textbook way to get picked off by informed flow. GLD carries the gold exposure at a spread we can actually work inside.
+- **25bps was set conservatively without live evidence.** With roughly 75 minutes of trading left before judging, fill count is itself a judged signal ("P&L *and how effectively the strategy performs through its trading activity*"). 10bps still guarantees a positive edge on every close — and the one-tick minimum floor means cheap contracts are unaffected either way — while materially widening the band in which a close can happen.
+
+**Alternatives considered:** keep IAU and widen its quote specifically (rejected — per-symbol spread tuning with no live data on a final session is guesswork); drop `min_close_edge_bps` to zero (rejected — that reinstates the exact break-even/loss-making round trips D-016 removed).
+
+**Impact:** Six specialist symbols instead of seven. Closing quotes sit nearer the market, so more round trips complete, each still with positive expected edge. 63 tests still passing.
+
+---
+
 ## Pending decisions (not yet made)
 
 | # | Decision needed | Blocks | Owner |
