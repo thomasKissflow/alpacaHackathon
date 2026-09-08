@@ -4520,5 +4520,21 @@
     "mode": "convexity",
     "symbol": "QQQ",
     "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:29:38.271831+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.5400000000000001
+  },
+  {
+    "timestamp": "2026-09-08T14:29:38.280360+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
+    "unrealized_pnl": 0.6100000000000003
   }
 ]
