@@ -1,80 +1,5 @@
 [
   {
-    "timestamp": "2026-09-03T18:16:14.438812+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "61b2c1b0-4ac8-4de0-b42b-e9a7ee1189ad",
-    "unrealized_pnl": 0.04500000000000015
-  },
-  {
-    "timestamp": "2026-09-03T18:16:14.442573+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "6282c600-4c7d-4d55-b4f3-abf49dd215d6",
-    "unrealized_pnl": 0.035000000000000364
-  },
-  {
-    "timestamp": "2026-09-03T18:16:14.444312+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "7ad74a92-03f9-4e31-a6f9-50e18739d113",
-    "unrealized_pnl": -0.14
-  },
-  {
-    "timestamp": "2026-09-03T18:16:28.808938+00:00",
-    "stage": "scan",
-    "mode": "convexity",
-    "candidates": [
-      {
-        "symbol": "QQQ",
-        "iv_rank": 86.0,
-        "trend": "neutral"
-      },
-      {
-        "symbol": "IWM",
-        "iv_rank": 85.8,
-        "trend": "neutral"
-      },
-      {
-        "symbol": "SPY",
-        "iv_rank": 46.9,
-        "trend": "bullish"
-      }
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T18:16:28.858067+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "QQQ",
-    "action": "rejected",
-    "reasons": [
-      "already have an open position on QQQ"
-    ],
-    "rationale": "QQQ: IV rank 86, trend=neutral -> iron_condor, credit~$1.27, max_loss~$373.00, exp 2026-09-10"
-  },
-  {
-    "timestamp": "2026-09-03T18:16:28.882408+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "IWM",
-    "action": "rejected",
-    "reasons": [
-      "already have an open position on IWM"
-    ],
-    "rationale": "IWM: IV rank 86, trend=neutral -> iron_condor, credit~$0.82, max_loss~$418.50, exp 2026-09-10"
-  },
-  {
-    "timestamp": "2026-09-03T18:16:28.882909+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "SPY",
-    "action": "no_plan"
-  },
-  {
     "timestamp": "2026-09-03T18:17:25.421361+00:00",
     "stage": "monitor",
     "mode": "convexity",
@@ -4550,6 +4475,81 @@
     "stage": "entry",
     "mode": "convexity",
     "symbol": "QQQ",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:41:12.483082+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.4600000000000001
+  },
+  {
+    "timestamp": "2026-09-08T14:41:12.490532+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
+    "unrealized_pnl": -0.030000000000000027
+  },
+  {
+    "timestamp": "2026-09-08T14:41:36.071558+00:00",
+    "stage": "scan",
+    "mode": "convexity",
+    "candidates": [
+      {
+        "symbol": "SPY",
+        "iv_rank": 91.1,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "GLD",
+        "iv_rank": 69.8,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "QQQ",
+        "iv_rank": 34.3,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "IWM",
+        "iv_rank": 0.0,
+        "trend": "neutral"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-09-08T14:41:36.126676+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "SPY",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on SPY"
+    ],
+    "rationale": "SPY: IV rank 91, trend=bullish -> bull_put_spread, credit~$0.55, max_loss~$445.00, exp 2026-09-15"
+  },
+  {
+    "timestamp": "2026-09-08T14:41:36.145777+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "GLD",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:41:36.147257+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "QQQ",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:41:36.148599+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "IWM",
     "action": "no_plan"
   }
 ]
