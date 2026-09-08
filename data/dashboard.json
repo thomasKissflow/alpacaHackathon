@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T15:38:39.128067+00:00",
+  "generated_at": "2026-09-08T15:40:07.735321+00:00",
   "risk_config": {
     "max_net_delta_dollars": 60000.0,
     "max_net_vega_dollars": 3000.0,
@@ -11,45 +11,45 @@
   "tickers": [
     {
       "symbol": "AAPL",
-      "price": 316.28,
+      "price": 316.26,
       "prev_close": 315.515,
-      "updated_ts": "2026-09-08T15:37:57.174815+00:00"
+      "updated_ts": "2026-09-08T15:39:22.346591+00:00"
     },
     {
       "symbol": "GLD",
-      "price": 403.355,
+      "price": 403.875,
       "prev_close": 403.14,
-      "updated_ts": "2026-09-08T15:38:04.301534+00:00"
+      "updated_ts": "2026-09-08T15:39:29.490140+00:00"
     },
     {
       "symbol": "IWM",
-      "price": 295.42,
+      "price": 295.41499999999996,
       "prev_close": 295.17,
-      "updated_ts": "2026-09-08T15:38:07.980620+00:00"
+      "updated_ts": "2026-09-08T15:39:33.629800+00:00"
     },
     {
       "symbol": "NVDA",
-      "price": 226.59500000000003,
+      "price": 226.56,
       "prev_close": 227.485,
-      "updated_ts": "2026-09-08T15:37:59.305915+00:00"
+      "updated_ts": "2026-09-08T15:39:24.648168+00:00"
     },
     {
       "symbol": "QQQ",
-      "price": 719.94,
+      "price": 719.99,
       "prev_close": 717.525,
-      "updated_ts": "2026-09-08T15:37:52.037464+00:00"
+      "updated_ts": "2026-09-08T15:39:17.469398+00:00"
     },
     {
       "symbol": "SPY",
-      "price": 767.405,
+      "price": 767.41,
       "prev_close": 766.615,
-      "updated_ts": "2026-09-08T15:37:45.627189+00:00"
+      "updated_ts": "2026-09-08T15:39:10.901004+00:00"
     },
     {
       "symbol": "TSLA",
-      "price": 365.345,
+      "price": 366.385,
       "prev_close": 363.53499999999997,
-      "updated_ts": "2026-09-08T15:38:01.538266+00:00"
+      "updated_ts": "2026-09-08T15:39:26.952881+00:00"
     }
   ],
   "account_history": [
@@ -1302,6 +1302,16 @@
       "specialist_pnl": -491.13000000000466,
       "convexity_pnl": 0.0,
       "day_pnl": -491.13000000000466
+    },
+    {
+      "id": 126,
+      "ts": "2026-09-08T15:40:07.722294+00:00",
+      "equity": 98761.37,
+      "cash": -169106.51,
+      "buying_power": 3829.43,
+      "specialist_pnl": -535.570000000007,
+      "convexity_pnl": 0.0,
+      "day_pnl": -535.570000000007
     }
   ],
   "equity_candles": [
@@ -1682,6 +1692,13 @@
       "h": 98805.81,
       "l": 98737.07,
       "c": 98805.81
+    },
+    {
+      "t": "2026-09-08T15:39:00+00:00",
+      "o": 98761.37,
+      "h": 98761.37,
+      "l": 98761.37,
+      "c": 98761.37
     }
   ],
   "activity_volume": [
@@ -1896,126 +1913,130 @@
     {
       "t": "2026-09-08T15:36:00+00:00",
       "v": 2
+    },
+    {
+      "t": "2026-09-08T15:39:00+00:00",
+      "v": 1
     }
   ],
   "candle_bucket_minutes": 3,
   "inventory": [
     {
-      "id": 1402,
-      "ts": "2026-09-08T15:38:13.275426+00:00",
+      "id": 1417,
+      "ts": "2026-09-08T15:39:38.586812+00:00",
       "mode": "specialist",
       "symbol": "IWM260915P00294000",
       "underlying": "IWM",
       "qty": 1,
-      "delta_dollars": -11949.069047190676,
-      "gamma": 5.295472408958919,
-      "vega_dollars": 15.851092148516784,
-      "theta_dollars": -18.74918459906234,
-      "notional": 215.0007983734028
+      "delta_dollars": -11932.845867092603,
+      "gamma": 5.344718920328963,
+      "vega_dollars": 15.845444178943168,
+      "theta_dollars": -18.551303107668996,
+      "notional": 212.50077019405467
     },
     {
-      "id": 1401,
-      "ts": "2026-09-08T15:38:12.428986+00:00",
+      "id": 1416,
+      "ts": "2026-09-08T15:39:37.924275+00:00",
       "mode": "specialist",
       "symbol": "TSLA260916P00360000",
       "underlying": "TSLA",
       "qty": 1,
-      "delta_dollars": -14287.30040510136,
-      "gamma": 1.633372974754423,
-      "vega_dollars": 20.768471136763193,
-      "theta_dollars": -54.571314107511185,
-      "notional": 672.9991596267638
+      "delta_dollars": -13779.78989626673,
+      "gamma": 1.5785317126495786,
+      "vega_dollars": 20.587283378342725,
+      "theta_dollars": -55.25728685312286,
+      "notional": 650.9992992684488
     },
     {
-      "id": 1400,
-      "ts": "2026-09-08T15:38:12.133002+00:00",
+      "id": 1415,
+      "ts": "2026-09-08T15:39:37.582913+00:00",
       "mode": "specialist",
       "symbol": "TSLA260911P00377500",
       "underlying": "TSLA",
       "qty": 1,
-      "delta_dollars": -27286.246366406704,
-      "gamma": 1.8620015327003816,
-      "vega_dollars": 10.594997672691125,
-      "theta_dollars": -88.04383323579601,
-      "notional": 1456.0002068272013
+      "delta_dollars": -25872.38738607051,
+      "gamma": 1.8094631175507965,
+      "vega_dollars": 11.44008731771645,
+      "theta_dollars": -105.89083024470905,
+      "notional": 1440.500538768623
     },
     {
-      "id": 1399,
-      "ts": "2026-09-08T15:38:11.751812+00:00",
+      "id": 1414,
+      "ts": "2026-09-08T15:39:37.274273+00:00",
       "mode": "specialist",
       "symbol": "TSLA260911P00382500",
       "underlying": "TSLA",
       "qty": 1,
-      "delta_dollars": -30802.009966351736,
-      "gamma": 1.4869484184460928,
-      "vega_dollars": 7.956427564143858,
-      "theta_dollars": -60.65435760134673,
-      "notional": 1831.5001017640157
+      "delta_dollars": -28634.004107859786,
+      "gamma": 1.516324206579908,
+      "vega_dollars": 9.79583071515826,
+      "theta_dollars": -91.83867210191917,
+      "notional": 1834.499774706768
     },
     {
-      "id": 1398,
-      "ts": "2026-09-08T15:38:11.451577+00:00",
+      "id": 1413,
+      "ts": "2026-09-08T15:39:36.976471+00:00",
       "mode": "specialist",
       "symbol": "NVDA",
       "underlying": "NVDA",
-      "qty": 57,
-      "delta_dollars": 12915.915,
+      "qty": 58,
+      "delta_dollars": 13140.48,
       "gamma": 0.0,
       "vega_dollars": 0.0,
       "theta_dollars": 0.0,
-      "notional": 12915.915
+      "notional": 13140.48
     },
     {
-      "id": 1397,
-      "ts": "2026-09-08T15:38:11.124527+00:00",
+      "id": 1412,
+      "ts": "2026-09-08T15:39:36.644289+00:00",
       "mode": "specialist",
       "symbol": "NVDA260911P00227500",
       "underlying": "NVDA",
       "qty": 1,
-      "delta_dollars": -11997.508533228609,
-      "gamma": 4.530761064858222,
-      "vega_dollars": 8.173113849848063,
-      "theta_dollars": -56.69923907227123,
-      "notional": 393.5002476149805
+      "delta_dollars": -12040.237448854372,
+      "gamma": 4.567101406030002,
+      "vega_dollars": 8.168763127465661,
+      "theta_dollars": -56.18713239561836,
+      "notional": 392.50025733678626
     },
     {
-      "id": 1396,
-      "ts": "2026-09-08T15:38:10.735385+00:00",
+      "id": 1411,
+      "ts": "2026-09-08T15:39:36.347434+00:00",
       "mode": "specialist",
       "symbol": "NVDA260918P00227500",
       "underlying": "NVDA",
       "qty": -1,
-      "delta_dollars": 11462.517234897494,
-      "gamma": -2.888011291579916,
-      "vega_dollars": -14.961223576520643,
-      "theta_dollars": 26.063349566873594,
-      "notional": 583.5001836491102
+      "delta_dollars": 11477.617973812037,
+      "gamma": -2.8637995866853743,
+      "vega_dollars": -14.958476436937968,
+      "theta_dollars": 26.291972120442303,
+      "notional": 589.9993120709496
     },
     {
-      "id": 1395,
-      "ts": "2026-09-08T15:38:10.438975+00:00",
+      "id": 1410,
+      "ts": "2026-09-08T15:39:36.037932+00:00",
       "mode": "specialist",
       "symbol": "NVDA260925P00230000",
       "underlying": "NVDA",
       "qty": 1,
-      "delta_dollars": -12463.05498759063,
-      "gamma": 2.2432715435651818,
-      "vega_dollars": 19.355637754611177,
-      "theta_dollars": -18.896799658474116,
-      "notional": 863.999860721698
+      "delta_dollars": -12506.778875426051,
+      "gamma": 2.276156748061776,
+      "vega_dollars": 19.34001393019613,
+      "theta_dollars": -18.569281151709735,
+      "notional": 855.4999071104419
     },
     {
-      "id": 1392,
-      "ts": "2026-09-08T15:38:01.543233+00:00",
+      "id": 1407,
+      "ts": "2026-09-08T15:39:26.958983+00:00",
       "mode": "specialist",
       "symbol": "TSLA",
       "underlying": "TSLA",
       "qty": 88,
-      "delta_dollars": 32150.36,
+      "delta_dollars": 32241.879999999997,
       "gamma": 0.0,
       "vega_dollars": 0.0,
       "theta_dollars": 0.0,
-      "notional": 32150.36
+      "notional": 32241.879999999997
     },
     {
       "id": 809,
@@ -5109,6 +5130,18 @@
   ],
   "hedges": [
     {
+      "id": 129,
+      "ts": "2026-09-08T15:39:36.973344+00:00",
+      "trigger_fill_id": null,
+      "underlying": "NVDA",
+      "side": "buy",
+      "qty": 1,
+      "price": 226.56,
+      "delta_before": 57.0,
+      "delta_after": 58.0,
+      "alpaca_order_id": "c9b68926-58ed-4531-a024-49fb8148de72"
+    },
+    {
       "id": 128,
       "ts": "2026-09-08T15:38:11.448890+00:00",
       "trigger_fill_id": null,
@@ -6295,21 +6328,105 @@
       "delta_before": 47.0,
       "delta_after": 6.0,
       "alpaca_order_id": "324df389-e82c-4ff0-a903-eb60cece5d9a"
-    },
-    {
-      "id": 29,
-      "ts": "2026-09-03T18:55:42.316189+00:00",
-      "trigger_fill_id": null,
-      "underlying": "TSLA",
-      "side": "buy",
-      "qty": 1,
-      "price": 380.87,
-      "delta_before": 46.0,
-      "delta_after": 47.0,
-      "alpaca_order_id": "9ed15103-0193-4a8f-81c8-928e4189e85b"
     }
   ],
   "risk_events": [
+    {
+      "id": 812,
+      "ts": "2026-09-08T15:40:07.665811+00:00",
+      "event_type": "reject",
+      "mode": "convexity",
+      "reason": "already have an open position on SPY",
+      "details_json": "{\"underlying\": \"SPY\", \"strategy_type\": \"bull_put_spread\", \"max_loss_estimate\": 455.99999999999994}"
+    },
+    {
+      "id": 811,
+      "ts": "2026-09-08T15:40:07.639054+00:00",
+      "event_type": "reject",
+      "mode": "convexity",
+      "reason": "already have an open position on IWM",
+      "details_json": "{\"underlying\": \"IWM\", \"strategy_type\": \"iron_condor\", \"max_loss_estimate\": 425.5}"
+    },
+    {
+      "id": 810,
+      "ts": "2026-09-08T15:39:41.256677+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "portfolio delta-dollars $-61,721 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
+      "details_json": "{\"portfolio_delta_dollars\": -61720.72659297402}"
+    },
+    {
+      "id": 809,
+      "ts": "2026-09-08T15:39:40.941518+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "portfolio delta-dollars $-61,721 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
+      "details_json": "{\"portfolio_delta_dollars\": -61720.72659297402}"
+    },
+    {
+      "id": 808,
+      "ts": "2026-09-08T15:39:40.631075+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "portfolio delta-dollars $-61,721 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
+      "details_json": "{\"portfolio_delta_dollars\": -61720.72659297402}"
+    },
+    {
+      "id": 807,
+      "ts": "2026-09-08T15:39:40.324706+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "portfolio delta-dollars $-61,721 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
+      "details_json": "{\"portfolio_delta_dollars\": -61720.72659297402}"
+    },
+    {
+      "id": 806,
+      "ts": "2026-09-08T15:39:40.013456+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "portfolio delta-dollars $-61,721 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
+      "details_json": "{\"portfolio_delta_dollars\": -61720.72659297402}"
+    },
+    {
+      "id": 805,
+      "ts": "2026-09-08T15:39:39.607388+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "portfolio delta-dollars $-61,721 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
+      "details_json": "{\"portfolio_delta_dollars\": -61720.72659297402}"
+    },
+    {
+      "id": 804,
+      "ts": "2026-09-08T15:39:39.232227+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "portfolio delta-dollars $-61,721 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
+      "details_json": "{\"portfolio_delta_dollars\": -61720.72659297402}"
+    },
+    {
+      "id": 803,
+      "ts": "2026-09-08T15:39:38.921206+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "hedge rebalance leg failed for IWM: {\"buying_power\":\"3463.97\",\"code\":40310000,\"cost_basis\":\"11816.01\",\"message\":\"insufficient buying power\"}",
+      "details_json": null
+    },
+    {
+      "id": 802,
+      "ts": "2026-09-08T15:39:38.261389+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "hedge rebalance leg failed for TSLA: {\"buying_power\":\"3487.28\",\"code\":40310000,\"cost_basis\":\"35835.67\",\"message\":\"insufficient buying power\"}",
+      "details_json": null
+    },
+    {
+      "id": 801,
+      "ts": "2026-09-08T15:39:10.591437+00:00",
+      "event_type": "clamp",
+      "mode": null,
+      "reason": "gold news regime 'turbulent' (5 headlines, cache): Mixed market reactions with significant movements in tech stocks and precious metals due to economic indicators and Fed policy expectations.",
+      "details_json": "{\"gate\": \"news_agent\", \"regime\": \"turbulent\", \"spread_multiplier\": 1.35}"
+    },
     {
       "id": 800,
       "ts": "2026-09-08T15:38:15.871761+00:00",
@@ -7013,102 +7130,6 @@
       "mode": "specialist",
       "reason": "portfolio delta-dollars $-61,864 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
       "details_json": "{\"portfolio_delta_dollars\": -61864.35616055651}"
-    },
-    {
-      "id": 712,
-      "ts": "2026-09-08T15:26:14.733618+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "hedge rebalance leg failed for IWM: {\"buying_power\":\"4494.84\",\"code\":40310000,\"cost_basis\":\"11820.41\",\"message\":\"insufficient buying power\"}",
-      "details_json": null
-    },
-    {
-      "id": 711,
-      "ts": "2026-09-08T15:26:13.942189+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "hedge rebalance leg failed for TSLA: {\"buying_power\":\"4479.54\",\"code\":40310000,\"cost_basis\":\"35952.29\",\"message\":\"insufficient buying power\"}",
-      "details_json": null
-    },
-    {
-      "id": 710,
-      "ts": "2026-09-08T15:25:12.844372+00:00",
-      "event_type": "clamp",
-      "mode": null,
-      "reason": "gold news regime 'turbulent' (5 headlines, cache): Crypto and gold miners sell-off amid hot jobs data, signaling potential economic shifts and increased market volatility.",
-      "details_json": "{\"gate\": \"news_agent\", \"regime\": \"turbulent\", \"spread_multiplier\": 1.35}"
-    },
-    {
-      "id": 709,
-      "ts": "2026-09-08T15:24:41.385814+00:00",
-      "event_type": "reject",
-      "mode": "convexity",
-      "reason": "already have an open position on SPY",
-      "details_json": "{\"underlying\": \"SPY\", \"strategy_type\": \"bull_put_spread\", \"max_loss_estimate\": 449.5}"
-    },
-    {
-      "id": 708,
-      "ts": "2026-09-08T15:24:41.351203+00:00",
-      "event_type": "reject",
-      "mode": "convexity",
-      "reason": "already have an open position on IWM",
-      "details_json": "{\"underlying\": \"IWM\", \"strategy_type\": \"iron_condor\", \"max_loss_estimate\": 435.50000000000006}"
-    },
-    {
-      "id": 707,
-      "ts": "2026-09-08T15:24:05.928228+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-66,306 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -66305.50501722076}"
-    },
-    {
-      "id": 706,
-      "ts": "2026-09-08T15:24:05.611057+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-66,306 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -66305.50501722076}"
-    },
-    {
-      "id": 705,
-      "ts": "2026-09-08T15:24:05.212041+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-66,306 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -66305.50501722076}"
-    },
-    {
-      "id": 704,
-      "ts": "2026-09-08T15:24:04.869743+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-66,306 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -66305.50501722076}"
-    },
-    {
-      "id": 703,
-      "ts": "2026-09-08T15:24:04.524582+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-66,306 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -66305.50501722076}"
-    },
-    {
-      "id": 702,
-      "ts": "2026-09-08T15:24:04.211398+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-66,306 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -66305.50501722076}"
-    },
-    {
-      "id": 701,
-      "ts": "2026-09-08T15:24:03.892176+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-66,306 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -66305.50501722076}"
     }
   ],
   "postmortems": [
