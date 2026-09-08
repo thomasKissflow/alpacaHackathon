@@ -1,110 +1,5 @@
 [
   {
-    "timestamp": "2026-09-03T18:17:38.803096+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "SPY",
-    "action": "rejected",
-    "reasons": [
-      "already have an open position on SPY"
-    ],
-    "rationale": "SPY: IV rank 72, trend=bullish -> bull_put_spread, credit~$0.49, max_loss~$450.50, exp 2026-09-10"
-  },
-  {
-    "timestamp": "2026-09-03T18:17:38.803448+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "IWM",
-    "action": "no_plan"
-  },
-  {
-    "timestamp": "2026-09-03T18:18:34.553911+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "61b2c1b0-4ac8-4de0-b42b-e9a7ee1189ad",
-    "unrealized_pnl": -0.004999999999999893
-  },
-  {
-    "timestamp": "2026-09-03T18:18:34.555572+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "6282c600-4c7d-4d55-b4f3-abf49dd215d6",
-    "unrealized_pnl": -0.054999999999999716
-  },
-  {
-    "timestamp": "2026-09-03T18:18:34.556556+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "7ad74a92-03f9-4e31-a6f9-50e18739d113",
-    "unrealized_pnl": -0.13
-  },
-  {
-    "timestamp": "2026-09-03T18:18:49.594638+00:00",
-    "stage": "scan",
-    "mode": "convexity",
-    "candidates": [
-      {
-        "symbol": "IWM",
-        "iv_rank": 57.9,
-        "trend": "neutral"
-      },
-      {
-        "symbol": "SPY",
-        "iv_rank": 17.8,
-        "trend": "bullish"
-      },
-      {
-        "symbol": "QQQ",
-        "iv_rank": 8.9,
-        "trend": "neutral"
-      }
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T18:18:49.642174+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "IWM",
-    "action": "rejected",
-    "reasons": [
-      "already have an open position on IWM"
-    ],
-    "rationale": "IWM: IV rank 58, trend=neutral -> iron_condor, credit~$0.83, max_loss~$417.00, exp 2026-09-10"
-  },
-  {
-    "timestamp": "2026-09-03T18:18:49.642836+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "SPY",
-    "action": "no_plan"
-  },
-  {
-    "timestamp": "2026-09-03T18:18:49.643410+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "QQQ",
-    "action": "no_plan"
-  },
-  {
-    "timestamp": "2026-09-03T18:19:46.599574+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "61b2c1b0-4ac8-4de0-b42b-e9a7ee1189ad",
-    "unrealized_pnl": -0.014999999999999902
-  },
-  {
-    "timestamp": "2026-09-03T18:19:46.601358+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "6282c600-4c7d-4d55-b4f3-abf49dd215d6",
-    "unrealized_pnl": -0.034999999999999476
-  },
-  {
     "timestamp": "2026-09-03T18:19:46.602831+00:00",
     "stage": "monitor",
     "mode": "convexity",
@@ -4557,5 +4452,116 @@
     "action": "entered",
     "rationale": "QQQ: IV rank 65, trend=neutral -> iron_condor, credit~$1.35, max_loss~$365.00, exp 2026-09-15",
     "strategy_id": "2225ae6b-d82d-4b71-9cfb-b8f9ec998038"
+  },
+  {
+    "timestamp": "2026-09-08T14:44:19.246340+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.43000000000000016
+  },
+  {
+    "timestamp": "2026-09-08T14:44:19.251723+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
+    "unrealized_pnl": -0.06999999999999995
+  },
+  {
+    "timestamp": "2026-09-08T14:44:19.256755+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "2225ae6b-d82d-4b71-9cfb-b8f9ec998038",
+    "unrealized_pnl": -0.10999999999999988
+  },
+  {
+    "timestamp": "2026-09-08T14:44:42.255491+00:00",
+    "stage": "scan",
+    "mode": "convexity",
+    "candidates": [
+      {
+        "symbol": "GLD",
+        "iv_rank": 88.1,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "SPY",
+        "iv_rank": 84.4,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "IWM",
+        "iv_rank": 75.8,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "QQQ",
+        "iv_rank": 31.5,
+        "trend": "neutral"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-09-08T14:44:42.299077+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "GLD",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:44:42.331360+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "SPY",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on SPY"
+    ],
+    "rationale": "SPY: IV rank 84, trend=bullish -> bull_put_spread, credit~$0.50, max_loss~$450.00, exp 2026-09-15"
+  },
+  {
+    "timestamp": "2026-09-08T14:44:42.345972+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "IWM",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on IWM"
+    ],
+    "rationale": "IWM: IV rank 76, trend=neutral -> iron_condor, credit~$0.78, max_loss~$422.00, exp 2026-09-15"
+  },
+  {
+    "timestamp": "2026-09-08T14:44:42.347111+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "QQQ",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:45:59.181515+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.5099999999999999
+  },
+  {
+    "timestamp": "2026-09-08T14:45:59.188388+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
+    "unrealized_pnl": -0.1100000000000001
+  },
+  {
+    "timestamp": "2026-09-08T14:45:59.193899+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "2225ae6b-d82d-4b71-9cfb-b8f9ec998038",
+    "unrealized_pnl": -0.22999999999999998
   }
 ]
