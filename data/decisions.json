@@ -1,107 +1,5 @@
 [
   {
-    "timestamp": "2026-09-03T18:08:17.948956+00:00",
-    "stage": "scan",
-    "mode": "convexity",
-    "candidates": [
-      {
-        "symbol": "SPY",
-        "iv_rank": 50.0,
-        "trend": "bullish"
-      },
-      {
-        "symbol": "QQQ",
-        "iv_rank": 50.0,
-        "trend": "neutral"
-      },
-      {
-        "symbol": "IWM",
-        "iv_rank": 50.0,
-        "trend": "neutral"
-      }
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T18:08:18.001308+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "SPY",
-    "action": "rejected",
-    "reasons": [
-      "already have an open position on SPY"
-    ],
-    "rationale": "SPY: IV rank 50, trend=bullish -> bull_put_spread, credit~$0.50, max_loss~$450.00, exp 2026-09-10"
-  },
-  {
-    "timestamp": "2026-09-03T18:08:18.296618+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "QQQ",
-    "action": "entered",
-    "rationale": "QQQ: IV rank 50, trend=neutral -> iron_condor, credit~$1.25, max_loss~$375.50, exp 2026-09-10",
-    "strategy_id": "6282c600-4c7d-4d55-b4f3-abf49dd215d6"
-  },
-  {
-    "timestamp": "2026-09-03T18:09:12.814857+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "61b2c1b0-4ac8-4de0-b42b-e9a7ee1189ad",
-    "unrealized_pnl": -0.004999999999999893
-  },
-  {
-    "timestamp": "2026-09-03T18:09:12.816179+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "6282c600-4c7d-4d55-b4f3-abf49dd215d6",
-    "unrealized_pnl": -0.054999999999999716
-  },
-  {
-    "timestamp": "2026-09-03T18:09:26.384365+00:00",
-    "stage": "scan",
-    "mode": "convexity",
-    "candidates": [
-      {
-        "symbol": "SPY",
-        "iv_rank": 50.0,
-        "trend": "bullish"
-      },
-      {
-        "symbol": "QQQ",
-        "iv_rank": 50.0,
-        "trend": "neutral"
-      },
-      {
-        "symbol": "IWM",
-        "iv_rank": 50.0,
-        "trend": "neutral"
-      }
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T18:09:26.431574+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "SPY",
-    "action": "rejected",
-    "reasons": [
-      "already have an open position on SPY"
-    ],
-    "rationale": "SPY: IV rank 50, trend=bullish -> bull_put_spread, credit~$0.50, max_loss~$450.00, exp 2026-09-10"
-  },
-  {
-    "timestamp": "2026-09-03T18:09:26.469441+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "QQQ",
-    "action": "rejected",
-    "reasons": [
-      "already have an open position on QQQ"
-    ],
-    "rationale": "QQQ: IV rank 50, trend=neutral -> iron_condor, credit~$1.26, max_loss~$374.00, exp 2026-09-10"
-  },
-  {
     "timestamp": "2026-09-03T18:09:26.845699+00:00",
     "stage": "entry",
     "mode": "convexity",
@@ -4557,5 +4455,96 @@
     "action": "hold",
     "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
     "unrealized_pnl": -0.09000000000000008
+  },
+  {
+    "timestamp": "2026-09-08T14:31:58.704865+00:00",
+    "stage": "scan",
+    "mode": "convexity",
+    "candidates": [
+      {
+        "symbol": "SPY",
+        "iv_rank": 83.7,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "GLD",
+        "iv_rank": 59.2,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "QQQ",
+        "iv_rank": 56.1,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "IWM",
+        "iv_rank": 54.6,
+        "trend": "neutral"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-09-08T14:31:58.767569+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "SPY",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on SPY"
+    ],
+    "rationale": "SPY: IV rank 84, trend=bullish -> bull_put_spread, credit~$0.57, max_loss~$443.00, exp 2026-09-15"
+  },
+  {
+    "timestamp": "2026-09-08T14:31:58.786811+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "GLD",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:31:58.817284+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "QQQ",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on QQQ"
+    ],
+    "rationale": "QQQ: IV rank 56, trend=neutral -> iron_condor, credit~$1.47, max_loss~$352.50, exp 2026-09-15"
+  },
+  {
+    "timestamp": "2026-09-08T14:31:58.831442+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "IWM",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on IWM"
+    ],
+    "rationale": "IWM: IV rank 55, trend=neutral -> iron_condor, credit~$0.79, max_loss~$421.00, exp 2026-09-15"
+  },
+  {
+    "timestamp": "2026-09-08T14:33:11.000626+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.5800000000000002
+  },
+  {
+    "timestamp": "2026-09-08T14:33:11.006252+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "close_failed",
+    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
+    "error": "{\"available\":\"0\",\"code\":40310000,\"existing_qty\":\"1\",\"held_for_orders\":\"1\",\"message\":\"insufficient qty available for order (requested: 1, available: 0)\",\"related_orders\":[\"bc415ec6-f77d-42d2-933a-5736bd836606\"],\"symbol\":\"QQQ260910P00705000\"}"
+  },
+  {
+    "timestamp": "2026-09-08T14:33:11.013707+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
+    "unrealized_pnl": -0.040000000000000036
   }
 ]
