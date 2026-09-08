@@ -1,67 +1,5 @@
 [
   {
-    "timestamp": "2026-09-03T18:57:22.507682+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
-    "unrealized_pnl": -0.030000000000000027
-  },
-  {
-    "timestamp": "2026-09-03T18:57:22.508743+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
-    "unrealized_pnl": -0.020000000000000018
-  },
-  {
-    "timestamp": "2026-09-03T18:57:22.509997+00:00",
-    "stage": "event_calendar",
-    "mode": "convexity",
-    "action": "halt_new_entries",
-    "reason": "Non-Farm Payrolls (Aug 2026) in 17.6h - de-risking: quotes widened 1.6x, size cut 25%, no new short premium held across the release"
-  },
-  {
-    "timestamp": "2026-09-03T18:58:26.281616+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "9ac8df93-fed1-4ccd-b130-f3edf56c510f",
-    "unrealized_pnl": -0.06999999999999995
-  },
-  {
-    "timestamp": "2026-09-03T18:58:26.284529+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
-    "unrealized_pnl": -0.02000000000000024
-  },
-  {
-    "timestamp": "2026-09-03T18:58:26.287076+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
-    "unrealized_pnl": 0.03000000000000025
-  },
-  {
-    "timestamp": "2026-09-03T18:58:26.289414+00:00",
-    "stage": "event_calendar",
-    "mode": "convexity",
-    "action": "halt_new_entries",
-    "reason": "Non-Farm Payrolls (Aug 2026) in 17.5h - de-risking: quotes widened 1.6x, size cut 25%, no new short premium held across the release"
-  },
-  {
-    "timestamp": "2026-09-03T18:59:30.600497+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "9ac8df93-fed1-4ccd-b130-f3edf56c510f",
-    "unrealized_pnl": 0.010000000000000009
-  },
-  {
     "timestamp": "2026-09-03T18:59:30.603664+00:00",
     "stage": "monitor",
     "mode": "convexity",
@@ -4694,5 +4632,92 @@
     "action": "hold",
     "strategy_id": "2225ae6b-d82d-4b71-9cfb-b8f9ec998038",
     "unrealized_pnl": -0.3899999999999999
+  },
+  {
+    "timestamp": "2026-09-08T15:19:28.924151+00:00",
+    "stage": "scan",
+    "mode": "convexity",
+    "candidates": [
+      {
+        "symbol": "QQQ",
+        "iv_rank": 70.6,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "GLD",
+        "iv_rank": 66.1,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "IWM",
+        "iv_rank": 55.9,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "SPY",
+        "iv_rank": 0.0,
+        "trend": "bullish"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-09-08T15:19:28.993113+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "QQQ",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on QQQ"
+    ],
+    "rationale": "QQQ: IV rank 71, trend=neutral -> iron_condor, credit~$1.31, max_loss~$368.50, exp 2026-09-15"
+  },
+  {
+    "timestamp": "2026-09-08T15:19:29.007899+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "GLD",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T15:19:29.023047+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "IWM",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on IWM"
+    ],
+    "rationale": "IWM: IV rank 56, trend=neutral -> iron_condor, credit~$0.73, max_loss~$427.00, exp 2026-09-15"
+  },
+  {
+    "timestamp": "2026-09-08T15:19:29.024315+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "SPY",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T15:20:49.526552+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.30000000000000016
+  },
+  {
+    "timestamp": "2026-09-08T15:20:49.531503+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
+    "unrealized_pnl": -0.10000000000000009
+  },
+  {
+    "timestamp": "2026-09-08T15:20:49.535862+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "2225ae6b-d82d-4b71-9cfb-b8f9ec998038",
+    "unrealized_pnl": -0.3199999999999996
   }
 ]
