@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T15:57:15.335677+00:00",
+  "generated_at": "2026-09-08T16:17:59.063939+00:00",
   "risk_config": {
     "max_net_delta_dollars": 60000.0,
     "max_net_vega_dollars": 3000.0,
@@ -41,9 +41,9 @@
     },
     {
       "symbol": "SPY",
-      "price": 767.595,
+      "price": 767.635,
       "prev_close": 766.615,
-      "updated_ts": "2026-09-08T15:56:12.678086+00:00"
+      "updated_ts": "2026-09-08T15:57:49.281842+00:00"
     },
     {
       "symbol": "TSLA",
@@ -1422,6 +1422,16 @@
       "specialist_pnl": -705.6000000000058,
       "convexity_pnl": 0.0,
       "day_pnl": -705.6000000000058
+    },
+    {
+      "id": 138,
+      "ts": "2026-09-08T16:17:58.558087+00:00",
+      "equity": 98549.8,
+      "cash": -169558.82,
+      "buying_power": 3751.18,
+      "specialist_pnl": -747.1399999999994,
+      "convexity_pnl": 0.0,
+      "day_pnl": -747.1399999999994
     }
   ],
   "equity_candles": [
@@ -1851,6 +1861,13 @@
       "h": 98591.34,
       "l": 98591.34,
       "c": 98591.34
+    },
+    {
+      "t": "2026-09-08T16:15:00+00:00",
+      "o": 98549.8,
+      "h": 98549.8,
+      "l": 98549.8,
+      "c": 98549.8
     }
   ],
   "activity_volume": [
@@ -6500,6 +6517,30 @@
   ],
   "risk_events": [
     {
+      "id": 943,
+      "ts": "2026-09-08T16:17:58.517441+00:00",
+      "event_type": "reject",
+      "mode": "convexity",
+      "reason": "convexity cycle raised: HTTPSConnectionPool(host='data.alpaca.markets', port=443): Max retries exceeded with url: /v1beta1/options/quotes/latest?symbols=SPY260910P00764000%2CSPY260910P00759000 (Caused by NameResolutionError(\"HTTPSConnection(host='data.alpaca.markets', port=443): Failed to resolve 'data.alpaca.markets' ([Errno 8] nodename nor servname provided, or not known)\"))",
+      "details_json": null
+    },
+    {
+      "id": 942,
+      "ts": "2026-09-08T16:01:43.501144+00:00",
+      "event_type": "reject",
+      "mode": "specialist",
+      "reason": "specialist cycle raised: HTTPSConnectionPool(host='data.alpaca.markets', port=443): Read timed out. (read timeout=None)",
+      "details_json": null
+    },
+    {
+      "id": 941,
+      "ts": "2026-09-08T15:57:48.741512+00:00",
+      "event_type": "clamp",
+      "mode": null,
+      "reason": "gold news regime 'turbulent' (5 headlines, cache): Mixed market reactions with significant movements in tech stocks and precious metals due to economic indicators and Fed policy expectations.",
+      "details_json": "{\"gate\": \"news_agent\", \"regime\": \"turbulent\", \"spread_multiplier\": 1.35}"
+    },
+    {
       "id": 940,
       "ts": "2026-09-08T15:57:14.215265+00:00",
       "event_type": "reject",
@@ -7270,30 +7311,6 @@
     {
       "id": 844,
       "ts": "2026-09-08T15:44:45.757740+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-63,029 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -63028.949540564805}"
-    },
-    {
-      "id": 843,
-      "ts": "2026-09-08T15:44:45.442997+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-63,029 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -63028.949540564805}"
-    },
-    {
-      "id": 842,
-      "ts": "2026-09-08T15:44:45.137779+00:00",
-      "event_type": "reject",
-      "mode": "specialist",
-      "reason": "portfolio delta-dollars $-63,029 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
-      "details_json": "{\"portfolio_delta_dollars\": -63028.949540564805}"
-    },
-    {
-      "id": 841,
-      "ts": "2026-09-08T15:44:44.828960+00:00",
       "event_type": "reject",
       "mode": "specialist",
       "reason": "portfolio delta-dollars $-63,029 exceeds cap +/-$60,000; forcing hedge-to-flat before new quotes",
