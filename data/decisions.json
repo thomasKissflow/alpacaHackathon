@@ -4265,5 +4265,86 @@
     "mode": "convexity",
     "symbol": "IWM",
     "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:24:22.790683+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "close",
+    "strategy_id": "9ac8df93-fed1-4ccd-b130-f3edf56c510f",
+    "reason": "profit target hit ($0.52 >= $0.42)",
+    "pnl": 0.52
+  },
+  {
+    "timestamp": "2026-09-08T14:24:22.796163+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.49
+  },
+  {
+    "timestamp": "2026-09-08T14:24:22.800391+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "close",
+    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
+    "reason": "profit target hit ($0.72 >= $0.63)",
+    "pnl": 0.7200000000000002
+  },
+  {
+    "timestamp": "2026-09-08T14:24:22.804370+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "5a61d8bb-3b1e-44f2-8dd4-97d19a35b116",
+    "unrealized_pnl": -0.1250000000000001
+  },
+  {
+    "timestamp": "2026-09-08T14:24:45.908266+00:00",
+    "stage": "scan",
+    "mode": "convexity",
+    "candidates": [
+      {
+        "symbol": "SPY",
+        "iv_rank": 93.5,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "IWM",
+        "iv_rank": 78.8,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "GLD",
+        "iv_rank": 50.0,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "QQQ",
+        "iv_rank": 30.6,
+        "trend": "neutral"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-09-08T14:24:45.969344+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "SPY",
+    "action": "rejected",
+    "reasons": [
+      "already have an open position on SPY"
+    ],
+    "rationale": "SPY: IV rank 93, trend=bullish -> bull_put_spread, credit~$0.51, max_loss~$448.50, exp 2026-09-15"
+  },
+  {
+    "timestamp": "2026-09-08T14:24:46.349177+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "IWM",
+    "action": "entered",
+    "rationale": "IWM: IV rank 79, trend=neutral -> iron_condor, credit~$0.88, max_loss~$412.50, exp 2026-09-15",
+    "strategy_id": "ed6cc427-30d3-4385-8706-471ca4c60e27"
   }
 ]
