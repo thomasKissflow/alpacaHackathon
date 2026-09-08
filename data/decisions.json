@@ -4536,5 +4536,41 @@
     "action": "hold",
     "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
     "unrealized_pnl": 0.6100000000000003
+  },
+  {
+    "timestamp": "2026-09-08T14:29:59.814110+00:00",
+    "stage": "scan",
+    "mode": "convexity",
+    "candidates": [
+      {
+        "symbol": "IWM",
+        "iv_rank": 60.1,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "SPY",
+        "iv_rank": 46.6,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "QQQ",
+        "iv_rank": 39.0,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "GLD",
+        "iv_rank": 4.5,
+        "trend": "bullish"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-09-08T14:30:00.263437+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "IWM",
+    "action": "entered",
+    "rationale": "IWM: IV rank 60, trend=neutral -> iron_condor, credit~$0.77, max_loss~$423.00, exp 2026-09-15",
+    "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731"
   }
 ]
