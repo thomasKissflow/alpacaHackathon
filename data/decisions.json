@@ -1,44 +1,5 @@
 [
   {
-    "timestamp": "2026-09-03T18:06:41.217859+00:00",
-    "stage": "scan",
-    "mode": "convexity",
-    "candidates": [
-      {
-        "symbol": "SPY",
-        "iv_rank": 50.0,
-        "trend": "bullish"
-      },
-      {
-        "symbol": "QQQ",
-        "iv_rank": 50.0,
-        "trend": "neutral"
-      },
-      {
-        "symbol": "IWM",
-        "iv_rank": 50.0,
-        "trend": "neutral"
-      }
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T18:06:41.696604+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "SPY",
-    "action": "entered",
-    "rationale": "SPY: IV rank 50, trend=bullish -> bull_put_spread, credit~$0.52, max_loss~$448.50, exp 2026-09-10",
-    "strategy_id": "61b2c1b0-4ac8-4de0-b42b-e9a7ee1189ad"
-  },
-  {
-    "timestamp": "2026-09-03T18:08:04.345566+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "61b2c1b0-4ac8-4de0-b42b-e9a7ee1189ad",
-    "unrealized_pnl": -0.03499999999999992
-  },
-  {
     "timestamp": "2026-09-03T18:08:17.948956+00:00",
     "stage": "scan",
     "mode": "convexity",
@@ -4572,5 +4533,29 @@
     "action": "entered",
     "rationale": "IWM: IV rank 60, trend=neutral -> iron_condor, credit~$0.77, max_loss~$423.00, exp 2026-09-15",
     "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731"
+  },
+  {
+    "timestamp": "2026-09-08T14:31:29.026911+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.5400000000000001
+  },
+  {
+    "timestamp": "2026-09-08T14:31:29.034322+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
+    "unrealized_pnl": 0.6100000000000002
+  },
+  {
+    "timestamp": "2026-09-08T14:31:29.040113+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
+    "unrealized_pnl": -0.09000000000000008
   }
 ]
