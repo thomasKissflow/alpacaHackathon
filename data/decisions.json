@@ -1,82 +1,5 @@
 [
   {
-    "timestamp": "2026-09-03T18:13:51.513980+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "7ad74a92-03f9-4e31-a6f9-50e18739d113",
-    "unrealized_pnl": -0.09000000000000008
-  },
-  {
-    "timestamp": "2026-09-03T18:14:05.093423+00:00",
-    "stage": "scan",
-    "mode": "convexity",
-    "candidates": [
-      {
-        "symbol": "SPY",
-        "iv_rank": 91.1,
-        "trend": "bullish"
-      },
-      {
-        "symbol": "IWM",
-        "iv_rank": 70.5,
-        "trend": "neutral"
-      },
-      {
-        "symbol": "QQQ",
-        "iv_rank": 7.0,
-        "trend": "neutral"
-      }
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T18:14:05.146076+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "SPY",
-    "action": "rejected",
-    "reasons": [
-      "already have an open position on SPY",
-      "insufficient buying power ($0.00) for max loss $450.00"
-    ],
-    "rationale": "SPY: IV rank 91, trend=bullish -> bull_put_spread, credit~$0.50, max_loss~$450.00, exp 2026-09-10"
-  },
-  {
-    "timestamp": "2026-09-03T18:14:05.164483+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "IWM",
-    "action": "rejected",
-    "reasons": [
-      "already have an open position on IWM",
-      "insufficient buying power ($0.00) for max loss $415.00"
-    ],
-    "rationale": "IWM: IV rank 71, trend=neutral -> iron_condor, credit~$0.85, max_loss~$415.00, exp 2026-09-10"
-  },
-  {
-    "timestamp": "2026-09-03T18:14:05.164969+00:00",
-    "stage": "entry",
-    "mode": "convexity",
-    "symbol": "QQQ",
-    "action": "no_plan"
-  },
-  {
-    "timestamp": "2026-09-03T18:15:00.010821+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "61b2c1b0-4ac8-4de0-b42b-e9a7ee1189ad",
-    "unrealized_pnl": 0.03500000000000014
-  },
-  {
-    "timestamp": "2026-09-03T18:15:00.015978+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "6282c600-4c7d-4d55-b4f3-abf49dd215d6",
-    "unrealized_pnl": -0.04499999999999971
-  },
-  {
     "timestamp": "2026-09-03T18:15:00.016888+00:00",
     "stage": "monitor",
     "mode": "convexity",
@@ -4557,5 +4480,76 @@
     "action": "hold",
     "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
     "unrealized_pnl": -0.16999999999999982
+  },
+  {
+    "timestamp": "2026-09-08T14:38:19.004836+00:00",
+    "stage": "scan",
+    "mode": "convexity",
+    "candidates": [
+      {
+        "symbol": "GLD",
+        "iv_rank": 49.1,
+        "trend": "bullish"
+      },
+      {
+        "symbol": "IWM",
+        "iv_rank": 42.0,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "QQQ",
+        "iv_rank": 38.2,
+        "trend": "neutral"
+      },
+      {
+        "symbol": "SPY",
+        "iv_rank": 23.9,
+        "trend": "bullish"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-09-08T14:38:19.014779+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "GLD",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:38:19.019790+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "IWM",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:38:19.032923+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "QQQ",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:38:19.037479+00:00",
+    "stage": "entry",
+    "mode": "convexity",
+    "symbol": "SPY",
+    "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T14:39:29.482808+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.4600000000000001
+  },
+  {
+    "timestamp": "2026-09-08T14:39:29.490552+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
+    "unrealized_pnl": -0.06000000000000005
   }
 ]
