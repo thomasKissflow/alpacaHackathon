@@ -1,28 +1,5 @@
 [
   {
-    "timestamp": "2026-09-03T18:55:48.902232+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "cb461930-a7fe-47d1-b8b8-f16cc97ea13d",
-    "unrealized_pnl": -0.06000000000000005
-  },
-  {
-    "timestamp": "2026-09-03T18:55:48.904506+00:00",
-    "stage": "event_calendar",
-    "mode": "convexity",
-    "action": "halt_new_entries",
-    "reason": "Non-Farm Payrolls (Aug 2026) in 17.6h - de-risking: quotes widened 1.6x, size cut 25%, no new short premium held across the release"
-  },
-  {
-    "timestamp": "2026-09-03T18:57:22.506683+00:00",
-    "stage": "monitor",
-    "mode": "convexity",
-    "action": "hold",
-    "strategy_id": "9ac8df93-fed1-4ccd-b130-f3edf56c510f",
-    "unrealized_pnl": 0.010000000000000009
-  },
-  {
     "timestamp": "2026-09-03T18:57:22.507682+00:00",
     "stage": "monitor",
     "mode": "convexity",
@@ -4693,5 +4670,29 @@
     "mode": "convexity",
     "symbol": "QQQ",
     "action": "no_plan"
+  },
+  {
+    "timestamp": "2026-09-08T15:18:45.274760+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "466173d5-7e5f-4e0b-83df-a3a9d9e564db",
+    "unrealized_pnl": -0.2600000000000001
+  },
+  {
+    "timestamp": "2026-09-08T15:18:45.285909+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "73feb63f-baed-489f-8e59-1bde3bfcb731",
+    "unrealized_pnl": -0.15999999999999992
+  },
+  {
+    "timestamp": "2026-09-08T15:18:45.291477+00:00",
+    "stage": "monitor",
+    "mode": "convexity",
+    "action": "hold",
+    "strategy_id": "2225ae6b-d82d-4b71-9cfb-b8f9ec998038",
+    "unrealized_pnl": -0.3899999999999999
   }
 ]
